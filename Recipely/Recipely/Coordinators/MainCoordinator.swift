@@ -20,7 +20,7 @@ final class MainCoordinator: Coordinator {
 
     func start() {
         autorizationSubscription()
-        //tabBarSubscription()
+        // tabBarSubscription()
     }
 
     func autorizationSubscription() {

@@ -21,8 +21,7 @@ final class TabBarCoordinator: Coordinator {
     // MARK: - Public Methods
 
     func start() {
-        let tabBarController = TabBarController()
-        tabBarController.coordinator = self
+        let tabBarController = ModuleBuilder.createTabBarModule()
         navigationController.pushViewController(tabBarController, animated: false)
     }
 }

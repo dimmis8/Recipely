@@ -21,8 +21,7 @@ final class AutorizationCoordinator: Coordinator {
     // MARK: - Public Methods
 
     func start() {
-        let autorizationViewController = AutorizationViewController()
-        autorizationViewController.coordinator = self
+        let autorizationViewController = ModuleBuilder.createAutorizationModule()
         navigationController.pushViewController(autorizationViewController, animated: false)
     }
 }
