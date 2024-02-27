@@ -17,6 +17,8 @@ final class ProfileViewController: UIViewController {
         static let alertTitle = "Are you sure you want to log out?"
         static let closeButtonText = "Close"
         static let yesButtonText = "Yes"
+        static let alertText = "Change your name and surname"
+        static let nameSurname = "Name Surname"
     }
 
     // MARK: - Visual Components
@@ -42,6 +44,17 @@ final class ProfileViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+
+    func createAlert() {
+        let alertView = UIAlertController(title: Constants.alertText, message: "", preferredStyle: .alert)
+        alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertView.addAction(UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
+            self?.presenter.editNameSurname(name: alertView.textFields?.first?.text ?? "")
+        })
+        alertView.addTextField()
+        alertView.textFields?.first?.placeholder = Constants.nameSurname
+        present(alertView, animated: true)
+    }
 
     private func configureView() {
         view.backgroundColor = .white
@@ -75,7 +88,11 @@ final class ProfileViewController: UIViewController {
 
 // MARK: - Подписание на протокол экрана профиля
 
-extension ProfileViewController: ProfileViewProtocol {}
+extension ProfileViewController: ProfileViewProtocol {
+    func setupAlert() {
+        createAlert()
+    }
+}
 
 // MARK: - Добавление групп контента на экране профиля
 
@@ -126,6 +143,9 @@ extension ProfileViewController: UITableViewDataSource {
             ) as? UserInfoViewCell else { return UITableViewCell() }
             guard let userInfo = presenter.getUserInformation() else { return cell }
             cell.setUserInformation(userInfo)
+            cell.action = { [weak self] in
+                self?.presenter.actionTapped()
+            }
             return cell
 
         case .profileButtons:
@@ -164,7 +184,15 @@ extension ProfileViewController {
     }
 }
 
-///
+/// Кнопка показа бонусов
 extension ProfileViewController {
-    private func showBonuses() {}
+    private func showBonuses() {
+        let profileBonusesViewController = ProfileBonusesViewController()
+        if let sheet = profileBonusesViewController.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+            sheet.prefersGrabberVisible = true
+        }
+        present(profileBonusesViewController, animated: true)
+    }
 }

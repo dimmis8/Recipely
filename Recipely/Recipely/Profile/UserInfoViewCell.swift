@@ -5,6 +5,8 @@ import UIKit
 
 /// Ячейка с информацией о пользователе
 final class UserInfoViewCell: UITableViewCell {
+    var action: (() -> ())?
+
     // MARK: - Constants
 
     enum Constants {
@@ -52,12 +54,14 @@ final class UserInfoViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createView()
         setConstraints()
+        tapButtonChangeName()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         createView()
         setConstraints()
+        tapButtonChangeName()
     }
 
     // MARK: - Public Properties
@@ -68,6 +72,10 @@ final class UserInfoViewCell: UITableViewCell {
     }
 
     // MARK: - Private Methods
+
+    private func tapButtonChangeName() {
+        changeNameButton.addTarget(self, action: #selector(changeNameTapped), for: .touchUpInside)
+    }
 
     private func createView() {
         contentView.backgroundColor = .white
@@ -110,5 +118,9 @@ final class UserInfoViewCell: UITableViewCell {
         nameView.topAnchor.constraint(equalTo: profilePhotoImageView.bottomAnchor, constant: 26).isActive = true
         nameView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         nameView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -29).isActive = true
+    }
+
+    @objc func changeNameTapped() {
+        action?()
     }
 }
