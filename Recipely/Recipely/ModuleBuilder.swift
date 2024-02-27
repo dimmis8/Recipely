@@ -40,7 +40,9 @@ final class ModuleBuilder: Builder {
 
     static func createProfileModule() -> ProfileViewController {
         let view = ProfileViewController()
+        let infoSource = InfoSource()
         let presenter = ProfilePresenter(view: view)
+        presenter.infoSource = infoSource
         view.presenter = presenter
         view.tabBarItem = UITabBarItem(
             title: Constants.titleProfile,
