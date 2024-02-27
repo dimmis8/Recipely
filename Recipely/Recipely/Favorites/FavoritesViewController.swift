@@ -1,0 +1,22 @@
+// FavoritesViewController.swift
+// Copyright © RoadMap. All rights reserved.
+
+import UIKit
+
+/// Экран избарнного
+final class FavoritesViewController: UIViewController {
+    // MARK: - Public Properties
+
+    var presenter: FavoritesViewPresenterProtocol!
+
+    // MARK: - Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .yellow
+    }
+}
+
+// MARK: - Подписание на протокол экрана избранного
+
+extension FavoritesViewController: FavoritesViewProtocol {}

@@ -4,24 +4,20 @@
 import UIKit
 
 /// Авторизационный координатор приложения
-final class AutorizationCoordinator: Coordinator {
-    weak var parentCoordinator: MainCoordinator?
+final class AutorizationCoordinator: BaseCoodinator {
+    private var rootController: UINavigationController
+    var onFinishFlow: (() -> ())?
 
-    // MARK: - Public Properties
-
-    var childrenCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
-
-    // MARK: - Initializers
-
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    init(rootController: UIViewController) {
+        self.rootController = UINavigationController(rootViewController: rootController)
     }
 
-    // MARK: - Public Methods
-
-    func start() {
-        let autorizationViewController = ModuleBuilder.createAutorizationModule()
-        navigationController.pushViewController(autorizationViewController, animated: false)
+    func logOut() {
+        onFinishFlow?()
     }
+
+//    func ​pushAutorization() {
+//        let autorizationViewController = ModuleBuilder.createAutorizationModule()
+//        rootController.pushViewController(autorizationViewController, animated: true)
+//    }
 }

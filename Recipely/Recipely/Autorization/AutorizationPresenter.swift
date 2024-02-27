@@ -8,6 +8,7 @@ protocol AutorizationViewProtocol: AnyObject {}
 
 /// Протокол презентера экрана авторизации
 protocol AutorizationViewPresenterProtocol: AnyObject {
+    var coordinator: AutorizationCoordinator? { get set }
     init(view: AutorizationViewProtocol)
 }
 
@@ -15,6 +16,7 @@ protocol AutorizationViewPresenterProtocol: AnyObject {
 final class AutorizationPresenter: AutorizationViewPresenterProtocol {
     // MARK: - Public Properties
 
+    weak var coordinator: AutorizationCoordinator?
     weak var view: AutorizationViewProtocol?
 
     // MARK: - Initializers

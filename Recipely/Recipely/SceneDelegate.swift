@@ -5,8 +5,7 @@ import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-    var coordinator: MainCoordinator?
-    // let loginViewController = AutorizationViewController()
+    private var appCoordinator: AppCoordinator?
 
     func scene(
         _ scene: UIScene,
@@ -19,10 +18,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func createRootViewController(_ windowScene: UIWindowScene) {
         window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController()
-        coordinator = MainCoordinator(navigationController: navigationController)
-        coordinator?.start()
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        if let window {
+            window.makeKeyAndVisible()
+            appCoordinator = AppCoordinator()
+            appCoordinator?.start()
+        }
     }
 }
