@@ -30,6 +30,10 @@
 		0A8521662B8DC2F9002BCE50 /* FavoritesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521652B8DC2F9002BCE50 /* FavoritesPresenter.swift */; };
 		0A8521682B8DC356002BCE50 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521672B8DC356002BCE50 /* FavoritesViewController.swift */; };
 		0A85216A2B8DC3E5002BCE50 /* FavoritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521692B8DC3E5002BCE50 /* FavoritesCoordinator.swift */; };
+		0A85216C2B8DF9AD002BCE50 /* UserInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */; };
+		0A85216E2B8DFE7D002BCE50 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */; };
+		0A8521712B8E0031002BCE50 /* InfoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521702B8E0031002BCE50 /* InfoSource.swift */; };
+		0A8521732B8E1B7C002BCE50 /* ProfileButtonViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +81,10 @@
 		0A8521652B8DC2F9002BCE50 /* FavoritesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPresenter.swift; sourceTree = "<group>"; };
 		0A8521672B8DC356002BCE50 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		0A8521692B8DC3E5002BCE50 /* FavoritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCoordinator.swift; sourceTree = "<group>"; };
+		0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewCell.swift; sourceTree = "<group>"; };
+		0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		0A8521702B8E0031002BCE50 /* InfoSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSource.swift; sourceTree = "<group>"; };
+		0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButtonViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +195,9 @@
 			children = (
 				0A8521522B8D26B5002BCE50 /* ProfileViewController.swift */,
 				0A8521542B8D271A002BCE50 /* ProfilePresenter.swift */,
+				0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */,
+				0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */,
+				0A85216F2B8E000A002BCE50 /* Models */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -215,6 +226,15 @@
 				0A8521652B8DC2F9002BCE50 /* FavoritesPresenter.swift */,
 			);
 			path = Favorites;
+			sourceTree = "<group>";
+		};
+		0A85216F2B8E000A002BCE50 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */,
+				0A8521702B8E0031002BCE50 /* InfoSource.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -394,17 +414,21 @@
 			files = (
 				0A85214E2B8D002C002BCE50 /* AutorizationPresenter.swift in Sources */,
 				0A8521442B8CF005002BCE50 /* AutorizationCoordinator.swift in Sources */,
+				0A8521732B8E1B7C002BCE50 /* ProfileButtonViewCell.swift in Sources */,
 				0A8521632B8DC194002BCE50 /* RecipesCoordinator.swift in Sources */,
 				0A8521112B8CB1D4002BCE50 /* AutorizationView.swift in Sources */,
 				0A8521532B8D26B5002BCE50 /* ProfileViewController.swift in Sources */,
 				0A85214C2B8CFF7C002BCE50 /* ModuleBuilder.swift in Sources */,
 				0A8521572B8DB45E002BCE50 /* BaseCoordinator.swift in Sources */,
+				0A85216C2B8DF9AD002BCE50 /* UserInfoViewCell.swift in Sources */,
+				0A85216E2B8DFE7D002BCE50 /* UserInfo.swift in Sources */,
 				0A85210D2B8CB1D4002BCE50 /* AppDelegate.swift in Sources */,
 				0A8521682B8DC356002BCE50 /* FavoritesViewController.swift in Sources */,
 				0A85215F2B8DC034002BCE50 /* RecipesViewController.swift in Sources */,
 				0A85215C2B8DBA97002BCE50 /* ProfileCoordinator.swift in Sources */,
 				0A8521422B8CEF0F002BCE50 /* AppCoordinator.swift in Sources */,
 				0A8521592B8DB91A002BCE50 /* MainTabBarViewController.swift in Sources */,
+				0A8521712B8E0031002BCE50 /* InfoSource.swift in Sources */,
 				0A8521612B8DC086002BCE50 /* RecipesPresenter.swift in Sources */,
 				0A85210F2B8CB1D4002BCE50 /* SceneDelegate.swift in Sources */,
 				0A8521662B8DC2F9002BCE50 /* FavoritesPresenter.swift in Sources */,
