@@ -5,6 +5,12 @@ import UIKit
 
 /// Экран профиля
 final class ProfileViewController: UIViewController {
+    // MARK: - Constants
+
+    enum Constants {
+        static let viewTitleText = "Profile"
+    }
+
     // MARK: - Public Properties
 
     var presenter: ProfileViewPresenterProtocol!
@@ -13,7 +19,18 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
+        configureView()
+    }
+
+    // MARK: - Private Methods
+
+    private func configureView() {
+        view.backgroundColor = .white
+        configureNavigationItem()
+    }
+
+    private func configureNavigationItem() {
+        navigationItem.title = Constants.viewTitleText
     }
 }
 

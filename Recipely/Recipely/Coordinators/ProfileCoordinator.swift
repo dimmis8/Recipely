@@ -5,7 +5,7 @@ import UIKit
 
 /// Координатор экрана профиля
 final class ProfileCoordinator: BaseCoodinator {
-    private var rootController: UINavigationController
+    var rootController: UINavigationController
     var onFinishFlow: (() -> ())?
 
     init(rootController: UIViewController) {

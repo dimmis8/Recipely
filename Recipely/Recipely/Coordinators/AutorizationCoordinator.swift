@@ -5,7 +5,7 @@ import UIKit
 
 /// Авторизационный координатор приложения
 final class AutorizationCoordinator: BaseCoodinator {
-    private var rootController: UINavigationController
+    var rootController: UINavigationController
     var onFinishFlow: (() -> ())?
 
     init(rootController: UIViewController) {

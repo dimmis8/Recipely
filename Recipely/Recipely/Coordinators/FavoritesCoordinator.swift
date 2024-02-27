@@ -5,7 +5,7 @@ import UIKit
 
 /// Координатор экрана избранного
 final class FavoritesCoordinator: BaseCoodinator {
-    private var rootController: UINavigationController
+    var rootController: UINavigationController
     var onFinishFlow: (() -> ())?
 
     init(rootController: UIViewController) {

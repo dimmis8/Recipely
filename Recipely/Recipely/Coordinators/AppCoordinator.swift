@@ -12,8 +12,8 @@ final class AppCoordinator: BaseCoodinator {
     // MARK: - Public Methods
 
     override func start() {
-        t​oAutorization()
-        // toMain()
+        // t​oAutorization()
+        toMain()
     }
 
     private func toMain() {
@@ -43,7 +43,7 @@ final class AppCoordinator: BaseCoodinator {
         }
 
         tabBarViewController?.setViewControllers(
-            [recipesViewController, favoritesViewController, profileViewController],
+            [recipesCoordinator.rootController, favoritesCoordinator.rootController, profileCoordinator.rootController],
             animated: false
         )
         setAsRoot(tabBarViewController ?? UIViewController())
@@ -60,6 +60,6 @@ final class AppCoordinator: BaseCoodinator {
             self?.toMain()
         }
 
-        setAsRoot(autorizationViewController)
+        setAsRoot(autorizationCoordinator.rootController)
     }
 }

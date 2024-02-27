@@ -5,7 +5,7 @@ import UIKit
 
 /// Координатор экрана рецептов
 final class RecipesCoordinator: BaseCoodinator {
-    private var rootController: UINavigationController
+    var rootController: UINavigationController
     var onFinishFlow: (() -> ())?
 
     init(rootController: UIViewController) {
