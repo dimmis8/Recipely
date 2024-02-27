@@ -4,7 +4,9 @@
 import Foundation
 
 /// Протокол экрана профиля
-protocol ProfileViewProtocol: AnyObject {}
+protocol ProfileViewProtocol: AnyObject {
+    func setupAlert()
+}
 
 /// Протокол презентера экрана профиля
 protocol ProfileViewPresenterProtocol: AnyObject {
@@ -13,11 +15,14 @@ protocol ProfileViewPresenterProtocol: AnyObject {
     init(view: ProfileViewProtocol)
     func getUserInformation() -> UserInfo?
     func logOut()
+    func actionTapped()
+    func editNameSurname(name: String)
 }
 
 /// Протокол источника информации
 protocol InfoSourceProtocol: AnyObject {
     func getUserInfo() -> UserInfo
+    func changeUserName(nameSurname: String)
 }
 
 /// Презентер экрана профиля
@@ -42,5 +47,13 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
 
     func logOut() {
         coordinator?.logOut()
+    }
+
+    func actionTapped() {
+        view?.setupAlert()
+    }
+
+    func editNameSurname(name: String) {
+        infoSource?.changeUserName(nameSurname: name)
     }
 }

@@ -36,6 +36,7 @@
 		0A8521732B8E1B7C002BCE50 /* ProfileButtonViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */; };
 		52073D8F2B8E066900A1DA9C /* AutorizationValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */; };
 		52073D932B8E357300A1DA9C /* ValidityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D922B8E357200A1DA9C /* ValidityType.swift */; };
+		52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButtonViewCell.swift; sourceTree = "<group>"; };
 		52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutorizationValidation.swift; sourceTree = "<group>"; };
 		52073D922B8E357200A1DA9C /* ValidityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidityType.swift; sourceTree = "<group>"; };
+		52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				0A8521522B8D26B5002BCE50 /* ProfileViewController.swift */,
+				52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */,
 				0A8521542B8D271A002BCE50 /* ProfilePresenter.swift */,
 				0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */,
 				0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */,
@@ -434,6 +437,7 @@
 				0A85215C2B8DBA97002BCE50 /* ProfileCoordinator.swift in Sources */,
 				0A8521422B8CEF0F002BCE50 /* AppCoordinator.swift in Sources */,
 				0A8521592B8DB91A002BCE50 /* MainTabBarViewController.swift in Sources */,
+				52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */,
 				0A8521712B8E0031002BCE50 /* InfoSource.swift in Sources */,
 				52073D8F2B8E066900A1DA9C /* AutorizationValidation.swift in Sources */,
 				0A8521612B8DC086002BCE50 /* RecipesPresenter.swift in Sources */,

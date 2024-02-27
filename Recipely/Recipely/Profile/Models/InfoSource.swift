@@ -15,6 +15,7 @@ final class InfoSource: InfoSourceProtocol {
 
     /// Поменять информацию о пользователе
     func changeUserName(nameSurname: String) {
-        personInfo.nameSurname
+//        personInfo.nameSurname = nameSurname
+        personInfo = UserInfo(nameSurname: nameSurname, userPhotoName: "voznyak")
     }
 }
