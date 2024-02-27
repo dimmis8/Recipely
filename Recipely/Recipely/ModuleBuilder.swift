@@ -30,6 +30,7 @@ final class ModuleBuilder: Builder {
     static func createAutorizationModule() -> AutorizationViewController {
         let view = AutorizationViewController()
         let presenter = AutorizationPresenter(view: view)
+        presenter.autorizationValidation = AutorizationValidation()
         view.presenter = presenter
         return view
     }

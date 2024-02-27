@@ -12,11 +12,15 @@ final class AutorizationViewController: UIViewController {
         static let verdanaBold = "Verdana-Bold"
         static let emailText = "Email Adress"
         static let passwordText = "Password"
-        static let emailPlaceholder = "Enter Email Address"
+        static let emailPlaceholder = " Enter Email Address"
         static let passwordPlaceholder = "Enter Password"
+        static let incorrectEmail = "Incorrect format"
+        static let incorrectPassword = "You entered the wrong password"
+        static let emailTextFieldTag = 0
+        static let passwordTextFieldTag = 1
     }
 
-    // MARK: - Private properties
+    // MARK: - Visual components
 
     private let gradientLayer = CAGradientLayer()
     private let loginLabel: UILabel = {
@@ -51,7 +55,12 @@ final class AutorizationViewController: UIViewController {
         textField.placeholder = Constants.emailPlaceholder
         textField.font = .systemFont(ofSize: 18)
         textField.textAlignment = .left
-        textField.borderStyle = .roundedRect
+        textField.backgroundColor = .white
+        textField.layer.borderColor = UIColor.systemGray5.cgColor
+        textField.layer.cornerRadius = 8
+        textField.layer.borderWidth = 1
+        textField.tag = Constants.emailTextFieldTag
+        //        textField.addTarget(self, action: #selector(handleTextChange(sender:)), for: .editingDidEnd)
         return textField
     }()
 
@@ -60,23 +69,52 @@ final class AutorizationViewController: UIViewController {
         textField.placeholder = Constants.passwordPlaceholder
         textField.textAlignment = .left
         textField.font = .systemFont(ofSize: 18)
-        textField.borderStyle = .roundedRect
+        textField.layer.borderColor = UIColor.systemGray5.cgColor
+        textField.layer.cornerRadius = 8
+        textField.layer.borderWidth = 1
+        textField.tag = Constants.passwordTextFieldTag
+
+        //        textField.addTarget(self, action: #selector(handleTextChange(sender:)), for: .editingDidEnd)
         return textField
     }()
 
-    private let loginButton: UIButton = {
+    private lazy var loginButton: UIButton = {
         let button = UIButton()
         button.setTitle(Constants.loginText, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .loginButtons
         button.layer.cornerRadius = 12
-        button.addTarget(AutorizationViewController.self, action: #selector(showMainMenu), for: .touchUpInside)
+        button.addTarget(self, action: #selector(showMainMenu), for: .touchUpInside)
         return button
+    }()
+
+    private let incorrectPasswordLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.incorrectPassword
+        label.textColor = .red
+        label.font = UIFont(name: Constants.verdanaBold, size: 12)
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
+    }()
+
+    private let incorrectEmailLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.incorrectEmail
+        label.textColor = .red
+        label.font = UIFont(name: Constants.verdanaBold, size: 12)
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
     }()
 
     // MARK: - Public Properties
 
     var presenter: AutorizationViewPresenterProtocol!
+
+    // MARK: - Private Properties
+
+    private let validityTypes: [ValidityType] = [.email, .password]
 
     // MARK: - Life Cycle
 
@@ -96,7 +134,13 @@ final class AutorizationViewController: UIViewController {
         view.addSubview(passwordLabel)
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
+        view.addSubview(incorrectEmailLabel)
+        view.addSubview(incorrectPasswordLabel)
 
+        emailTextField.addTarget(self, action: #selector(handleTextChange(sender:)), for: .editingDidEnd)
+        passwordTextField.addTarget(self, action: #selector(handleTextChange(sender:)), for: .editingDidEnd)
+
+        okButton()
         addGradientLayer()
         makeLoginLabelConstants()
         makeLoginButtonConstants()
@@ -104,12 +148,15 @@ final class AutorizationViewController: UIViewController {
         makeEmailTextFieldsConstants()
         makePasswordLabelConstants()
         makePasswordTextFieldsConstants()
+        makeIncorrectPassConstants()
+        makeIncorrectEmailConstants()
+    }
 
+    private func okButton() {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 35))
         toolBar.barStyle = .default
         toolBar.sizeToFit()
 
-        // Adding Button ToolBar
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let doneButton = UIBarButtonItem(
@@ -121,9 +168,12 @@ final class AutorizationViewController: UIViewController {
         toolBar.items = [flexSpace, doneButton]
         toolBar.isUserInteractionEnabled = true
         emailTextField.inputAccessoryView = toolBar
+        passwordTextField.inputAccessoryView = toolBar
     }
 
-    @objc func doneButtonTapped() {}
+    @objc func doneButtonTapped() {
+        view.endEditing(true)
+    }
 
     private func addGradientLayer() {
         gradientLayer.frame = view.bounds
@@ -179,6 +229,52 @@ final class AutorizationViewController: UIViewController {
         passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 6).isActive = true
         passwordTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+
+    private func makeIncorrectPassConstants() {
+        incorrectPasswordLabel.translatesAutoresizingMaskIntoConstraints = false
+        incorrectPasswordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        incorrectPasswordLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        incorrectPasswordLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 1)
+            .isActive = true
+        incorrectPasswordLabel.heightAnchor.constraint(equalToConstant: 19).isActive = true
+    }
+
+    private func makeIncorrectEmailConstants() {
+        incorrectEmailLabel.translatesAutoresizingMaskIntoConstraints = false
+        incorrectEmailLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        incorrectEmailLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        incorrectEmailLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 1).isActive = true
+        incorrectEmailLabel.heightAnchor.constraint(equalToConstant: 19).isActive = true
+    }
+
+    @objc func handleTextChange(sender: UITextField) {
+        switch validityTypes[sender.tag] {
+        case .email:
+            guard let emailText = emailTextField.text else { return }
+            if presenter.checkValid(.email, enteringText: emailText) == false {
+                incorrectEmailLabel.isHidden = false
+                emailLabel.textColor = .red
+                emailTextField.layer.borderColor = UIColor.red.cgColor
+
+            } else {
+                incorrectEmailLabel.isHidden = true
+                emailLabel.textColor = .loginText
+                emailTextField.layer.borderColor = UIColor.systemGray5.cgColor
+            }
+        case .password:
+            guard let passwordText = passwordTextField.text else { return }
+            if presenter.checkValid(.password, enteringText: passwordText) == false {
+                incorrectPasswordLabel.isHidden = false
+                passwordLabel.textColor = .red
+                passwordTextField.layer.borderColor = UIColor.red.cgColor
+
+            } else {
+                incorrectPasswordLabel.isHidden = true
+                passwordLabel.textColor = .loginText
+                passwordTextField.layer.borderColor = UIColor.systemGray5.cgColor
+            }
+        }
     }
 
     // TODO:
