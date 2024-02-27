@@ -5,6 +5,75 @@ import UIKit
 
 /// Экран входа
 final class AutorizationViewController: UIViewController {
+    // MARK: - Constants
+
+    enum Constants {
+        static let loginText = "Login"
+        static let verdanaBold = "Verdana-Bold"
+        static let emailText = "Email Adress"
+        static let passwordText = "Password"
+        static let emailPlaceholder = "Enter Email Address"
+        static let passwordPlaceholder = "Enter Password"
+    }
+
+    // MARK: - Private properties
+
+    private let gradientLayer = CAGradientLayer()
+    private let loginLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.loginText
+        label.textColor = .loginText
+        label.font = UIFont(name: Constants.verdanaBold, size: 28)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private let emailLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.emailText
+        label.textColor = .loginText
+        label.font = UIFont(name: Constants.verdanaBold, size: 18)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private let passwordLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.passwordText
+        label.textColor = .loginText
+        label.font = UIFont(name: Constants.verdanaBold, size: 18)
+        label.textAlignment = .left
+        return label
+    }()
+
+    private let emailTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = Constants.emailPlaceholder
+        textField.font = .systemFont(ofSize: 18)
+        textField.textAlignment = .left
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+
+    private let passwordTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = Constants.passwordPlaceholder
+        textField.textAlignment = .left
+        textField.font = .systemFont(ofSize: 18)
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+
+    private let loginButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(Constants.loginText, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .loginButtons
+        button.layer.cornerRadius = 12
+        button.addTarget(AutorizationViewController.self, action: #selector(showMainMenu), for: .touchUpInside)
+        return button
+    }()
+
     // MARK: - Public Properties
 
     var presenter: AutorizationViewPresenterProtocol!
@@ -13,7 +82,108 @@ final class AutorizationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
+        setupUI()
+    }
+
+    // MARK: - Private methods
+
+    private func setupUI() {
+        view.layer.addSublayer(gradientLayer)
+        view.addSubview(loginLabel)
+        view.addSubview(loginButton)
+        view.addSubview(emailLabel)
+        view.addSubview(passwordLabel)
+        view.addSubview(emailTextField)
+        view.addSubview(passwordTextField)
+
+        addGradientLayer()
+        makeLoginLabelConstants()
+        makeLoginButtonConstants()
+        makeEmailLabelConstants()
+        makeEmailTextFieldsConstants()
+        makePasswordLabelConstants()
+        makePasswordTextFieldsConstants()
+
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 35))
+        toolBar.barStyle = .default
+        toolBar.sizeToFit()
+
+        // Adding Button ToolBar
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
+        let doneButton = UIBarButtonItem(
+            title: "Ok",
+            style: .done,
+            target: self,
+            action: #selector(doneButtonTapped)
+        )
+        toolBar.items = [flexSpace, doneButton]
+        toolBar.isUserInteractionEnabled = true
+        emailTextField.inputAccessoryView = toolBar
+    }
+
+    @objc func doneButtonTapped() {}
+
+    private func addGradientLayer() {
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [
+            UIColor.white.cgColor,
+            UIColor.loginGradient.cgColor
+        ]
+    }
+
+    private func makeLoginLabelConstants() {
+        loginLabel.translatesAutoresizingMaskIntoConstraints = false
+        loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        loginLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 82).isActive = true
+        loginLabel.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        loginLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
+    }
+
+    private func makeLoginButtonConstants() {
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        loginButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -71).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+    }
+
+    private func makeEmailLabelConstants() {
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        emailLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        emailLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 23).isActive = true
+        emailLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        emailLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
+    }
+
+    private func makeEmailTextFieldsConstants() {
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 6).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+
+    private func makePasswordLabelConstants() {
+        passwordLabel.translatesAutoresizingMaskIntoConstraints = false
+        passwordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        passwordLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 23).isActive = true
+        passwordLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        passwordLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
+    }
+
+    private func makePasswordTextFieldsConstants() {
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 6).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+
+    // TODO:
+    @objc func showMainMenu() {
+        print("Show menu")
     }
 }
 
