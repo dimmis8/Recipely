@@ -4,29 +4,30 @@
 import Foundation
 
 ///  Валидация
-class AutorizationValidation: AutorizationValidationProtocol {
+final class AutorizationValidation: AutorizationValidationProtocol {
+    // MARK: - Constants
+
+    enum Constants {
+        static let regexForEmail = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+    }
+
+    // MARK: - Private Properties
+
+    private let accounts = ["123@mm.mm": "123"]
+
     // MARK: - Public method
 
-    func isValid(_ validityType: ValidityType, enteringText: String) -> Bool {
+    func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool {
         let format = "SELF MATCHES %@"
-        var regex = ""
-        switch validityType {
-        case .email:
-            regex = Regex.email.rawValue
-        case .password:
-            regex = Regex.password.rawValue
+        switch (enteringEmail, enteringPassword) {
+        case (.some(let email), nil):
+            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) && accounts.keys
+                .contains(email)
+        case let (.some(email), .some(password)):
+            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) && accounts.keys
+                .contains(email) && accounts[email] == password
+        default:
+            return false
         }
-        return NSPredicate(format: format, regex).evaluate(with: enteringText)
-    }
-}
-
-/// Добавление валидации возможных regex
-extension AutorizationValidation {
-    /// Перечисление символов
-    enum Regex: String {
-        /// regex для емайла
-        case email = "1234"
-        /// regex для пароля
-        case password = "123"
     }
 }

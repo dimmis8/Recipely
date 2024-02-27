@@ -13,8 +13,8 @@ final class InfoSource: InfoSourceProtocol {
         personInfo
     }
 
-    /// Поменять информацию о пользователе
-    func changeUserName(nameSurname: String) {
-        personInfo.nameSurname
-    }
+//    /// Поменять информацию о пользователе
+//    func changeUserName(nameSurname: String) {
+//        personInfo.nameSurname
+//    }
 }

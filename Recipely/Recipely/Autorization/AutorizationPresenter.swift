@@ -4,11 +4,13 @@
 import Foundation
 
 /// Протокол экрана авторизации
-protocol AutorizationViewProtocol: AnyObject {}
+protocol AutorizationViewProtocol: AnyObject {
+    func changePasswordvisableState(isVisable: Bool)
+}
 
 /// Протокол валидации авторизации
 protocol AutorizationValidationProtocol: AnyObject {
-    func isValid(_ validityType: ValidityType, enteringText: String) -> Bool
+    func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool
 }
 
 /// Протокол презентера экрана авторизации
@@ -16,7 +18,8 @@ protocol AutorizationViewPresenterProtocol: AnyObject {
     var coordinator: AutorizationCoordinator? { get set }
     var autorizationValidation: AutorizationValidationProtocol? { get set }
     init(view: AutorizationViewProtocol)
-    func checkValid(_ validityType: ValidityType, enteringText: String) -> Bool?
+    func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool?
+    func changePasswordVisableState()
 }
 
 /// Презентер экрана авторизации
@@ -27,6 +30,10 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
     weak var coordinator: AutorizationCoordinator?
     weak var view: AutorizationViewProtocol?
 
+    // MARK: - Private Properties
+
+    private var isPasswordVisable = false
+
     // MARK: - Initializers
 
     required init(view: AutorizationViewProtocol) {
@@ -35,7 +42,12 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
 
     // MARK: - Public method
 
-    func checkValid(_ validityType: ValidityType, enteringText: String) -> Bool? {
-        autorizationValidation?.isValid(validityType, enteringText: enteringText)
+    func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool? {
+        autorizationValidation?.isValid(enteringEmail: enteringEmail, enteringPassword: enteringPassword)
+    }
+
+    func changePasswordVisableState() {
+        isPasswordVisable = !isPasswordVisable
+        view?.changePasswordvisableState(isVisable: isPasswordVisable)
     }
 }
