@@ -33,8 +33,9 @@
 		0A85216C2B8DF9AD002BCE50 /* UserInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */; };
 		0A85216E2B8DFE7D002BCE50 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */; };
 		0A8521712B8E0031002BCE50 /* InfoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521702B8E0031002BCE50 /* InfoSource.swift */; };
-		0A8521732B8E1B7C002BCE50 /* ProfileButtonViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */; };
+		0A8521732B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521722B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift */; };
 		0A8521772B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */; };
+		0A8521792B8F512B002BCE50 /* VoidHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521782B8F512B002BCE50 /* VoidHandler.swift */; };
 		52073D8F2B8E066900A1DA9C /* AutorizationValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */; };
 		52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */; };
 /* End PBXBuildFile section */
@@ -87,8 +88,9 @@
 		0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewCell.swift; sourceTree = "<group>"; };
 		0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		0A8521702B8E0031002BCE50 /* InfoSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSource.swift; sourceTree = "<group>"; };
-		0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButtonViewCell.swift; sourceTree = "<group>"; };
+		0A8521722B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFieldsViewCell.swift; sourceTree = "<group>"; };
 		0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesPresenter.swift; sourceTree = "<group>"; };
+		0A8521782B8F512B002BCE50 /* VoidHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoidHandler.swift; sourceTree = "<group>"; };
 		52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutorizationValidation.swift; sourceTree = "<group>"; };
 		52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +145,7 @@
 			children = (
 				0A85210C2B8CB1D4002BCE50 /* AppDelegate.swift */,
 				0A85210E2B8CB1D4002BCE50 /* SceneDelegate.swift */,
+				0A8521782B8F512B002BCE50 /* VoidHandler.swift */,
 				0A85214B2B8CFF7C002BCE50 /* ModuleBuilder.swift */,
 				0A8521402B8CEEF5002BCE50 /* Coordinators */,
 				0A8521472B8CFB47002BCE50 /* Autorization */,
@@ -203,7 +206,7 @@
 				0A8521742B8E9A11002BCE50 /* Views */,
 				0A8521752B8E9A2C002BCE50 /* Presenters */,
 				0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */,
-				0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */,
+				0A8521722B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift */,
 				0A85216F2B8E000A002BCE50 /* Models */,
 			);
 			path = Profile;
@@ -439,7 +442,7 @@
 			files = (
 				0A85214E2B8D002C002BCE50 /* AutorizationPresenter.swift in Sources */,
 				0A8521442B8CF005002BCE50 /* AutorizationCoordinator.swift in Sources */,
-				0A8521732B8E1B7C002BCE50 /* ProfileButtonViewCell.swift in Sources */,
+				0A8521732B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift in Sources */,
 				0A8521632B8DC194002BCE50 /* RecipesCoordinator.swift in Sources */,
 				0A8521112B8CB1D4002BCE50 /* AutorizationView.swift in Sources */,
 				0A8521532B8D26B5002BCE50 /* ProfileViewController.swift in Sources */,
@@ -455,6 +458,7 @@
 				0A8521422B8CEF0F002BCE50 /* AppCoordinator.swift in Sources */,
 				0A8521592B8DB91A002BCE50 /* MainTabBarViewController.swift in Sources */,
 				52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */,
+				0A8521792B8F512B002BCE50 /* VoidHandler.swift in Sources */,
 				0A8521712B8E0031002BCE50 /* InfoSource.swift in Sources */,
 				52073D8F2B8E066900A1DA9C /* AutorizationValidation.swift in Sources */,
 				0A8521612B8DC086002BCE50 /* RecipesPresenter.swift in Sources */,

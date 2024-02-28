@@ -147,11 +147,11 @@ custom_rules:
     message: "Переносы строк для многострочных массивов необходимо делать по гайду"
     severity: error
 
-  custom_custom_void_handler:
-    name: "Используй VoidHandler"
-    regex: "typealias \\w+ = (VoidHandler|\\( *\\) *-> *\\( *\\))"
-    message: "Вместо кастомного typealias используй VoidHandler"
-    severity: error
+#  custom_custom_void_handler:
+#    name: "Используй VoidHandler"
+#    regex: "typealias \\w+ = (VoidHandler|\\( *\\) *-> *\\( *\\))"
+#    message: "Вместо кастомного typealias используй VoidHandler"
+#    severity: error
     
   custom_optional_error_handler:
     name: "Используй OptionalErrorHandler"

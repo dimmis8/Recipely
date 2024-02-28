@@ -3,12 +3,11 @@
 
 import Foundation
 
-/// Протокол экрана рецептов
-protocol RecipesViewProtocol: AnyObject {}
-
 /// Протокол презентера экрана рецептов
 protocol RecipesViewPresenterProtocol: AnyObject {
+    /// Координатор флоу экрана
     var coordinator: RecipesCoordinator? { get set }
+    /// Инициализатор с присвоением вью
     init(view: RecipesViewProtocol)
 }
 

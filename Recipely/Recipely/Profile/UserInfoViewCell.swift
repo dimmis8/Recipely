@@ -48,8 +48,8 @@ final class UserInfoViewCell: UITableViewCell {
 
     // MARK: - Private Properties
 
-    private var buttonChangeHandler: (() -> ())?
-    private var buttonChangePhotoHandler: (() -> ())?
+    private var buttonChangeHandler: VoidHandler?
+    private var buttonChangePhotoHandler: VoidHandler?
 
     // MARK: - Initializers
 
@@ -69,12 +69,10 @@ final class UserInfoViewCell: UITableViewCell {
 
     func setUserInformation(
         _ userInfo: UserInfo,
-        changeNameComplition: @escaping () -> (),
-        changePhotoComplition: @escaping () -> ()
+        changeNameComplition: @escaping VoidHandler,
+        changePhotoComplition: @escaping VoidHandler
     ) {
         profilePhotoButton.setImage(UIImage(named: userInfo.userPhotoName), for: .normal)
-        profilePhotoButton.imageView?.clipsToBounds = true
-        profilePhotoButton.imageView?.contentMode = .scaleAspectFill
         fullNameLabel.text = "\(userInfo.nameSurname)"
         buttonChangeHandler = changeNameComplition
         buttonChangePhotoHandler = changePhotoComplition
@@ -90,6 +88,8 @@ final class UserInfoViewCell: UITableViewCell {
         contentView.addSubview(nameView)
         changeNameButton.addTarget(self, action: #selector(changeNameTapped), for: .touchUpInside)
         profilePhotoButton.addTarget(self, action: #selector(changePhotoTapped), for: .touchUpInside)
+        profilePhotoButton.imageView?.clipsToBounds = true
+        profilePhotoButton.imageView?.contentMode = .scaleAspectFill
     }
 
     private func setConstraints() {
@@ -127,11 +127,11 @@ final class UserInfoViewCell: UITableViewCell {
         nameView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -29).isActive = true
     }
 
-    @objc func changeNameTapped() {
+    @objc private func changeNameTapped() {
         buttonChangeHandler?()
     }
 
-    @objc func changePhotoTapped() {
+    @objc private func changePhotoTapped() {
         buttonChangePhotoHandler?()
     }
 }

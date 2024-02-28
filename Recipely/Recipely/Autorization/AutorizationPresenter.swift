@@ -3,22 +3,17 @@
 
 import Foundation
 
-/// Протокол экрана авторизации
-protocol AutorizationViewProtocol: AnyObject {
-    func changePasswordvisableState(isVisable: Bool)
-}
-
-/// Протокол валидации авторизации
-protocol AutorizationValidationProtocol: AnyObject {
-    func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool
-}
-
 /// Протокол презентера экрана авторизации
 protocol AutorizationViewPresenterProtocol: AnyObject {
+    /// Координатор флоу экрана
     var coordinator: AutorizationCoordinator? { get set }
+    /// Модуль проверки введенных пользоватлем данных
     var autorizationValidation: AutorizationValidationProtocol? { get set }
+    /// Инициализатор с присвоением вью
     init(view: AutorizationViewProtocol)
+    /// Проверка валидации пароля
     func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool?
+    /// Функция изменения состояния видимости пароля
     func changePasswordVisableState()
 }
 
@@ -32,7 +27,7 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
 
     // MARK: - Private Properties
 
-    private var isPasswordVisable = false
+    private var isPasswordVisible = false
 
     // MARK: - Initializers
 
@@ -47,7 +42,7 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
     }
 
     func changePasswordVisableState() {
-        isPasswordVisable = !isPasswordVisable
-        view?.changePasswordvisableState(isVisable: isPasswordVisable)
+        isPasswordVisible = !isPasswordVisible
+        view?.changePasswordvisableState(isVisable: isPasswordVisible)
     }
 }

@@ -3,12 +3,11 @@
 
 import Foundation
 
-/// Протокол экрана избранного
-protocol FavoritesViewProtocol: AnyObject {}
-
 /// Протокол презентера экрана избранного
 protocol FavoritesViewPresenterProtocol: AnyObject {
+    /// Координатор флоу экрана
     var coordinator: FavoritesCoordinator? { get set }
+    /// Инициализатор с присвоением вью
     init(view: FavoritesViewProtocol)
 }
 

@@ -3,6 +3,22 @@
 
 import UIKit
 
+/// Протокол экрана профиля
+protocol ProfileViewProtocol: AnyObject {
+    ///  Презентер экрана
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    /// Показ алерта с полем для измененеия имени
+    func showChangeNameAlert()
+    /// Показ алерта с сообщением о разработки функциональности
+    func showInDevelopAlert()
+    /// Показ алерта с сообщением о подтверждении выхода с аккаунта
+    func showLogOutAlert()
+    /// Установка нового имени из источника данных
+    func setNewNameFromSource()
+    /// Установка нового фото из источника данных
+    func setPhotoFromSource()
+}
+
 /// Экран профиля
 final class ProfileViewController: UIViewController {
     // MARK: - Constants
@@ -10,7 +26,7 @@ final class ProfileViewController: UIViewController {
     enum Constants {
         static let viewTitleText = "Profile"
         static let userInfoViewCellIdentifier = "UserInfoViewCell"
-        static let profileButtonViewCellIdentifire = "ProfileButtonViewCell"
+        static let profileFieldsViewCellIdentifier = "ProfileButtonViewCell"
         static let bonusesButtonText = "Bonuses"
         static let termsAndPrivacyButtonText = "Terms & Privacy Policy"
         static let logOutButtonText = "Log out"
@@ -30,12 +46,12 @@ final class ProfileViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var presenter: ProfileViewPresenterProtocol!
+    var presenter: ProfileViewPresenterProtocol?
 
     // MARK: - Private Properties
 
     private let contentTypes: [ContentTypes] = [.userInfo, .profileButtons]
-    private let buttons: [ButtonType] = [.bonuses, .termsAndPrivacy, .logOut]
+    private let fields: [FieldsType] = [.bonuses, .termsAndPrivacy, .logOut]
 
     // MARK: - Life Cycle
 
@@ -58,14 +74,14 @@ final class ProfileViewController: UIViewController {
     }
 
     private func setNewName(_ newName: String) {
-        presenter.editNameSurname(name: newName)
+        presenter?.editNameSurname(name: newName)
     }
 
     private func configureTableView() {
         tableView.register(UserInfoViewCell.self, forCellReuseIdentifier: Constants.userInfoViewCellIdentifier)
         tableView.register(
-            ProfileButtonViewCell.self,
-            forCellReuseIdentifier: Constants.profileButtonViewCellIdentifire
+            ProfileFieldsViewCell.self,
+            forCellReuseIdentifier: Constants.profileFieldsViewCellIdentifier
         )
         tableView.dataSource = self
         tableView.allowsSelection = false
@@ -80,24 +96,42 @@ final class ProfileViewController: UIViewController {
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
-}
 
-// MARK: - Подписание на протокол экрана профиля
+    private func showBonuses() {
+        presenter?.showBonuses()
+    }
 
-extension ProfileViewController: ProfileViewProtocol {
-    func showLogOutAlert() {
-        let alertController = UIAlertController(title: Constants.alertTitle, message: nil, preferredStyle: .alert)
+    private func showTermsAndPrivacy() {
+        presenter?.termsAndPrivacyAction()
+    }
+
+    private func showLogOutAllert() {
+        presenter?.logOutAction()
+    }
+
+    func showAlert(title: String, buttonAgreeTitle: String, handler: VoidHandler?) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         let actionClose = UIAlertAction(title: Constants.closeButtonText, style: .default)
-        let actionYes = UIAlertAction(title: Constants.yesButtonText, style: .default) { _ in
-            self.presenter.logOut()
+        let actionYes = UIAlertAction(title: buttonAgreeTitle, style: .default) { _ in
+            handler?()
         }
         alertController.addAction(actionClose)
         alertController.addAction(actionYes)
         present(alertController, animated: true)
     }
+}
+
+// MARK: - ProfileViewController + ProfileViewProtocol
+
+extension ProfileViewController: ProfileViewProtocol {
+    func showLogOutAlert() {
+        showAlert(title: Constants.alertTitle, buttonAgreeTitle: Constants.yesButtonText) { [weak self] in
+            self?.presenter?.logOut()
+        }
+    }
 
     func showChangeNameAlert() {
-        let alertView = UIAlertController(title: Constants.alertText, message: "", preferredStyle: .alert)
+        let alertView = UIAlertController(title: Constants.alertText, message: nil, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: Constants.cancelButtonText, style: .cancel)
         let okAction = UIAlertAction(title: Constants.okButtonText, style: .default) { _ in
             self.setNewName(alertView.textFields?.first?.text ?? "")
@@ -110,26 +144,18 @@ extension ProfileViewController: ProfileViewProtocol {
     }
 
     func showInDevelopAlert() {
-        let alertView = UIAlertController(
-            title: Constants.termsAndPrivacyAlertMassage,
-            message: "",
-            preferredStyle: .alert
-        )
-        let okAction = UIAlertAction(title: Constants.okButtonText, style: .default)
-        alertView.addAction(okAction)
-        present(alertView, animated: true)
+        showAlert(title: Constants.termsAndPrivacyAlertMassage, buttonAgreeTitle: Constants.okButtonText, handler: nil)
     }
 
-    func setPhotoFromSource() {
-        tableView.reloadData()
-    }
+    // TODO:
+    func setPhotoFromSource() {}
 
     func setNewNameFromSource() {
         tableView.reloadData()
     }
 }
 
-// MARK: - Добавление групп контента на экране профиля
+// MARK: - Добавление групп контента и вида кнопок на экране профиля
 
 extension ProfileViewController {
     enum ContentTypes {
@@ -138,12 +164,8 @@ extension ProfileViewController {
         /// Кнопки с дополнительными возможностями
         case profileButtons
     }
-}
 
-// MARK: - Добавление видов кнопок на экране профиля
-
-extension ProfileViewController {
-    enum ButtonType {
+    enum FieldsType {
         /// Кнопка бонусов
         case bonuses
         /// Кнопка условия эксплуатации
@@ -153,7 +175,7 @@ extension ProfileViewController {
     }
 }
 
-// MARK: - Подписание на дата сорс тейбл вью
+// MARK: - ProfileViewController + UITableViewDataSource
 
 extension ProfileViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -165,7 +187,7 @@ extension ProfileViewController: UITableViewDataSource {
         case .userInfo:
             return 1
         case .profileButtons:
-            return buttons.count
+            return fields.count
         }
     }
 
@@ -175,22 +197,22 @@ extension ProfileViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: Constants.userInfoViewCellIdentifier,
                 for: indexPath
-            ) as? UserInfoViewCell else { return UITableViewCell() }
-            guard let userInfo = presenter.getUserInformation() else { return cell }
+            ) as? UserInfoViewCell, let userInfo = presenter?.getUserInformation() else { return UITableViewCell() }
             cell.setUserInformation(userInfo) { [weak self] in
-                self?.presenter.actionChangeName()
+                self?.presenter?.actionChangeName()
             } changePhotoComplition: { [weak self] in
-                self?.presenter.actionChangePhoto()
+                self?.presenter?.actionChangePhoto()
             }
+
             return cell
 
         case .profileButtons:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: Constants.profileButtonViewCellIdentifire,
+                withIdentifier: Constants.profileFieldsViewCellIdentifier,
                 for: indexPath
-            ) as? ProfileButtonViewCell else { return UITableViewCell() }
+            ) as? ProfileFieldsViewCell else { return UITableViewCell() }
 
-            switch buttons[indexPath.row] {
+            switch fields[indexPath.row] {
             case .bonuses:
                 cell.setButtonInformation(text: Constants.bonusesButtonText, icon: .starIcon) { [weak self] in
                     self?.showBonuses()
@@ -206,20 +228,5 @@ extension ProfileViewController: UITableViewDataSource {
             }
             return cell
         }
-    }
-}
-
-/// Экшены кнопок
-extension ProfileViewController {
-    private func showBonuses() {
-        presenter.showBonuses()
-    }
-
-    private func showTermsAndPrivacy() {
-        presenter.termsAndPrivacyAction()
-    }
-
-    private func showLogOutAllert() {
-        presenter.logOutAction()
     }
 }

@@ -3,15 +3,22 @@
 
 import UIKit
 
+/// Протокол экрана рецептов
+protocol RecipesViewProtocol: AnyObject {
+    ///  Презентер экрана
+    var presenter: RecipesViewPresenterProtocol? { get set }
+}
+
 /// Экран рецептов
 final class RecipesViewController: UIViewController {
     // MARK: - Public Properties
 
-    var presenter: RecipesViewPresenterProtocol!
+    var presenter: RecipesViewPresenterProtocol?
 
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         setupView()
     }
 
@@ -22,6 +29,6 @@ final class RecipesViewController: UIViewController {
     }
 }
 
-// MARK: - Подписание на протокол экрана рецептов
+// MARK: - RecipesViewController + RecipesViewProtocol
 
 extension RecipesViewController: RecipesViewProtocol {}

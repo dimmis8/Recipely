@@ -3,6 +3,14 @@
 
 import UIKit
 
+/// Протокол экрана авторизации
+protocol AutorizationViewProtocol: AnyObject {
+    ///  Презентер экрана
+    var presenter: AutorizationViewPresenterProtocol? { get set }
+    /// Функция изменения текущего отображения пароля
+    func changePasswordvisableState(isVisable: Bool)
+}
+
 /// Экран входа
 final class AutorizationViewController: UIViewController {
     // MARK: - Constants
@@ -180,7 +188,7 @@ final class AutorizationViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var presenter: AutorizationViewPresenterProtocol!
+    var presenter: AutorizationViewPresenterProtocol?
 
     // MARK: - Private Properties
 
@@ -289,7 +297,7 @@ final class AutorizationViewController: UIViewController {
         switch validityTypes[sender.tag] {
         case .email:
             guard let emailText = emailTextField.text else { return false }
-            if presenter.isValid(enteringEmail: emailText, enteringPassword: nil) == false {
+            if presenter?.isValid(enteringEmail: emailText, enteringPassword: nil) == false {
                 incorrectEmailLabel.isHidden = false
                 emailLabel.textColor = .red
                 emailTextField.layer.borderColor = UIColor.red.cgColor
@@ -302,7 +310,7 @@ final class AutorizationViewController: UIViewController {
         case .password:
             guard let emailText = emailTextField.text else { return false }
             guard let passwordText = passwordTextField.text else { return false }
-            if presenter.isValid(enteringEmail: emailText, enteringPassword: passwordText) == false {
+            if presenter?.isValid(enteringEmail: emailText, enteringPassword: passwordText) == false {
                 incorrectPasswordLabel.isHidden = false
                 passwordLabel.textColor = .red
                 passwordTextField.layer.borderColor = UIColor.red.cgColor
@@ -355,7 +363,7 @@ final class AutorizationViewController: UIViewController {
     }
 
     @objc private func changeVisablePassword() {
-        presenter.changePasswordVisableState()
+        presenter?.changePasswordVisableState()
     }
 }
 
@@ -389,7 +397,7 @@ extension AutorizationViewController {
     }
 }
 
-// MARK: - Подписание на протокол экрана авторизации
+// MARK: - AutorizationViewController + AutorizationViewProtocol
 
 extension AutorizationViewController: AutorizationViewProtocol {
     func changePasswordvisableState(isVisable: Bool) {

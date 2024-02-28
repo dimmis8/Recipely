@@ -3,11 +3,17 @@
 
 import UIKit
 
+/// Протокол экрана избранного
+protocol FavoritesViewProtocol: AnyObject {
+    ///  Презентер экрана
+    var presenter: FavoritesViewPresenterProtocol? { get set }
+}
+
 /// Экран избарнного
 final class FavoritesViewController: UIViewController {
     // MARK: - Public Properties
 
-    var presenter: FavoritesViewPresenterProtocol!
+    var presenter: FavoritesViewPresenterProtocol?
 
     // MARK: - Life Cycle
 

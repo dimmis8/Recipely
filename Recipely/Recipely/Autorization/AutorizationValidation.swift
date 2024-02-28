@@ -3,7 +3,13 @@
 
 import Foundation
 
-///  Валидация
+/// Протокол валидации авторизации
+protocol AutorizationValidationProtocol: AnyObject {
+    /// Проверка валидации пароля
+    func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool
+}
+
+/// Модуль проверки введенных пользоватлем данных
 final class AutorizationValidation: AutorizationValidationProtocol {
     // MARK: - Constants
 

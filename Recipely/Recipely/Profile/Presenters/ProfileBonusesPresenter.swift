@@ -3,17 +3,16 @@
 
 import Foundation
 
-/// Протокол экрана бонусов
-protocol ProfileBonusesViewProtocol: AnyObject {
-    func setBonuses(bonusesCount: Int)
-}
-
 /// Протокол презентера экрана бонусов
 protocol ProfileBonusesViewPresenterProtocol: AnyObject {
+    /// Источник данных
     var infoSource: InfoSourceProtocol { get set }
+    /// Координатор флоу экрана
     var coordinator: ProfileCoordinator? { get set }
+    /// Инициализатор с присвоением вью источника данных
     init(view: ProfileBonusesViewProtocol, infoSource: InfoSourceProtocol)
-    func dismissSelf()
+    /// Функция закрытия экрана бонусов
+    func close()
 }
 
 /// Презентер экрана бонусов
@@ -38,7 +37,7 @@ final class ProfileBonusesPresenter: ProfileBonusesViewPresenterProtocol {
         view?.setBonuses(bonusesCount: infoSource.getBonusesCount())
     }
 
-    func dismissSelf() {
+    func close() {
         coordinator?.dismissBonuses?()
     }
 }

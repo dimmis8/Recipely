@@ -3,12 +3,12 @@
 
 import UIKit
 
-/// Координатор экрана избранного
+/// Координатор флоу избранного
 final class FavoritesCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
     var rootController: UINavigationController
-    var onFinishFlow: (() -> ())?
+    var onFinishFlow: VoidHandler?
 
     // MARK: - Initializers
 

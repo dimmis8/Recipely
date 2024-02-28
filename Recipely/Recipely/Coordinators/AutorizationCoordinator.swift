@@ -3,12 +3,12 @@
 
 import UIKit
 
-/// Авторизационный координатор приложения
+/// Авторизационный флоу приложения
 final class AutorizationCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
     var rootController: UINavigationController
-    var onFinishFlow: (() -> ())?
+    var onFinishFlow: VoidHandler?
 
     // MARK: - Initializers
 

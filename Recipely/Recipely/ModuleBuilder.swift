@@ -6,17 +6,17 @@ import UIKit
 /// Протокол билдера
 protocol Builder {
     /// Функция создания модуля экрана авторизации
-    func createAutorizationModule() -> AutorizationViewController
+    func createAutorizationModule() -> UIViewController
     /// Функция создания модуля экрана с таб баром
-    func createTabBarModule() -> MainTabBarViewController
+    func createTabBarModule() -> UITabBarController
     /// Функция создания модуля экрана профиля
-    func createProfileModule() -> ProfileViewController
+    func createProfileModule() -> UIViewController
     /// Функция создания модуля экрана избранного
-    func createFavoritesModule() -> FavoritesViewController
+    func createFavoritesModule() -> UIViewController
     /// Функция создания модуля экрана рецептов
-    func createRecipesModule() -> RecipesViewController
+    func createRecipesModule() -> UIViewController
     /// Функция создания модуля экрана бонусов
-    func createBonusesProfileModule() -> ProfileBonusesViewController
+    func createBonusesProfileModule() -> UIViewController
 }
 
 /// Билдер модулей
@@ -31,7 +31,7 @@ final class ModuleBuilder: Builder {
 
     // MARK: - Public Methods
 
-    func createAutorizationModule() -> AutorizationViewController {
+    func createAutorizationModule() -> UIViewController {
         let view = AutorizationViewController()
         let presenter = AutorizationPresenter(view: view)
         presenter.autorizationValidation = AutorizationValidation()
@@ -39,15 +39,14 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createTabBarModule() -> MainTabBarViewController {
+    func createTabBarModule() -> UITabBarController {
         MainTabBarViewController()
     }
 
-    func createProfileModule() -> ProfileViewController {
+    func createProfileModule() -> UIViewController {
         let view = ProfileViewController()
         let infoSource = InfoSource()
-        let presenter = ProfilePresenter(view: view)
-        presenter.infoSource = infoSource
+        let presenter = ProfilePresenter(view: view, infoSource: infoSource)
         view.presenter = presenter
         view.tabBarItem = UITabBarItem(
             title: Constants.titleProfile,
@@ -57,7 +56,7 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createBonusesProfileModule() -> ProfileBonusesViewController {
+    func createBonusesProfileModule() -> UIViewController {
         let view = ProfileBonusesViewController()
         let infoSource = InfoSource()
         let presenter = ProfileBonusesPresenter(view: view, infoSource: infoSource)
@@ -65,7 +64,7 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createRecipesModule() -> RecipesViewController {
+    func createRecipesModule() -> UIViewController {
         let view = RecipesViewController()
         let presenter = RecipesPresenter(view: view)
         view.presenter = presenter
@@ -77,7 +76,7 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createFavoritesModule() -> FavoritesViewController {
+    func createFavoritesModule() -> UIViewController {
         let view = FavoritesViewController()
         let presenter = FavoritesPresenter(view: view)
         view.presenter = presenter

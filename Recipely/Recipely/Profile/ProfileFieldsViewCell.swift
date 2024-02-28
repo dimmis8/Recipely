@@ -1,10 +1,10 @@
-// ProfileButtonViewCell.swift
+// ProfileFieldsViewCell.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
 /// Ячейка с кнопками дополнительных опций
-final class ProfileButtonViewCell: UITableViewCell {
+final class ProfileFieldsViewCell: UITableViewCell {
     // MARK: - Visual Components
 
     private let buttonImageView: UIImageView = {
@@ -53,7 +53,7 @@ final class ProfileButtonViewCell: UITableViewCell {
 
     // MARK: - Private Properties
 
-    private var buttonHandler: (() -> ())?
+    private var buttonHandler: VoidHandler?
 
     // MARK: - Initializers
 

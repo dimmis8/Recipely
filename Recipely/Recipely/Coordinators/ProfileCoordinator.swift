@@ -3,14 +3,14 @@
 
 import UIKit
 
-/// Координатор экрана профиля
+/// Координатор флоу профиля
 final class ProfileCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
     var moduleBuilder: Builder
     var rootController: UINavigationController
-    var onFinishFlow: (() -> ())?
-    var dismissBonuses: (() -> ())?
+    var onFinishFlow: VoidHandler?
+    var dismissBonuses: VoidHandler?
 
     // MARK: - Initializers
 
@@ -27,7 +27,6 @@ final class ProfileCoordinator: BaseCoodinator {
 
     func showBonuses() {
         let profileBonusesView = moduleBuilder.createBonusesProfileModule()
-        profileBonusesView.presenter.coordinator = self
         if let sheet = profileBonusesView.sheetPresentationController {
             sheet.detents = [.medium()]
             sheet.preferredCornerRadius = 30
@@ -38,6 +37,7 @@ final class ProfileCoordinator: BaseCoodinator {
         dismissBonuses = {
             profileBonusesView.dismiss(animated: true)
         }
+        (profileBonusesView as? ProfileBonusesViewProtocol)?.presenter?.coordinator = self
         rootController.present(profileBonusesView, animated: true)
     }
 }

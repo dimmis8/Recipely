@@ -7,15 +7,18 @@ import UIKit
 final class AppCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
-    private var tabBarViewController: MainTabBarViewController?
+    private var tabBarViewController: UITabBarController?
     private var appBuilder: Builder
 
     // MARK: - Public Methods
 
     override func start() {
+        // пока что используется для выбора стартового экрана
 //        t​oAutorization()
         toMain()
     }
+
+    // MARK: - Initializers
 
     init(appBuilder: Builder) {
         self.appBuilder = appBuilder
@@ -28,17 +31,20 @@ final class AppCoordinator: BaseCoodinator {
 
         let recipesViewController = appBuilder.createRecipesModule()
         let recipesCoordinator = RecipesCoordinator(rootController: recipesViewController)
-        recipesViewController.presenter.coordinator = recipesCoordinator
+        guard let recipesViewController = recipesViewController as? RecipesViewProtocol else { return }
+        recipesViewController.presenter?.coordinator = recipesCoordinator
         add(coordinator: recipesCoordinator)
 
         let profileViewController = appBuilder.createProfileModule()
         let profileCoordinator = ProfileCoordinator(rootController: profileViewController, moduleBulder: appBuilder)
-        profileViewController.presenter.coordinator = profileCoordinator
+        guard let profileViewController = profileViewController as? ProfileViewProtocol else { return }
+        profileViewController.presenter?.coordinator = profileCoordinator
         add(coordinator: profileCoordinator)
 
         let favoritesViewController = appBuilder.createFavoritesModule()
         let favoritesCoordinator = FavoritesCoordinator(rootController: favoritesViewController)
-        favoritesViewController.presenter.coordinator = favoritesCoordinator
+        guard let favoritesViewController = favoritesViewController as? FavoritesViewProtocol else { return }
+        favoritesViewController.presenter?.coordinator = favoritesCoordinator
         add(coordinator: favoritesCoordinator)
 
         profileCoordinator.onFinishFlow = { [weak self] in
@@ -59,9 +65,9 @@ final class AppCoordinator: BaseCoodinator {
     private func t​oAutorization() {
         let autorizationViewController = appBuilder.createAutorizationModule()
         let autorizationCoordinator = AutorizationCoordinator(rootController: autorizationViewController)
-        autorizationViewController.presenter.coordinator = autorizationCoordinator
+        guard let autorizationViewController = autorizationViewController as? AutorizationViewProtocol else { return }
+        autorizationViewController.presenter?.coordinator = autorizationCoordinator
         add(coordinator: autorizationCoordinator)
-
         autorizationCoordinator.onFinishFlow = { [weak self] in
             self?.remove(coordinator: autorizationCoordinator)
             self?.toMain()

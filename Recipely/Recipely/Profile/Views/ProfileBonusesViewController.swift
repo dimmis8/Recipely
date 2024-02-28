@@ -3,7 +3,15 @@
 
 import UIKit
 
-/// Экран бонусов пользвателя
+/// Протокол экрана бонусов
+protocol ProfileBonusesViewProtocol: AnyObject {
+    ///  Презентер экрана
+    var presenter: ProfileBonusesPresenter? { get set }
+    /// Установка значения количетсва бонусов
+    func setBonuses(bonusesCount: Int)
+}
+
+/// Экран бонусов пользователя
 final class ProfileBonusesViewController: UIViewController {
     // MARK: - Constants
 
@@ -23,7 +31,7 @@ final class ProfileBonusesViewController: UIViewController {
         return label
     }()
 
-    private lazy var bonusesCountLabel: UILabel = {
+    private var bonusesCountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Constants.verdanaBold, size: 30)
         label.textColor = .dirtyGreen
@@ -51,8 +59,7 @@ final class ProfileBonusesViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var presenter: ProfileBonusesPresenter!
-    var bonusesCount: Int?
+    var presenter: ProfileBonusesPresenter?
 
     // MARK: - Life Cycle
 
@@ -129,15 +136,14 @@ final class ProfileBonusesViewController: UIViewController {
     }
 
     @objc private func dismissButtonTapped() {
-        presenter.dismissSelf()
+        presenter?.close()
     }
 }
 
-// MARK: - Подписание под протокол для работы с презентером бонусов
+// MARK: - ProfileBonusesViewController + ProfileBonusesViewProtocol
 
 extension ProfileBonusesViewController: ProfileBonusesViewProtocol {
     func setBonuses(bonusesCount: Int) {
-        self.bonusesCount = bonusesCount
         bonusesCountLabel.text = String(bonusesCount)
     }
 }

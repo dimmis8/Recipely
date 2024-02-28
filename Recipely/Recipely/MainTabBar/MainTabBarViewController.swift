@@ -3,6 +3,9 @@
 
 import UIKit
 
+/// Протокол экрана рецептов
+protocol MainTabBarViewProtocol: AnyObject {}
+
 /// Вью главного таб бара
 final class MainTabBarViewController: UITabBarController {
     // MARK: - Life Cycle
@@ -20,3 +23,6 @@ final class MainTabBarViewController: UITabBarController {
         tabBar.backgroundColor = .white
     }
 }
+
+/// MainTabBarViewController + MainTabBarViewProtocol
+extension MainTabBarViewController: MainTabBarViewProtocol {}

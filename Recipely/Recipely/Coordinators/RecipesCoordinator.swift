@@ -3,12 +3,12 @@
 
 import UIKit
 
-/// Координатор экрана рецептов
+/// Координатор флоу рецептов
 final class RecipesCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
     var rootController: UINavigationController
-    var onFinishFlow: (() -> ())?
+    var onFinishFlow: VoidHandler?
 
     // MARK: - Initializers
 

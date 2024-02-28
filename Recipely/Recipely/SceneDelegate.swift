@@ -4,15 +4,8 @@
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    // MARK: - Public Properties
-
     var window: UIWindow?
-
-    // MARK: - Private Properties
-
     private var appCoordinator: AppCoordinator?
-
-    // MARK: - Public Methods
 
     func scene(
         _ scene: UIScene,
@@ -22,8 +15,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         createRootViewController(windowScene)
     }
-
-    // MARK: - Private Methods
 
     private func createRootViewController(_ windowScene: UIWindowScene) {
         window = UIWindow(windowScene: windowScene)
