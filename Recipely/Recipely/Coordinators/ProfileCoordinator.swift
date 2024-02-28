@@ -7,14 +7,16 @@ import UIKit
 final class ProfileCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
+    var moduleBuilder: Builder
     var rootController: UINavigationController
     var onFinishFlow: (() -> ())?
     var dismissBonuses: (() -> ())?
 
     // MARK: - Initializers
 
-    init(rootController: UIViewController) {
+    init(rootController: UIViewController, moduleBulder: Builder) {
         self.rootController = UINavigationController(rootViewController: rootController)
+        moduleBuilder = moduleBulder
     }
 
     // MARK: - Public Methods
@@ -24,7 +26,7 @@ final class ProfileCoordinator: BaseCoodinator {
     }
 
     func showBonuses() {
-        let profileBonusesView = ModuleBuilder.createBonusesProfileModule()
+        let profileBonusesView = moduleBuilder.createBonusesProfileModule()
         profileBonusesView.presenter.coordinator = self
         if let sheet = profileBonusesView.sheetPresentationController {
             sheet.detents = [.medium()]

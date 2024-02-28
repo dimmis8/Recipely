@@ -57,6 +57,10 @@ final class ProfileViewController: UIViewController {
         navigationItem.title = Constants.viewTitleText
     }
 
+    private func setNewName(_ newName: String) {
+        presenter.editNameSurname(name: newName)
+    }
+
     private func configureTableView() {
         tableView.register(UserInfoViewCell.self, forCellReuseIdentifier: Constants.userInfoViewCellIdentifier)
         tableView.register(
@@ -81,7 +85,6 @@ final class ProfileViewController: UIViewController {
 // MARK: - Подписание на протокол экрана профиля
 
 extension ProfileViewController: ProfileViewProtocol {
-
     func showLogOutAlert() {
         let alertController = UIAlertController(title: Constants.alertTitle, message: nil, preferredStyle: .alert)
         let actionClose = UIAlertAction(title: Constants.closeButtonText, style: .default)
@@ -117,10 +120,6 @@ extension ProfileViewController: ProfileViewProtocol {
         present(alertView, animated: true)
     }
 
-    private func setNewName(_ newName: String) {
-        presenter.editNameSurname(name: newName)
-    }
-    
     func setPhotoFromSource() {
         tableView.reloadData()
     }
@@ -210,7 +209,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
 }
 
-/// Кнопки
+/// Экшены кнопок
 extension ProfileViewController {
     private func showBonuses() {
         presenter.showBonuses()

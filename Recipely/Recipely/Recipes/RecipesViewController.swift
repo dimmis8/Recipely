@@ -12,7 +12,12 @@ final class RecipesViewController: UIViewController {
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
-        super.viewDidLoad()
+        setupView()
+    }
+
+    // MARK: - Private Methods
+
+    private func setupView() {
         view.backgroundColor = .green
     }
 }

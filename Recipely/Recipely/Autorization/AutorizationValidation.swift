@@ -21,11 +21,12 @@ final class AutorizationValidation: AutorizationValidationProtocol {
         let format = "SELF MATCHES %@"
         switch (enteringEmail, enteringPassword) {
         case (.some(let email), nil):
-            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) && accounts.keys
-                .contains(email)
+            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) &&
+                accounts.keys.contains(email)
         case let (.some(email), .some(password)):
-            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) && accounts.keys
-                .contains(email) && accounts[email] == password
+            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) &&
+                accounts.keys.contains(email) &&
+                accounts[email] == password
         default:
             return false
         }

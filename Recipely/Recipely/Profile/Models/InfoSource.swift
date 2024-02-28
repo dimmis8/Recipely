@@ -6,7 +6,7 @@ import Foundation
 /// Источник информации
 final class InfoSource: InfoSourceProtocol {
     /// Информация о пользователе
-    private var personInfo = UserInfo(nameSurname: "Steve Wozniak", userPhotoName: "voznyak", bonusesCount: 100)
+    private var personInfo = UserInfo(nameSurname: "Steve Wozniak", userPhotoName: "voznyak", bonusesCount: 200)
 
     /// Получить информацию о пользователе
     func getUserInfo() -> UserInfo {

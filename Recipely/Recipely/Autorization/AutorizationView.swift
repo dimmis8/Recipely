@@ -18,6 +18,7 @@ final class AutorizationViewController: UIViewController {
         static let incorrectEmail = "Incorrect format"
         static let incorrectPassword = "You entered the wrong password"
         static let errorLoginText = "Please check the accuracy of the entered credentials."
+        static let toolBarOkButtonText = "OK"
         static let emailTextFieldTag = 0
         static let passwordTextFieldTag = 1
     }
@@ -260,7 +261,7 @@ final class AutorizationViewController: UIViewController {
         toolBar.sizeToFit()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(
-            title: "Ok",
+            title: Constants.toolBarOkButtonText,
             style: .done,
             target: self,
             action: #selector(hideKeyboard)
@@ -352,6 +353,10 @@ final class AutorizationViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
+
+    @objc private func changeVisablePassword() {
+        presenter.changePasswordVisableState()
+    }
 }
 
 // MARK: - Добавление экрана ошибки ввода данных
@@ -382,10 +387,6 @@ extension AutorizationViewController {
             self.view.layoutIfNeeded()
         }
     }
-
-    @objc private func changeVisablePassword() {
-        presenter.changePasswordVisableState()
-    }
 }
 
 // MARK: - Подписание на протокол экрана авторизации
@@ -399,6 +400,18 @@ extension AutorizationViewController: AutorizationViewProtocol {
             passwordHideButton.setImage(.unvisibility, for: .normal)
             passwordTextField.isSecureTextEntry = true
         }
+    }
+}
+
+// MARK: - Типы полей ввода на экране
+
+extension AutorizationViewController {
+    /// Тип проверяемого поля
+    enum ValidityType {
+        /// Емайл
+        case email
+        /// Пароль
+        case password
     }
 }
 

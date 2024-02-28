@@ -8,6 +8,7 @@ final class AppCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
     private var tabBarViewController: MainTabBarViewController?
+    private var appBuilder: Builder
 
     // MARK: - Public Methods
 
@@ -16,20 +17,26 @@ final class AppCoordinator: BaseCoodinator {
         toMain()
     }
 
-    private func toMain() {
-        tabBarViewController = ModuleBuilder.createTabBarModule()
+    init(appBuilder: Builder) {
+        self.appBuilder = appBuilder
+    }
 
-        let recipesViewController = ModuleBuilder.createRecipesModule()
+    // MARK: - Private Methods
+
+    private func toMain() {
+        tabBarViewController = appBuilder.createTabBarModule()
+
+        let recipesViewController = appBuilder.createRecipesModule()
         let recipesCoordinator = RecipesCoordinator(rootController: recipesViewController)
         recipesViewController.presenter.coordinator = recipesCoordinator
         add(coordinator: recipesCoordinator)
 
-        let profileViewController = ModuleBuilder.createProfileModule()
-        let profileCoordinator = ProfileCoordinator(rootController: profileViewController)
+        let profileViewController = appBuilder.createProfileModule()
+        let profileCoordinator = ProfileCoordinator(rootController: profileViewController, moduleBulder: appBuilder)
         profileViewController.presenter.coordinator = profileCoordinator
         add(coordinator: profileCoordinator)
 
-        let favoritesViewController = ModuleBuilder.createFavoritesModule()
+        let favoritesViewController = appBuilder.createFavoritesModule()
         let favoritesCoordinator = FavoritesCoordinator(rootController: favoritesViewController)
         favoritesViewController.presenter.coordinator = favoritesCoordinator
         add(coordinator: favoritesCoordinator)
@@ -50,7 +57,7 @@ final class AppCoordinator: BaseCoodinator {
     }
 
     private func t​oAutorization() {
-        let autorizationViewController = ModuleBuilder.createAutorizationModule()
+        let autorizationViewController = appBuilder.createAutorizationModule()
         let autorizationCoordinator = AutorizationCoordinator(rootController: autorizationViewController)
         autorizationViewController.presenter.coordinator = autorizationCoordinator
         add(coordinator: autorizationCoordinator)

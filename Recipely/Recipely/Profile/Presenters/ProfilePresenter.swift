@@ -36,7 +36,6 @@ protocol InfoSourceProtocol: AnyObject {
 
 /// Презентер экрана профиля
 final class ProfilePresenter: ProfileViewPresenterProtocol {
-    
     // MARK: - Public Properties
 
     weak var coordinator: ProfileCoordinator?
@@ -54,7 +53,7 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
     func getUserInformation() -> UserInfo? {
         infoSource?.getUserInfo()
     }
-    
+
     func logOutAction() {
         view?.showLogOutAlert()
     }
@@ -75,12 +74,11 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
         infoSource?.changeUserName(nameSurname: name)
         view?.setNewNameFromSource()
     }
-    
+
     func termsAndPrivacyAction() {
         view?.showInDevelopAlert()
     }
-    
-    func actionChangePhoto() {
-        <#code#>
-    }
+
+    // TODO:
+    func actionChangePhoto() {}
 }

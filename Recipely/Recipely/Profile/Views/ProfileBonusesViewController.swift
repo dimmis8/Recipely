@@ -52,9 +52,6 @@ final class ProfileBonusesViewController: UIViewController {
     // MARK: - Public Properties
 
     var presenter: ProfileBonusesPresenter!
-
-    // MARK: - Public Properties
-
     var bonusesCount: Int?
 
     // MARK: - Life Cycle
@@ -135,6 +132,8 @@ final class ProfileBonusesViewController: UIViewController {
         presenter.dismissSelf()
     }
 }
+
+// MARK: - Подписание под протокол для работы с презентером бонусов
 
 extension ProfileBonusesViewController: ProfileBonusesViewProtocol {
     func setBonuses(bonusesCount: Int) {

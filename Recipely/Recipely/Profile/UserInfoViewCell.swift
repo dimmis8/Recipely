@@ -67,14 +67,17 @@ final class UserInfoViewCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func setUserInformation(_ userInfo: UserInfo, changeNameComplition: @escaping () -> (), changePhotoComplition: @escaping () -> ()) {
+    func setUserInformation(
+        _ userInfo: UserInfo,
+        changeNameComplition: @escaping () -> (),
+        changePhotoComplition: @escaping () -> ()
+    ) {
         profilePhotoButton.setImage(UIImage(named: userInfo.userPhotoName), for: .normal)
         profilePhotoButton.imageView?.clipsToBounds = true
         profilePhotoButton.imageView?.contentMode = .scaleAspectFill
         fullNameLabel.text = "\(userInfo.nameSurname)"
         buttonChangeHandler = changeNameComplition
         buttonChangePhotoHandler = changePhotoComplition
-        
     }
 
     // MARK: - Private Methods
@@ -127,6 +130,7 @@ final class UserInfoViewCell: UITableViewCell {
     @objc func changeNameTapped() {
         buttonChangeHandler?()
     }
+
     @objc func changePhotoTapped() {
         buttonChangePhotoHandler?()
     }

@@ -6,13 +6,17 @@ import UIKit
 /// Протокол билдера
 protocol Builder {
     /// Функция создания модуля экрана авторизации
-    static func createAutorizationModule() -> AutorizationViewController
+    func createAutorizationModule() -> AutorizationViewController
     /// Функция создания модуля экрана с таб баром
-    static func createTabBarModule() -> MainTabBarViewController
+    func createTabBarModule() -> MainTabBarViewController
     /// Функция создания модуля экрана профиля
-    static func createProfileModule() -> ProfileViewController
+    func createProfileModule() -> ProfileViewController
     /// Функция создания модуля экрана избранного
-    static func createFavoritesModule() -> FavoritesViewController
+    func createFavoritesModule() -> FavoritesViewController
+    /// Функция создания модуля экрана рецептов
+    func createRecipesModule() -> RecipesViewController
+    /// Функция создания модуля экрана бонусов
+    func createBonusesProfileModule() -> ProfileBonusesViewController
 }
 
 /// Билдер модулей
@@ -25,9 +29,9 @@ final class ModuleBuilder: Builder {
         static let titleProfile = "Profile"
     }
 
-    // MARK: - Public Properties
+    // MARK: - Public Methods
 
-    static func createAutorizationModule() -> AutorizationViewController {
+    func createAutorizationModule() -> AutorizationViewController {
         let view = AutorizationViewController()
         let presenter = AutorizationPresenter(view: view)
         presenter.autorizationValidation = AutorizationValidation()
@@ -35,11 +39,11 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    static func createTabBarModule() -> MainTabBarViewController {
+    func createTabBarModule() -> MainTabBarViewController {
         MainTabBarViewController()
     }
 
-    static func createProfileModule() -> ProfileViewController {
+    func createProfileModule() -> ProfileViewController {
         let view = ProfileViewController()
         let infoSource = InfoSource()
         let presenter = ProfilePresenter(view: view)
@@ -53,7 +57,7 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    static func createBonusesProfileModule() -> ProfileBonusesViewController {
+    func createBonusesProfileModule() -> ProfileBonusesViewController {
         let view = ProfileBonusesViewController()
         let infoSource = InfoSource()
         let presenter = ProfileBonusesPresenter(view: view, infoSource: infoSource)
@@ -61,7 +65,7 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    static func createRecipesModule() -> RecipesViewController {
+    func createRecipesModule() -> RecipesViewController {
         let view = RecipesViewController()
         let presenter = RecipesPresenter(view: view)
         view.presenter = presenter
@@ -73,7 +77,7 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    static func createFavoritesModule() -> FavoritesViewController {
+    func createFavoritesModule() -> FavoritesViewController {
         let view = FavoritesViewController()
         let presenter = FavoritesPresenter(view: view)
         view.presenter = presenter

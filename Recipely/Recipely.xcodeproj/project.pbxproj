@@ -36,7 +36,6 @@
 		0A8521732B8E1B7C002BCE50 /* ProfileButtonViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */; };
 		0A8521772B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */; };
 		52073D8F2B8E066900A1DA9C /* AutorizationValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */; };
-		52073D932B8E357300A1DA9C /* ValidityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D922B8E357200A1DA9C /* ValidityType.swift */; };
 		52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,7 +90,6 @@
 		0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButtonViewCell.swift; sourceTree = "<group>"; };
 		0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesPresenter.swift; sourceTree = "<group>"; };
 		52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutorizationValidation.swift; sourceTree = "<group>"; };
-		52073D922B8E357200A1DA9C /* ValidityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidityType.swift; sourceTree = "<group>"; };
 		52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -195,7 +193,6 @@
 				0A8521102B8CB1D4002BCE50 /* AutorizationView.swift */,
 				0A85214D2B8D002C002BCE50 /* AutorizationPresenter.swift */,
 				52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */,
-				52073D922B8E357200A1DA9C /* ValidityType.swift */,
 			);
 			path = Autorization;
 			sourceTree = "<group>";
@@ -465,7 +462,6 @@
 				0A8521662B8DC2F9002BCE50 /* FavoritesPresenter.swift in Sources */,
 				0A85216A2B8DC3E5002BCE50 /* FavoritesCoordinator.swift in Sources */,
 				0A8521552B8D271A002BCE50 /* ProfilePresenter.swift in Sources */,
-				52073D932B8E357300A1DA9C /* ValidityType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

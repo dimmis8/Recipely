@@ -13,6 +13,12 @@ final class FavoritesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+
+    // MARK: - Private Methods
+
+    private func setupView() {
         view.backgroundColor = .yellow
     }
 }
