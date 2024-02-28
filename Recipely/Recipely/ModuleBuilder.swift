@@ -53,6 +53,14 @@ final class ModuleBuilder: Builder {
         return view
     }
 
+    static func createBonusesProfileModule() -> ProfileBonusesViewController {
+        let view = ProfileBonusesViewController()
+        let infoSource = InfoSource()
+        let presenter = ProfileBonusesPresenter(view: view, infoSource: infoSource)
+        view.presenter = presenter
+        return view
+    }
+
     static func createRecipesModule() -> RecipesViewController {
         let view = RecipesViewController()
         let presenter = RecipesPresenter(view: view)

@@ -11,13 +11,4 @@ final class RecipesCoordinator: BaseCoodinator {
     init(rootController: UIViewController) {
         self.rootController = UINavigationController(rootViewController: rootController)
     }
-
-    func logOut() {
-        onFinishFlow?()
-    }
-
-//    func ​pushRecipes() {
-//        let recepesViewController = ModuleBuilder.createRecipesModule()
-//        rootController.pushViewController(recepesViewController, animated: true)
-//    }
 }

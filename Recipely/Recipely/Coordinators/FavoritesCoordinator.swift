@@ -11,13 +11,4 @@ final class FavoritesCoordinator: BaseCoodinator {
     init(rootController: UIViewController) {
         self.rootController = UINavigationController(rootViewController: rootController)
     }
-
-    func logOut() {
-        onFinishFlow?()
-    }
-
-//    func ​pushFavorites() {
-//        let favoritesViewController = ModuleBuilder.createFavoritesModule()
-//        rootController.pushViewController(favoritesViewController, animated: true)
-//    }
 }

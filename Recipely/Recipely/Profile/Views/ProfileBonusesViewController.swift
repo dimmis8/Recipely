@@ -9,7 +9,6 @@ final class ProfileBonusesViewController: UIViewController {
 
     enum Constants {
         static let bonusesText = "Your bonuses"
-        static let bonusesCount = "100"
         static let verdanaBold = "Verdana-Bold"
     }
 
@@ -24,9 +23,8 @@ final class ProfileBonusesViewController: UIViewController {
         return label
     }()
 
-    private let bonusesCountLabel: UILabel = {
+    private lazy var bonusesCountLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.bonusesCount
         label.font = UIFont(name: Constants.verdanaBold, size: 30)
         label.textColor = .dirtyGreen
         label.textAlignment = .left
@@ -50,6 +48,14 @@ final class ProfileBonusesViewController: UIViewController {
         button.setImage(.dismissButton, for: .normal)
         return button
     }()
+
+    // MARK: - Public Properties
+
+    var presenter: ProfileBonusesPresenter!
+
+    // MARK: - Public Properties
+
+    var bonusesCount: Int?
 
     // MARK: - Life Cycle
 
@@ -126,6 +132,13 @@ final class ProfileBonusesViewController: UIViewController {
     }
 
     @objc private func dismissButtonTapped() {
-        dismiss(animated: true)
+        presenter.dismissSelf()
+    }
+}
+
+extension ProfileBonusesViewController: ProfileBonusesViewProtocol {
+    func setBonuses(bonusesCount: Int) {
+        self.bonusesCount = bonusesCount
+        bonusesCountLabel.text = String(bonusesCount)
     }
 }

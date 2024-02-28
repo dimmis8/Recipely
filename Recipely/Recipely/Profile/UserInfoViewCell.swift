@@ -5,8 +5,6 @@ import UIKit
 
 /// Ячейка с информацией о пользователе
 final class UserInfoViewCell: UITableViewCell {
-    var action: (() -> ())?
-
     // MARK: - Constants
 
     enum Constants {
@@ -15,15 +13,15 @@ final class UserInfoViewCell: UITableViewCell {
 
     // MARK: - Visual Components
 
-    private let profilePhotoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = Constants.profilePhotoHeigh / 2
-        imageView.layer.borderWidth = 3
-        imageView.layer.borderColor = UIColor.selectedTitle.cgColor
-        imageView.clipsToBounds = true
-        return imageView
+    private let profilePhotoButton: UIButton = {
+        let button = UIButton()
+        button.contentMode = .scaleAspectFill
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = Constants.profilePhotoHeigh / 2
+        button.layer.borderWidth = 3
+        button.clipsToBounds = true
+        button.layer.borderColor = UIColor.selectedTitle.cgColor
+        return button
     }()
 
     private let nameView: UIView = {
@@ -48,41 +46,47 @@ final class UserInfoViewCell: UITableViewCell {
         return button
     }()
 
+    // MARK: - Private Properties
+
+    private var buttonChangeHandler: (() -> ())?
+    private var buttonChangePhotoHandler: (() -> ())?
+
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createView()
         setConstraints()
-        tapButtonChangeName()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         createView()
         setConstraints()
-        tapButtonChangeName()
     }
 
-    // MARK: - Public Properties
+    // MARK: - Public Methods
 
-    func setUserInformation(_ userInfo: UserInfo) {
-        profilePhotoImageView.image = UIImage(named: userInfo.userPhotoName)
+    func setUserInformation(_ userInfo: UserInfo, changeNameComplition: @escaping () -> (), changePhotoComplition: @escaping () -> ()) {
+        profilePhotoButton.setImage(UIImage(named: userInfo.userPhotoName), for: .normal)
+        profilePhotoButton.imageView?.clipsToBounds = true
+        profilePhotoButton.imageView?.contentMode = .scaleAspectFill
         fullNameLabel.text = "\(userInfo.nameSurname)"
+        buttonChangeHandler = changeNameComplition
+        buttonChangePhotoHandler = changePhotoComplition
+        
     }
 
     // MARK: - Private Methods
 
-    private func tapButtonChangeName() {
-        changeNameButton.addTarget(self, action: #selector(changeNameTapped), for: .touchUpInside)
-    }
-
     private func createView() {
         contentView.backgroundColor = .white
-        contentView.addSubview(profilePhotoImageView)
+        contentView.addSubview(profilePhotoButton)
         nameView.addSubview(fullNameLabel)
         nameView.addSubview(changeNameButton)
         contentView.addSubview(nameView)
+        changeNameButton.addTarget(self, action: #selector(changeNameTapped), for: .touchUpInside)
+        profilePhotoButton.addTarget(self, action: #selector(changePhotoTapped), for: .touchUpInside)
     }
 
     private func setConstraints() {
@@ -93,10 +97,10 @@ final class UserInfoViewCell: UITableViewCell {
     }
 
     private func setProfilePhotoImageViewConstraints() {
-        profilePhotoImageView.heightAnchor.constraint(equalToConstant: Constants.profilePhotoHeigh).isActive = true
-        profilePhotoImageView.widthAnchor.constraint(equalToConstant: Constants.profilePhotoHeigh).isActive = true
-        profilePhotoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        profilePhotoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 36).isActive = true
+        profilePhotoButton.heightAnchor.constraint(equalToConstant: Constants.profilePhotoHeigh).isActive = true
+        profilePhotoButton.widthAnchor.constraint(equalToConstant: Constants.profilePhotoHeigh).isActive = true
+        profilePhotoButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        profilePhotoButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 36).isActive = true
     }
 
     private func setfullNameLabelConstraints() {
@@ -115,12 +119,15 @@ final class UserInfoViewCell: UITableViewCell {
 
     private func setNameViewConstraints() {
         nameView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        nameView.topAnchor.constraint(equalTo: profilePhotoImageView.bottomAnchor, constant: 26).isActive = true
+        nameView.topAnchor.constraint(equalTo: profilePhotoButton.bottomAnchor, constant: 26).isActive = true
         nameView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         nameView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -29).isActive = true
     }
 
     @objc func changeNameTapped() {
-        action?()
+        buttonChangeHandler?()
+    }
+    @objc func changePhotoTapped() {
+        buttonChangePhotoHandler?()
     }
 }

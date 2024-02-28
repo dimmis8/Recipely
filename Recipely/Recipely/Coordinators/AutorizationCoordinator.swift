@@ -12,12 +12,7 @@ final class AutorizationCoordinator: BaseCoodinator {
         self.rootController = UINavigationController(rootViewController: rootController)
     }
 
-    func logOut() {
+    func logIn() {
         onFinishFlow?()
     }
-
-//    func ​pushAutorization() {
-//        let autorizationViewController = ModuleBuilder.createAutorizationModule()
-//        rootController.pushViewController(autorizationViewController, animated: true)
-//    }
 }

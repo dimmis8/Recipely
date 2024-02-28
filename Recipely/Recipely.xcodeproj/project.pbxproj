@@ -34,6 +34,7 @@
 		0A85216E2B8DFE7D002BCE50 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */; };
 		0A8521712B8E0031002BCE50 /* InfoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521702B8E0031002BCE50 /* InfoSource.swift */; };
 		0A8521732B8E1B7C002BCE50 /* ProfileButtonViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */; };
+		0A8521772B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */; };
 		52073D8F2B8E066900A1DA9C /* AutorizationValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */; };
 		52073D932B8E357300A1DA9C /* ValidityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D922B8E357200A1DA9C /* ValidityType.swift */; };
 		52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */; };
@@ -88,6 +89,7 @@
 		0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		0A8521702B8E0031002BCE50 /* InfoSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSource.swift; sourceTree = "<group>"; };
 		0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButtonViewCell.swift; sourceTree = "<group>"; };
+		0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesPresenter.swift; sourceTree = "<group>"; };
 		52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutorizationValidation.swift; sourceTree = "<group>"; };
 		52073D922B8E357200A1DA9C /* ValidityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidityType.swift; sourceTree = "<group>"; };
 		52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesViewController.swift; sourceTree = "<group>"; };
@@ -201,9 +203,8 @@
 		0A8521512B8D2653002BCE50 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				0A8521522B8D26B5002BCE50 /* ProfileViewController.swift */,
-				52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */,
-				0A8521542B8D271A002BCE50 /* ProfilePresenter.swift */,
+				0A8521742B8E9A11002BCE50 /* Views */,
+				0A8521752B8E9A2C002BCE50 /* Presenters */,
 				0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */,
 				0A8521722B8E1B7C002BCE50 /* ProfileButtonViewCell.swift */,
 				0A85216F2B8E000A002BCE50 /* Models */,
@@ -244,6 +245,24 @@
 				0A8521702B8E0031002BCE50 /* InfoSource.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		0A8521742B8E9A11002BCE50 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0A8521522B8D26B5002BCE50 /* ProfileViewController.swift */,
+				52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0A8521752B8E9A2C002BCE50 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				0A8521542B8D271A002BCE50 /* ProfilePresenter.swift */,
+				0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */,
+			);
+			path = Presenters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,6 +452,7 @@
 				0A85216E2B8DFE7D002BCE50 /* UserInfo.swift in Sources */,
 				0A85210D2B8CB1D4002BCE50 /* AppDelegate.swift in Sources */,
 				0A8521682B8DC356002BCE50 /* FavoritesViewController.swift in Sources */,
+				0A8521772B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift in Sources */,
 				0A85215F2B8DC034002BCE50 /* RecipesViewController.swift in Sources */,
 				0A85215C2B8DBA97002BCE50 /* ProfileCoordinator.swift in Sources */,
 				0A8521422B8CEF0F002BCE50 /* AppCoordinator.swift in Sources */,

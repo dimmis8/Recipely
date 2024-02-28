@@ -9,9 +9,12 @@ struct UserInfo {
     var nameSurname: String
     /// Название фото пользователя
     var userPhotoName: String
+    /// Количество бонусов
+    var bonusesCount: Int
 
-    init(nameSurname: String, userPhotoName: String = "userDefaultIcon") {
+    init(nameSurname: String, userPhotoName: String = "userDefaultIcon", bonusesCount: Int) {
         self.nameSurname = nameSurname
         self.userPhotoName = userPhotoName
+        self.bonusesCount = bonusesCount
     }
 }
