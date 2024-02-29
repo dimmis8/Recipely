@@ -9,12 +9,16 @@ protocol RecipesViewPresenterProtocol: AnyObject {
     var coordinator: RecipesCoordinator? { get set }
     /// Инициализатор с присвоением вью
     init(view: RecipesViewProtocol)
+    func getInfo(categoryNumber: Int) -> DishCategory
+    func getCategoryCount() -> Int
+    func goToCategory(_ category: RecipeCategories)
 }
 
 /// Презентер экрана м
 final class RecipesPresenter: RecipesViewPresenterProtocol {
     // MARK: - Public Properties
 
+    private let informationSource = InformationSource()
     weak var coordinator: RecipesCoordinator?
     weak var view: RecipesViewProtocol?
 
@@ -23,4 +27,14 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
     required init(view: RecipesViewProtocol) {
         self.view = view
     }
+
+    func getInfo(categoryNumber: Int) -> DishCategory {
+        informationSource.categories[categoryNumber]
+    }
+
+    func getCategoryCount() -> Int {
+        informationSource.categories.count
+    }
+
+    func goToCategory(_ category: RecipeCategories) {}
 }
