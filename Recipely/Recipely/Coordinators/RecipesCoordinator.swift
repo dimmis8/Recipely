@@ -7,28 +7,27 @@ import UIKit
 final class RecipesCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
-    var moduleBuilder: Builder
-    var rootController: UINavigationController
     var onFinishFlow: VoidHandler?
+    var rootController: UINavigationController?
 
-    // MARK: - Initializers
+    // MARK: - Private Properties
 
-    init(rootController: UIViewController, moduleBulder: Builder) {
-        self.rootController = UINavigationController(rootViewController: rootController)
-        moduleBuilder = moduleBulder
-    }
+    private var moduleBuilder: Builder?
 
     // MARK: - Public Methods
 
+    func setRootViewController(view: UIViewController, moduleBuilder: Builder) {
+        rootController = UINavigationController(rootViewController: view)
+        self.moduleBuilder = moduleBuilder
+    }
+
     func goToCategory(_ category: RecipeCategories) {
-        let recepeCategoryView = moduleBuilder.createRecepeCategoryModule()
-        recepeCategoryView.navigationItem.title = category.rawValue
-        guard let recepeCategoryView = recepeCategoryView as? RecepeCategoryViewProtocol else { return }
-        recepeCategoryView.presenter?.coordinator = self
-        rootController.pushViewController(recepeCategoryView as? UIViewController ?? UIViewController(), animated: true)
+        let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self)
+        recepeCategoryView?.navigationItem.title = category.rawValue
+        rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
     }
 
     func backToRecepies() {
-        rootController.popViewController(animated: true)
+        rootController?.popViewController(animated: true)
     }
 }

@@ -3,27 +3,32 @@
 
 import UIKit
 
+/// Протокол датасорса пикера сортировки
 protocol SortPickerViewDataSource {
+    /// Количество кнопок пикера
     func sortPickerCount(_ sortPicker: SortPickerView) -> Int
+    /// Тайтлы для кнопок пикера
     func sortPickerTitle(_ sortPicker: SortPickerView, indexPath: IndexPath) -> String
+    /// Картинка для кнопки пикера при нажатии на нее
     func sortPickerImage(indexPath: IndexPath, beforeSelected: Bool) -> String
 }
 
-/// Пикер дня
-class SortPickerView: UIControl {
+/// Пикер сортировки
+final class SortPickerView: UIControl {
+    // MARK: - Public Properties
+
     public var dataSource: SortPickerViewDataSource? {
         didSet {
             setupView()
         }
     }
 
+    // MARK: - Private Properties
+
     private var buttons: [UIButton] = []
     private var stackView: UIStackView!
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.frame = bounds
-    }
+    // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,6 +37,15 @@ class SortPickerView: UIControl {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+
+    // MARK: - Public Methods
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        stackView.frame = bounds
+    }
+
+    // MARK: - Private Methods
 
     func setupView() {
         let count = dataSource?.sortPickerCount(self)
@@ -42,6 +56,8 @@ class SortPickerView: UIControl {
             button.setTitle("\(title ?? "") ", for: .normal)
             button.tag = item
             button.layer.cornerRadius = 18
+            button.titleLabel?.font = .init(name: "Verdana", size: 14)
+            button.contentVerticalAlignment = .center
             button.backgroundColor = .backgroundTeal
             button.semanticContentAttribute = .forceRightToLeft
             button.setTitleColor(.black, for: .normal)
@@ -53,16 +69,14 @@ class SortPickerView: UIControl {
             addSubview(button)
         }
         stackView = UIStackView(arrangedSubviews: buttons)
-
         addSubview(stackView)
-
         stackView.spacing = 8
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         stackView.alignment = .fill
     }
 
-    @objc func selectedButton(sender: UIButton) {
+    @objc private func selectedButton(sender: UIButton) {
         let selectedButton = buttons[sender.tag]
         let newImageName = dataSource?.sortPickerImage(
             indexPath: IndexPath(row: sender.tag, section: 0),

@@ -50,7 +50,6 @@ final class RecepeCategoryView: UIViewController {
     }()
 
     private let sortPickerView = SortPickerView()
-
     private let tableView = UITableView()
 
     // MARK: - Public Properties
@@ -160,7 +159,7 @@ final class RecepeCategoryView: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: sortPickerView.bottomAnchor, constant: 20).isActive = true
+        tableView.topAnchor.constraint(equalTo: sortPickerView.bottomAnchor, constant: 15).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
 

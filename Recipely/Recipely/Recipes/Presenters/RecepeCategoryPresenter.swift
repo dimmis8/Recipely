@@ -5,10 +5,8 @@ import Foundation
 
 /// Протокол презентера экрана категории рецептов
 protocol RecepeCategoryPresenterProtocol: AnyObject {
-    /// Координатор флоу экрана
-    var coordinator: RecipesCoordinator? { get set }
     /// Инициализатор с присвоением вью
-    init(view: RecepeCategoryViewProtocol)
+    init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator)
     /// Экшн кнопки назад
     func back()
     /// Изменение состояние сортировки рецептов
@@ -21,20 +19,25 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
 
 /// Презентер экрана категории рецептов
 final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
-    // MARK: - Public Properties
+    // MARK: - Constants
 
-    weak var coordinator: RecipesCoordinator?
-    weak var view: RecepeCategoryViewProtocol?
+    enum Constants {
+        static let whiteSortDirectionRevers = "whiteSortDirectionRevers"
+        static let whiteSortDirection = "whiteSortDirection"
+    }
 
     // MARK: - Private Properties
 
+    private weak var coordinator: RecipesCoordinator?
+    private weak var view: RecepeCategoryViewProtocol?
     private var selectedSortMap: [SortTypes: Bool] = [.calories: false, .time: false]
     private let sourceOfRecepies = SourceOfRecepies()
 
     // MARK: - Initializers
 
-    required init(view: RecepeCategoryViewProtocol) {
+    required init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator) {
         self.view = view
+        self.coordinator = coordinator
     }
 
     // MARK: - Public Methods
@@ -47,16 +50,16 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         switch previousState {
         case true where selectedSortMap[sortType] == true:
             selectedSortMap[sortType] = false
-            return "whiteSortDirectionRevers"
+            return Constants.whiteSortDirectionRevers
         case true where selectedSortMap[sortType] == false:
             selectedSortMap[sortType] = true
-            return "whiteSortDirection"
+            return Constants.whiteSortDirection
         case false:
             for key in selectedSortMap.keys {
                 selectedSortMap[key] = false
             }
             selectedSortMap[sortType] = true
-            return "whiteSortDirection"
+            return Constants.whiteSortDirection
         default:
             return ""
         }

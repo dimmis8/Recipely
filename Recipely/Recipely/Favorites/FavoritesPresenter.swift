@@ -5,22 +5,21 @@ import Foundation
 
 /// Протокол презентера экрана избранного
 protocol FavoritesViewPresenterProtocol: AnyObject {
-    /// Координатор флоу экрана
-    var coordinator: FavoritesCoordinator? { get set }
     /// Инициализатор с присвоением вью
-    init(view: FavoritesViewProtocol)
+    init(view: FavoritesViewProtocol, coordinator: FavoritesCoordinator)
 }
 
 /// Презентер экрана избранного
 final class FavoritesPresenter: FavoritesViewPresenterProtocol {
-    // MARK: - Public Properties
+    // MARK: - Private Properties
 
-    weak var coordinator: FavoritesCoordinator?
-    weak var view: FavoritesViewProtocol?
+    private weak var coordinator: FavoritesCoordinator?
+    private weak var view: FavoritesViewProtocol?
 
     // MARK: - Initializers
 
-    required init(view: FavoritesViewProtocol) {
+    required init(view: FavoritesViewProtocol, coordinator: FavoritesCoordinator) {
         self.view = view
+        self.coordinator = coordinator
     }
 }

@@ -115,7 +115,7 @@ final class RecipeCell: UITableViewCell {
         background.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
         background.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
         background.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        background.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14).isActive = true
+        background.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
         background.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
 
