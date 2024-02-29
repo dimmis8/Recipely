@@ -37,6 +37,7 @@ final class RecipesViewController: UIViewController {
     }
 
     @objc private func goToCategory() {
+        
         presenter?.goToCategory(.fish)
     }
 }
