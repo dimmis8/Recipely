@@ -17,6 +17,8 @@ protocol Builder {
     func createRecipesModule() -> UIViewController
     /// Функция создания модуля экрана бонусов
     func createBonusesProfileModule() -> UIViewController
+    /// Функция создания модуля блюд категории
+    func createRecepeCategoryModule() -> UIViewController
 }
 
 /// Билдер модулей
@@ -73,6 +75,13 @@ final class ModuleBuilder: Builder {
             image: .recipesIcon,
             selectedImage: .selectedRecipesIcon
         )
+        return view
+    }
+
+    func createRecepeCategoryModule() -> UIViewController {
+        let view = RecepeCategoryView()
+        let presenter = RecepeCategoryPresenter(view: view)
+        view.presenter = presenter
         return view
     }
 

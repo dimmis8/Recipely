@@ -30,7 +30,7 @@ final class AppCoordinator: BaseCoodinator {
         tabBarViewController = appBuilder.createTabBarModule()
 
         let recipesViewController = appBuilder.createRecipesModule()
-        let recipesCoordinator = RecipesCoordinator(rootController: recipesViewController)
+        let recipesCoordinator = RecipesCoordinator(rootController: recipesViewController, moduleBulder: appBuilder)
         guard let recipesViewController = recipesViewController as? RecipesViewProtocol else { return }
         recipesViewController.presenter?.coordinator = recipesCoordinator
         add(coordinator: recipesCoordinator)
