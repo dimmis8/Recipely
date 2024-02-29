@@ -239,9 +239,16 @@
 		0A85215D2B8DBFF9002BCE50 /* Recipes */ = {
 			isa = PBXGroup;
 			children = (
-				0A85217D2B905A62002BCE50 /* Views */,
-				0A85217E2B905A6A002BCE50 /* Presenters */,
-				0A85217A2B9058A3002BCE50 /* Models */,
+				0A8521812B905B1F002BCE50 /* RecepeCategoryView.swift */,
+				0A85215E2B8DC034002BCE50 /* RecipesViewController.swift */,
+				0A85218D2B90F222002BCE50 /* RecipeCell.swift */,
+				0A8521602B8DC086002BCE50 /* RecipesPresenter.swift */,
+				0A85217F2B905A9D002BCE50 /* RecepeCategoryPresenter.swift */,
+				0A8521842B90BC4A002BCE50 /* SortPickerView.swift */,
+				0A85217B2B9058E2002BCE50 /* RecipeCategories.swift */,
+				0A8521862B90DB0F002BCE50 /* SortTypes.swift */,
+				0A8521892B90EEF1002BCE50 /* Recipe.swift */,
+				0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */,
 			);
 			path = Recipes;
 			sourceTree = "<group>";
@@ -278,37 +285,6 @@
 			children = (
 				0A8521542B8D271A002BCE50 /* ProfilePresenter.swift */,
 				0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */,
-			);
-			path = Presenters;
-			sourceTree = "<group>";
-		};
-		0A85217A2B9058A3002BCE50 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				0A8521842B90BC4A002BCE50 /* SortPickerView.swift */,
-				0A85217B2B9058E2002BCE50 /* RecipeCategories.swift */,
-				0A8521862B90DB0F002BCE50 /* SortTypes.swift */,
-				0A8521892B90EEF1002BCE50 /* Recipe.swift */,
-				0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		0A85217D2B905A62002BCE50 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				0A85215E2B8DC034002BCE50 /* RecipesViewController.swift */,
-				0A8521812B905B1F002BCE50 /* RecepeCategoryView.swift */,
-				0A85218D2B90F222002BCE50 /* RecipeCell.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		0A85217E2B905A6A002BCE50 /* Presenters */ = {
-			isa = PBXGroup;
-			children = (
-				0A8521602B8DC086002BCE50 /* RecipesPresenter.swift */,
-				0A85217F2B905A9D002BCE50 /* RecepeCategoryPresenter.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
