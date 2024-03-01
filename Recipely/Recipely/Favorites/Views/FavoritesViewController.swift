@@ -17,8 +17,6 @@ final class FavoritesViewController: UIViewController {
 
     enum Constants {
         static let viewTitleText = "Favorites"
-        static let verdana = "Verdana"
-        static let verdanaBold = "Verdana-Bold"
         static let recipeCellIdentifier = "RecipeCell"
         static let emptyFavoritesText = "There's nothing here yet"
         static let emptyDescriptionText = "Add interesting recipes to make ordering products convenient"
@@ -29,7 +27,7 @@ final class FavoritesViewController: UIViewController {
     private let favoritesLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.viewTitleText
-        label.font = .init(name: Constants.verdanaBold, size: 28)
+        label.font = .verdanaBold(ofSize: 28)
         return label
     }()
 
@@ -37,7 +35,7 @@ final class FavoritesViewController: UIViewController {
         let label = UILabel()
         label.text = Constants.emptyFavoritesText
         label.textAlignment = .center
-        label.font = .init(name: Constants.verdanaBold, size: 18)
+        label.font = .verdanaBold(ofSize: 18)
         return label
     }()
 
@@ -57,7 +55,7 @@ final class FavoritesViewController: UIViewController {
     private let emptyDescriptionLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.emptyDescriptionText
-        label.font = .init(name: Constants.verdana, size: 14)
+        label.font = .verdana(ofSize: 14)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = .lightInfoText

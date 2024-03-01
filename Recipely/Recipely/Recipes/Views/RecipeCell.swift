@@ -5,12 +5,6 @@ import UIKit
 
 /// Ячейка с рецептом
 final class RecipeCell: UITableViewCell {
-    // MARK: - Constants
-
-    enum Constants {
-        static let verdanaFont = "Verdana"
-    }
-
     // MARK: - Visual Components
 
     private let background: UIView = {
@@ -30,7 +24,7 @@ final class RecipeCell: UITableViewCell {
 
     private let recipeLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaFont, size: 14)
+        label.font = .verdana(ofSize: 14)
         label.numberOfLines = 2
         return label
     }()
@@ -43,7 +37,7 @@ final class RecipeCell: UITableViewCell {
 
     private let timerLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaFont, size: 12)
+        label.font = .verdana(ofSize: 12)
         return label
     }()
 
@@ -55,7 +49,7 @@ final class RecipeCell: UITableViewCell {
 
     private let caloriesLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaFont, size: 12)
+        label.font = .verdana(ofSize: 12)
         return label
     }()
 

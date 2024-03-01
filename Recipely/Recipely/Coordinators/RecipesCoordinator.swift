@@ -42,21 +42,21 @@ final class RecipesCoordinator: BaseCoodinator {
         rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
         rootController?.popViewController(animated: true)
     }
+
+    func backToRecipes() {
+        if rootController?.viewControllers.first is FavoritesViewController {
+            rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
+        }
+        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
+        rootController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - RecipesCoordinator + RecipesDetailCoordinatorProtocol
 
 extension RecipesCoordinator: RecipesDetailCoordinatorProtocol {
-    func backToRecipes() {
-        if rootController?.viewControllers.first is FavoritesViewController {
-            rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
-        }
-        rootController?.popViewController(animated: true)
-    }
-
     func openRecipeDetails(recipe: Recipe) {
         let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
-
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
     }
 

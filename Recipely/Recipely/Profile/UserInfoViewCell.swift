@@ -35,7 +35,7 @@ final class UserInfoViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .dirtyGreen
-        label.font = .init(name: "Verdana-Bold", size: 25)
+        label.font = .verdanaBold(ofSize: 25)
         return label
     }()
 

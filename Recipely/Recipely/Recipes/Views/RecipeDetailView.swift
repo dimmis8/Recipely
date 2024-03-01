@@ -16,8 +16,7 @@ final class RecipeDetailView: UIViewController {
     // MARK: - Constants
 
     enum Constants {
-        static let verdanaBold = "Verdana-Bold"
-        static let verdana = "Verdana"
+
         static let inDevelopMassage = "Functionality in development"
         static let okAlertText = "OK"
     }
@@ -50,13 +49,24 @@ final class RecipeDetailView: UIViewController {
 
     private let barView = UIView()
 
+    private lazy var recipeLabel: UILabel = {
+        let recipeLabel = UILabel()
+        recipeLabel.text = presenter?.getRecipeInfo().title
+        recipeLabel.font = .verdanaBold(ofSize: 20)
+        recipeLabel.numberOfLines = 0
+        recipeLabel.textAlignment = .center
+        return recipeLabel
+    }()
+
+    private let recipeLabelView = UIView()
+
     // MARK: - Public Properties
 
     var presenter: RecipeDetailPresenterProtocol?
 
     // MARK: - Visual Components
 
-    private let tableView = UITableView()
+    private let tableView = UITableView(frame: CGRect(), style: .grouped)
 
     // MARK: - Private Properties
 
@@ -67,9 +77,9 @@ final class RecipeDetailView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setConstraints()
         setTableView()
         setupNavigationBar()
+        setConstraints()
     }
 
     // MARK: - Private Methods
@@ -80,6 +90,7 @@ final class RecipeDetailView: UIViewController {
     }
 
     private func setupNavigationBar() {
+        navigationController?.navigationBar.barTintColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backBarButton)
         backBarButton.addTarget(self, action: #selector(back), for: .touchUpInside)
         barView.addSubview(shareButton)
@@ -90,6 +101,39 @@ final class RecipeDetailView: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: barView)
         setFavorite.addTarget(self, action: #selector(saveHandler), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(shareRecipe), for: .touchUpInside)
+    }
+
+    private func setConstraints() {
+        makeTableViewConstraints()
+        createRecipeLabelConstraints()
+    }
+
+    private func setTableView() {
+        tableView.backgroundColor = .white
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
+        tableView.separatorStyle = .none
+
+        tableView.register(RecipesImageDetailCell.self, forCellReuseIdentifier: RecipesImageDetailCell.identifier)
+        tableView.register(
+            RecipesCharacteristicsDetailsCell.self,
+            forCellReuseIdentifier: RecipesCharacteristicsDetailsCell.identifier
+        )
+        tableView.register(
+            RecipesDescriptionDetailsCell.self,
+            forCellReuseIdentifier: RecipesDescriptionDetailsCell.identifier
+        )
+        recipeLabelView.addSubview(recipeLabel)
+    }
+
+    private func createRecipeLabelConstraints() {
+        recipeLabel.translatesAutoresizingMaskIntoConstraints = false
+        recipeLabel.leadingAnchor.constraint(equalTo: recipeLabelView.leadingAnchor).isActive = true
+        recipeLabel.trailingAnchor.constraint(equalTo: recipeLabelView.trailingAnchor).isActive = true
+        recipeLabel.centerYAnchor.constraint(equalTo: recipeLabelView.centerYAnchor).isActive = true
+        recipeLabel.bottomAnchor.constraint(equalTo: recipeLabelView.bottomAnchor, constant: -10).isActive = true
     }
 
     private func createShareButtonConstraints() {
@@ -114,6 +158,8 @@ final class RecipeDetailView: UIViewController {
         barView.heightAnchor.constraint(equalToConstant: 24).isActive = true
     }
 
+<<<<<<< HEAD
+=======
     private func setConstraints() {
         makeTableViewConstraints()
     }
@@ -137,6 +183,7 @@ final class RecipeDetailView: UIViewController {
         )
     }
 
+>>>>>>> b1b5346 (Добавлены ячейки таблицы)
     private func makeTableViewConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -186,6 +233,7 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesDescriptionDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
+            cell.setText(presenter?.getRecipeInfo().description ?? "")
             return cell
         }
     }
@@ -193,15 +241,21 @@ extension RecipeDetailView: UITableViewDataSource {
 
 extension RecipeDetailView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+<<<<<<< HEAD
+        recipeLabelView
+=======
         let recipeLabel = UILabel()
         recipeLabel.text = presenter?.getRecipeInfo().title
         recipeLabel.font = .init(name: Constants.verdanaBold, size: 20)
         recipeLabel.textAlignment = .center
         return recipeLabel
+>>>>>>> b1b5346 (Добавлены ячейки таблицы)
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        50
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? RecipesDescriptionDetailsCell {
+            cell.addGradient()
+        }
     }
 }
 

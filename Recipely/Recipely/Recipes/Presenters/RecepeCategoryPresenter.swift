@@ -45,7 +45,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     // MARK: - Public Methods
 
     func back() {
-        coordinator?.backToCategiries()
+        coordinator?.backToRecipes()
     }
 
     func selectedSort(_ sortType: SortTypes, previousState: Bool) -> String {
@@ -67,16 +67,16 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         }
     }
 
+    func goToRecipeDetail(numberOfRecipe: Int) {
+        let recipe = sourceOfRecepies.fishRecepies[numberOfRecipe]
+        coordinator?.openRecipeDetails(recipe: recipe)
+    }
+
     func getRecipeInfo(forNumber number: Int) -> Recipe {
         sourceOfRecepies.fishRecepies[number]
     }
 
     func getRecipeCount() -> Int {
         sourceOfRecepies.fishRecepies.count
-    }
-
-    func goToRecipeDetail(numberOfRecipe: Int) {
-        let recipe = sourceOfRecepies.fishRecepies[numberOfRecipe]
-        coordinator?.openRecipeDetails(recipe: recipe)
     }
 }

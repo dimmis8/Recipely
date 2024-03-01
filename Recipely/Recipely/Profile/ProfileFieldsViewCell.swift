@@ -33,7 +33,7 @@ final class ProfileFieldsViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .dirtyGreen
-        label.font = .init(name: "Verdana", size: 18)
+        label.font = .verdana(ofSize: 18)
         return label
     }()
 
