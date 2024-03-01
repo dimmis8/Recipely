@@ -38,9 +38,17 @@ final class ProfileViewController: UIViewController {
         static let alertText = "Change your name and surname"
         static let nameSurname = "Name Surname"
         static let termsAndPrivacyAlertMassage = "Functionality in development"
+        static let verdanaBold = "Verdana-Bold"
     }
 
     // MARK: - Visual Components
+
+    private let profileLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.viewTitleText
+        label.font = .init(name: Constants.verdanaBold, size: 28)
+        return label
+    }()
 
     private let tableView = UITableView()
 
@@ -58,7 +66,6 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        configureNavigationItem()
         configureTableView()
     }
 
@@ -66,11 +73,7 @@ final class ProfileViewController: UIViewController {
 
     private func configureView() {
         view.backgroundColor = .white
-    }
-
-    private func configureNavigationItem() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = Constants.viewTitleText
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileLabel)
     }
 
     private func setNewName(_ newName: String) {

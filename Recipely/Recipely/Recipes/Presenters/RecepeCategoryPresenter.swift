@@ -45,7 +45,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     // MARK: - Public Methods
 
     func back() {
-        coordinator?.backToRecepies()
+        coordinator?.backToCategiries()
     }
 
     func selectedSort(_ sortType: SortTypes, previousState: Bool) -> String {

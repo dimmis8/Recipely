@@ -3,6 +3,16 @@
 
 import UIKit
 
+/// Протокол для открытия деталей о рецепте
+protocol RecipesDetailCoordinatorProtocol: AnyObject {
+    /// Открыть экран деталей
+    func openRecipeDetails(recipe: Recipe)
+    /// Вернуться на экран рецептов
+    func backToRecipes()
+    /// Поделиться рецептом
+    func shareRecipe(text: String)
+}
+
 /// Координатор флоу рецептов
 final class RecipesCoordinator: BaseCoodinator {
     // MARK: - Public Properties
@@ -22,17 +32,36 @@ final class RecipesCoordinator: BaseCoodinator {
     }
 
     func goToCategory(_ category: RecipeCategories) {
+        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = true
         let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self)
         recepeCategoryView?.navigationItem.title = category.rawValue
         rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
     }
 
-    func backToRecepies() {
+    func backToCategiries() {
+        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
+        rootController?.popViewController(animated: true)
+    }
+}
+
+// MARK: - RecipesCoordinator + RecipesDetailCoordinatorProtocol
+
+extension RecipesCoordinator: RecipesDetailCoordinatorProtocol {
+    func backToRecipes() {
+        if rootController?.viewControllers.first is FavoritesViewController {
+            rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
+        }
         rootController?.popViewController(animated: true)
     }
 
     func openRecipeDetails(recipe: Recipe) {
         let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
+
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
+    }
+
+    func shareRecipe(text: String) {
+        let sharingView = moduleBuilder?.createSharingModule(sharingInfo: [text])
+        rootController?.viewControllers.last?.present(sharingView ?? UIViewController(), animated: true)
     }
 }

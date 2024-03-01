@@ -160,7 +160,7 @@ final class RecepeCategoryView: UIViewController {
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: sortPickerView.bottomAnchor, constant: 15).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
     @objc private func back() {
@@ -203,12 +203,12 @@ extension RecepeCategoryView: UITableViewDataSource {
         cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
         return cell
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
-    }
 }
 
 // MARK: - RecepeCategoryView + UITableViewDelegate
 
-extension RecepeCategoryView: UITableViewDelegate {}
+extension RecepeCategoryView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+    }
+}
