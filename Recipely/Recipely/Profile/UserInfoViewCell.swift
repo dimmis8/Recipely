@@ -11,6 +11,8 @@ final class UserInfoViewCell: UITableViewCell {
         static let profilePhotoHeigh: CGFloat = 160
     }
 
+    static let identifier = "UserInfoViewCell"
+
     // MARK: - Visual Components
 
     private let profilePhotoButton: UIButton = {

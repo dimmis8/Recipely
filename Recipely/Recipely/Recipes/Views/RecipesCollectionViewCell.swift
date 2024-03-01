@@ -5,6 +5,10 @@ import UIKit
 
 /// Ячейка каталога рецептов
 final class RecipesCollectionViewCell: UICollectionViewCell {
+    // MARK: - Constants
+
+    static let identifier = "RecipesCollectionViewCell"
+
     // MARK: - Visual Components
 
     private let recipesImageView: UIImageView = {

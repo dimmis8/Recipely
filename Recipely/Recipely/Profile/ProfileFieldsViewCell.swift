@@ -5,6 +5,10 @@ import UIKit
 
 /// Ячейка с кнопками дополнительных опций
 final class ProfileFieldsViewCell: UITableViewCell {
+    // MARK: - Constants
+
+    static let identifier = "ProfileButtonViewCell"
+
     // MARK: - Visual Components
 
     private let buttonImageView: UIImageView = {

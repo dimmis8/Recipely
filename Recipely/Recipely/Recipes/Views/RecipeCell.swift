@@ -5,6 +5,10 @@ import UIKit
 
 /// Ячейка с рецептом
 final class RecipeCell: UITableViewCell {
+    // MARK: - Constants
+
+    static let identifier = "RecipeCell"
+
     // MARK: - Visual Components
 
     private let background: UIView = {

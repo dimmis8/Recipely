@@ -17,7 +17,6 @@ final class FavoritesViewController: UIViewController {
 
     enum Constants {
         static let viewTitleText = "Favorites"
-        static let recipeCellIdentifier = "RecipeCell"
         static let emptyFavoritesText = "There's nothing here yet"
         static let emptyDescriptionText = "Add interesting recipes to make ordering products convenient"
     }
@@ -90,7 +89,7 @@ final class FavoritesViewController: UIViewController {
     }
 
     private func configureTableView() {
-        tableView.register(RecipeCell.self, forCellReuseIdentifier: Constants.recipeCellIdentifier)
+        tableView.register(RecipeCell.self, forCellReuseIdentifier: RecipeCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsSelection = true
@@ -177,7 +176,7 @@ extension FavoritesViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: Constants.recipeCellIdentifier,
+            withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
         cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
