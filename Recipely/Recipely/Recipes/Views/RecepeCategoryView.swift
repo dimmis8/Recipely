@@ -203,12 +203,12 @@ extension RecepeCategoryView: UITableViewDataSource {
         cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
         return cell
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
-    }
 }
 
 // MARK: - RecepeCategoryView + UITableViewDelegate
 
-extension RecepeCategoryView: UITableViewDelegate {}
+extension RecepeCategoryView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+    }
+}

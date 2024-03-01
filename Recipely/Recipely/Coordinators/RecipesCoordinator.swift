@@ -3,6 +3,14 @@
 
 import UIKit
 
+/// Протокол для открытия деталей о рецепте
+protocol RecipesDetailCoordinatorProtocol: AnyObject {
+    /// Открыть экран деталей
+    func openRecipeDetails(recipe: Recipe)
+    /// Вернуться на экран деталей
+    func backToRecepies()
+}
+
 /// Координатор флоу рецептов
 final class RecipesCoordinator: BaseCoodinator {
     // MARK: - Public Properties
@@ -27,7 +35,11 @@ final class RecipesCoordinator: BaseCoodinator {
         recepeCategoryView?.navigationItem.title = category.rawValue
         rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
     }
+}
 
+// MARK: - RecipesCoordinator + RecipesDetailCoordinatorProtocol
+
+extension RecipesCoordinator: RecipesDetailCoordinatorProtocol {
     func backToRecepies() {
         rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
         rootController?.popViewController(animated: true)
