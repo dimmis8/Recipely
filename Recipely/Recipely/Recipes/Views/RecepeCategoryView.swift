@@ -14,8 +14,6 @@ final class RecepeCategoryView: UIViewController {
     // MARK: - Constants
 
     enum Constants {
-        static let verdanaBold = "Verdana-Bold"
-        static let verdana = "Verdana"
         static let seatchBarText = "Search recipes"
         static let recipeCellIdentifier = "RecipeCell"
         static let buttonSortHigh: CGFloat = 36
@@ -31,7 +29,7 @@ final class RecepeCategoryView: UIViewController {
 
     private let categoryLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaBold, size: 28)
+        label.font = .verdanaBold(ofSize: 28)
         label.textColor = .black
         return label
     }()

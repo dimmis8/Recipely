@@ -15,7 +15,6 @@ final class RecipesViewController: UIViewController {
 
     enum Constants {
         static let viewTitleText = "Recipes"
-        static let verdanaBold = "Verdana-Bold"
         static let recipesCollectionViewCellIdentifier = "RecipesCollectionViewCell"
         static let numberOfCellsInPattern = 7
     }
@@ -25,7 +24,7 @@ final class RecipesViewController: UIViewController {
     let recipesLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.viewTitleText
-        label.font = .init(name: Constants.verdanaBold, size: 28)
+        label.font = .verdanaBold(ofSize: 28)
         return label
     }()
 

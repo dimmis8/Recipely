@@ -56,7 +56,7 @@ final class SortPickerView: UIControl {
             button.setTitle("\(title ?? "") ", for: .normal)
             button.tag = item
             button.layer.cornerRadius = 18
-            button.titleLabel?.font = .init(name: "Verdana", size: 14)
+            button.titleLabel?.font = .verdana(ofSize: 14)
             button.contentVerticalAlignment = .center
             button.backgroundColor = .backgroundTeal
             button.semanticContentAttribute = .forceRightToLeft

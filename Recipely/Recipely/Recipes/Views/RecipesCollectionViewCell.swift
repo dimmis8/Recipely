@@ -5,12 +5,6 @@ import UIKit
 
 /// Ячейка каталога рецептов
 final class RecipesCollectionViewCell: UICollectionViewCell {
-    // MARK: - Constants
-
-    enum Constants {
-        static let verdana = "Verdana"
-    }
-
     // MARK: - Visual Components
 
     private let recipesImageView: UIImageView = {
@@ -106,9 +100,9 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         recipesImageView.image = UIImage(named: info.imageName)
         titleLabel.text = info.type.rawValue
         if contentView.frame.width < 150 {
-            titleLabel.font = .init(name: Constants.verdana, size: 16)
+            titleLabel.font = .verdana(ofSize: 16)
         } else {
-            titleLabel.font = .init(name: Constants.verdana, size: 20)
+            titleLabel.font = .verdana(ofSize: 20)
         }
     }
 }

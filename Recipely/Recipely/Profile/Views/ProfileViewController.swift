@@ -38,7 +38,6 @@ final class ProfileViewController: UIViewController {
         static let alertText = "Change your name and surname"
         static let nameSurname = "Name Surname"
         static let termsAndPrivacyAlertMassage = "Functionality in development"
-        static let verdanaBold = "Verdana-Bold"
     }
 
     // MARK: - Visual Components
@@ -46,7 +45,7 @@ final class ProfileViewController: UIViewController {
     private let profileLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.viewTitleText
-        label.font = .init(name: Constants.verdanaBold, size: 28)
+        label.font = .verdanaBold(ofSize: 28)
         return label
     }()
 
