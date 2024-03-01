@@ -89,6 +89,7 @@ final class RecipeCell: UITableViewCell {
     // MARK: - Private Methods
 
     private func createView() {
+        selectionStyle = .none
         contentView.addSubview(background)
         background.addSubview(recipeImageView)
         background.addSubview(recipeLabel)

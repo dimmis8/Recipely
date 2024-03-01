@@ -22,12 +22,14 @@ final class RecipesCoordinator: BaseCoodinator {
     }
 
     func goToCategory(_ category: RecipeCategories) {
+        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = true
         let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self)
         recepeCategoryView?.navigationItem.title = category.rawValue
         rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
     }
 
     func backToRecepies() {
+        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
         rootController?.popViewController(animated: true)
     }
 
@@ -35,6 +37,4 @@ final class RecipesCoordinator: BaseCoodinator {
         let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
     }
-    
-    
 }
