@@ -129,7 +129,7 @@ final class RecipeCell: UITableViewCell {
 
     private func setRecipeLabelConstraints() {
         recipeLabel.translatesAutoresizingMaskIntoConstraints = false
-        recipeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 22).isActive = true
+        recipeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16).isActive = true
         recipeLabel.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 20).isActive = true
         recipeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -43).isActive = true
         recipeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
