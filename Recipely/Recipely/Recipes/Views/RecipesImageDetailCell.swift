@@ -4,40 +4,47 @@
 import UIKit
 
 /// Ячейка с картинкой блюда
-class RecipesImageDetailCell: UITableViewCell {
+final class RecipesImageDetailCell: UITableViewCell {
+    // MARK: - Constants
+
+    enum Constants {
+        static let cookingTime = "Cooking time"
+    }
+
     // MARK: - Puplic Properties
 
     static let identifier = "RecipesImageDetailCell"
 
     // MARK: - Private Properties
 
-    let recipeImage: UIImageView = {
+    private let recipeImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 24
-        imageView.contentMode = .scaleToFill
+        imageView.layer.cornerRadius = 45
+        imageView.backgroundColor = .red
+        imageView.clipsToBounds = true
         return imageView
     }()
 
-    let iconGram: UIImageView = {
+    private let iconGram: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .pot
         return imageView
     }()
 
-    let iconCookingTime: UIImageView = {
+    private let iconCookingTime: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .timerDetails
         return imageView
     }()
 
-    let gramView: UIView = {
+    private let gramView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 25
         view.backgroundColor = .detailsBackView
         return view
     }()
 
-    let cookingTimeView: UIView = {
+    private let cookingTimeView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 24
         view.backgroundColor = .detailsBackView
@@ -45,7 +52,7 @@ class RecipesImageDetailCell: UITableViewCell {
         return view
     }()
 
-    let gramLabel: UILabel = {
+    private let gramLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .verdana(ofSize: 10)
@@ -53,15 +60,16 @@ class RecipesImageDetailCell: UITableViewCell {
         return label
     }()
 
-    let cookingTimeTitleLabel: UILabel = {
+    private let cookingTimeTitleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .verdana(ofSize: 10)
         label.textColor = .white
+        label.text = Constants.cookingTime
         return label
     }()
 
-    let cookingTimeLabel: UILabel = {
+    private let cookingTimeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = .verdana(ofSize: 10)
@@ -82,12 +90,15 @@ class RecipesImageDetailCell: UITableViewCell {
         setUp()
     }
 
-    // MARK: - Private Methods
+    // MARK: - Public Methods
 
     func getInfo(recipe: Recipe) {
         recipeImage.image = UIImage(named: recipe.imageName)
-        gramLabel.text = String(recipe.weight)
+        gramLabel.text = "\(recipe.weight) g"
+        cookingTimeLabel.text = "\(recipe.cookTime) min"
     }
+
+    // MARK: - Private Methods
 
     private func setUp() {
         setupView()
@@ -101,6 +112,9 @@ class RecipesImageDetailCell: UITableViewCell {
         gramView.addSubview(iconGram)
         gramView.addSubview(gramLabel)
         recipeImage.addSubview(cookingTimeView)
+        cookingTimeView.addSubview(iconCookingTime)
+        cookingTimeView.addSubview(cookingTimeTitleLabel)
+        cookingTimeView.addSubview(cookingTimeLabel)
     }
 
     private func setConstraints() {
@@ -109,6 +123,9 @@ class RecipesImageDetailCell: UITableViewCell {
         makeiconGramConstraints()
         makeGramLabelConstraints()
         makeCookingTimeViewConstraints()
+        makeIconCookingTimeConstraints()
+        makeCookingTimeTitleLabelConstraints()
+        makeCookingTimeLabelConstraints()
     }
 
     private func makeRecipeImageConstraints() {
@@ -150,5 +167,30 @@ class RecipesImageDetailCell: UITableViewCell {
         cookingTimeView.trailingAnchor.constraint(equalTo: recipeImage.trailingAnchor).isActive = true
         cookingTimeView.widthAnchor.constraint(equalToConstant: 124).isActive = true
         cookingTimeView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+    }
+
+    private func makeIconCookingTimeConstraints() {
+        iconCookingTime.translatesAutoresizingMaskIntoConstraints = false
+        iconCookingTime.topAnchor.constraint(equalTo: cookingTimeView.topAnchor, constant: 8).isActive = true
+        iconCookingTime.leadingAnchor.constraint(equalTo: cookingTimeView.leadingAnchor, constant: 12).isActive = true
+        iconCookingTime.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        iconCookingTime.heightAnchor.constraint(equalToConstant: 25).isActive = true
+    }
+
+    private func makeCookingTimeTitleLabelConstraints() {
+        cookingTimeTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        cookingTimeTitleLabel.topAnchor.constraint(equalTo: cookingTimeView.topAnchor, constant: 10).isActive = true
+        cookingTimeTitleLabel.trailingAnchor.constraint(equalTo: cookingTimeView.trailingAnchor, constant: -8)
+            .isActive = true
+        cookingTimeTitleLabel.widthAnchor.constraint(equalToConstant: 83).isActive = true
+        cookingTimeTitleLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+    }
+
+    private func makeCookingTimeLabelConstraints() {
+        cookingTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        cookingTimeLabel.topAnchor.constraint(equalTo: cookingTimeTitleLabel.bottomAnchor).isActive = true
+        cookingTimeLabel.leadingAnchor.constraint(equalTo: iconCookingTime.trailingAnchor, constant: 15).isActive = true
+        cookingTimeLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        cookingTimeLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
 }

@@ -21,8 +21,11 @@ final class RecipeDetailView: UIViewController {
     }
 
     enum Details {
+        /// Фото блюда
         case photo
+        /// Характеристики
         case characteristics
+        /// Описание
         case description
     }
 
@@ -59,13 +62,11 @@ final class RecipeDetailView: UIViewController {
 
     private let recipeLabelView = UIView()
 
+    private let tableView = UITableView(frame: CGRect(), style: .grouped)
+
     // MARK: - Public Properties
 
     var presenter: RecipeDetailPresenterProtocol?
-
-    // MARK: - Visual Components
-
-    private let tableView = UITableView(frame: CGRect(), style: .grouped)
 
     // MARK: - Private Properties
 
@@ -200,6 +201,7 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
+            cell.getCharacteristics(recipe: presenter?.getRecipeInfo() ?? Recipe())
             return cell
         case .description:
             guard let cell = tableView.dequeueReusableCell(
