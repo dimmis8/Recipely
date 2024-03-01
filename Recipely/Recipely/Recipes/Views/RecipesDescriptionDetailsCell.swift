@@ -17,7 +17,6 @@ class RecipesDescriptionDetailsCell: UITableViewCell {
         let textView = UITextView()
         textView.backgroundColor = .clear
         textView.isScrollEnabled = false
-        textView.font = .verdana(ofSize: 14)
         textView.isEditable = false
         return textView
     }()
@@ -39,7 +38,14 @@ class RecipesDescriptionDetailsCell: UITableViewCell {
     // MARK: - Public Methods
 
     func setText(_ text: String) {
-        textView.text = text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 5
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.verdana(ofSize: 14),
+            .paragraphStyle: paragraphStyle
+        ]
+        let attributedText = NSMutableAttributedString(string: text, attributes: attributes)
+        textView.attributedText = attributedText
     }
 
     func addGradient() {
