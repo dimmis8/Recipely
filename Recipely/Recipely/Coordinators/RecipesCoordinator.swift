@@ -35,6 +35,4 @@ final class RecipesCoordinator: BaseCoodinator {
         let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
     }
-    
-    
 }

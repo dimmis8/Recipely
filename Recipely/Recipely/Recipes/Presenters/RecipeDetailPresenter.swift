@@ -9,6 +9,8 @@ protocol RecipeDetailPresenterProtocol: AnyObject {
     init(view: RecipeDetailViewProtocol, coordinator: RecipesCoordinator, recipe: Recipe)
     /// Экшн кнопки назад
     func back()
+    /// Получение данных рецепта
+    func getRecipeInfo() -> Recipe
 }
 
 /// Презентер экрана деталей рецептов
@@ -30,4 +32,8 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     // MARK: - Public Methods
 
     func back() {}
+
+    func getRecipeInfo() -> Recipe {
+        recipe ?? Recipe()
+    }
 }
