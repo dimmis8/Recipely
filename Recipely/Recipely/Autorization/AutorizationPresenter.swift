@@ -5,12 +5,12 @@ import Foundation
 
 /// Протокол презентера экрана авторизации
 protocol AutorizationViewPresenterProtocol: AnyObject {
-    /// Координатор флоу экрана
-    var coordinator: AutorizationCoordinator? { get set }
-    /// Модуль проверки введенных пользоватлем данных
-    var autorizationValidation: AutorizationValidationProtocol? { get set }
     /// Инициализатор с присвоением вью
-    init(view: AutorizationViewProtocol)
+    init(
+        view: AutorizationViewProtocol,
+        autorizationValidation: AutorizationValidationProtocol,
+        coordinator: AutorizationCoordinator
+    )
     /// Проверка валидации пароля
     func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool?
     /// Функция изменения состояния видимости пароля
@@ -19,20 +19,22 @@ protocol AutorizationViewPresenterProtocol: AnyObject {
 
 /// Презентер экрана авторизации
 final class AutorizationPresenter: AutorizationViewPresenterProtocol {
-    // MARK: - Public Properties
-
-    var autorizationValidation: AutorizationValidationProtocol?
-    weak var coordinator: AutorizationCoordinator?
-    weak var view: AutorizationViewProtocol?
-
     // MARK: - Private Properties
 
+    private var autorizationValidation: AutorizationValidationProtocol?
+    private weak var coordinator: AutorizationCoordinator?
+    private weak var view: AutorizationViewProtocol?
     private var isPasswordVisible = false
 
     // MARK: - Initializers
 
-    required init(view: AutorizationViewProtocol) {
+    required init(
+        view: AutorizationViewProtocol,
+        autorizationValidation: AutorizationValidationProtocol,
+        coordinator: AutorizationCoordinator
+    ) {
         self.view = view
+        self.coordinator = coordinator
     }
 
     // MARK: - Public method

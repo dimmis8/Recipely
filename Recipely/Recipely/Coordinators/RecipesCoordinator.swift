@@ -7,12 +7,27 @@ import UIKit
 final class RecipesCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
-    var rootController: UINavigationController
     var onFinishFlow: VoidHandler?
+    var rootController: UINavigationController?
 
-    // MARK: - Initializers
+    // MARK: - Private Properties
 
-    init(rootController: UIViewController) {
-        self.rootController = UINavigationController(rootViewController: rootController)
+    private var moduleBuilder: Builder?
+
+    // MARK: - Public Methods
+
+    func setRootViewController(view: UIViewController, moduleBuilder: Builder) {
+        rootController = UINavigationController(rootViewController: view)
+        self.moduleBuilder = moduleBuilder
+    }
+
+    func goToCategory(_ category: RecipeCategories) {
+        let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self)
+        recepeCategoryView?.navigationItem.title = category.rawValue
+        rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
+    }
+
+    func backToRecepies() {
+        rootController?.popViewController(animated: true)
     }
 }

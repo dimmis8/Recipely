@@ -5,29 +5,26 @@ import Foundation
 
 /// Протокол презентера экрана бонусов
 protocol ProfileBonusesViewPresenterProtocol: AnyObject {
-    /// Источник данных
-    var infoSource: InfoSourceProtocol { get set }
-    /// Координатор флоу экрана
-    var coordinator: ProfileCoordinator? { get set }
     /// Инициализатор с присвоением вью источника данных
-    init(view: ProfileBonusesViewProtocol, infoSource: InfoSourceProtocol)
+    init(view: ProfileBonusesViewProtocol, infoSource: InfoSourceProtocol, coordinator: ProfileCoordinator)
     /// Функция закрытия экрана бонусов
     func close()
 }
 
 /// Презентер экрана бонусов
 final class ProfileBonusesPresenter: ProfileBonusesViewPresenterProtocol {
-    // MARK: - Public Properties
+    // MARK: - Private Properties
 
-    weak var coordinator: ProfileCoordinator?
-    weak var view: ProfileBonusesViewProtocol?
-    var infoSource: InfoSourceProtocol
+    private weak var coordinator: ProfileCoordinator?
+    private weak var view: ProfileBonusesViewProtocol?
+    private var infoSource: InfoSourceProtocol
 
     // MARK: - Initializers
 
-    required init(view: ProfileBonusesViewProtocol, infoSource: InfoSourceProtocol) {
+    required init(view: ProfileBonusesViewProtocol, infoSource: InfoSourceProtocol, coordinator: ProfileCoordinator) {
         self.view = view
         self.infoSource = infoSource
+        self.coordinator = coordinator
         setBonusesCount()
     }
 

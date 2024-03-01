@@ -7,13 +7,18 @@ import UIKit
 final class AutorizationCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
-    var rootController: UINavigationController
+    var rootController: UINavigationController?
     var onFinishFlow: VoidHandler?
 
-    // MARK: - Initializers
+    // MARK: - Private Properties
 
-    init(rootController: UIViewController) {
-        self.rootController = UINavigationController(rootViewController: rootController)
+    private var moduleBuilder: Builder?
+
+    // MARK: - Public Methods
+
+    func setRootViewController(view: UIViewController, moduleBuilder: Builder) {
+        rootController = UINavigationController(rootViewController: view)
+        self.moduleBuilder = moduleBuilder
     }
 
     // MARK: - Public Methods

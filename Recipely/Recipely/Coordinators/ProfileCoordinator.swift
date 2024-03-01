@@ -7,27 +7,28 @@ import UIKit
 final class ProfileCoordinator: BaseCoodinator {
     // MARK: - Public Properties
 
-    var moduleBuilder: Builder
-    var rootController: UINavigationController
+    var rootController: UINavigationController?
     var onFinishFlow: VoidHandler?
     var dismissBonuses: VoidHandler?
 
-    // MARK: - Initializers
+    // MARK: - Private Properties
 
-    init(rootController: UIViewController, moduleBulder: Builder) {
-        self.rootController = UINavigationController(rootViewController: rootController)
-        moduleBuilder = moduleBulder
-    }
+    private var moduleBuilder: Builder?
 
     // MARK: - Public Methods
+
+    func setRootViewController(view: UIViewController, moduleBuilder: Builder) {
+        rootController = UINavigationController(rootViewController: view)
+        self.moduleBuilder = moduleBuilder
+    }
 
     func logOut() {
         onFinishFlow?()
     }
 
     func showBonuses() {
-        let profileBonusesView = moduleBuilder.createBonusesProfileModule()
-        if let sheet = profileBonusesView.sheetPresentationController {
+        let profileBonusesView = moduleBuilder?.createBonusesProfileModule(coordinator: self)
+        if let sheet = profileBonusesView?.sheetPresentationController {
             sheet.detents = [.medium()]
             sheet.preferredCornerRadius = 30
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false
@@ -35,9 +36,8 @@ final class ProfileCoordinator: BaseCoodinator {
             sheet.prefersEdgeAttachedInCompactHeight = true
         }
         dismissBonuses = {
-            profileBonusesView.dismiss(animated: true)
+            profileBonusesView?.dismiss(animated: true)
         }
-        (profileBonusesView as? ProfileBonusesViewProtocol)?.presenter?.coordinator = self
-        rootController.present(profileBonusesView, animated: true)
+        rootController?.present(profileBonusesView ?? UIViewController(), animated: true)
     }
 }

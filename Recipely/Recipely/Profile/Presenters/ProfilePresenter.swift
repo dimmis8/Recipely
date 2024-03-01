@@ -5,12 +5,8 @@ import Foundation
 
 /// Протокол презентера экрана профиля
 protocol ProfileViewPresenterProtocol: AnyObject {
-    /// Координатор флоу экрана
-    var coordinator: ProfileCoordinator? { get set }
-    /// Источник данных
-    var infoSource: InfoSourceProtocol? { get set }
     /// Инициализатор с присвоением вью источника данных
-    init(view: ProfileViewProtocol, infoSource: InfoSourceProtocol)
+    init(view: ProfileViewProtocol, infoSource: InfoSourceProtocol, coordinator: ProfileCoordinator)
     /// Получение информации о пользователе
     func getUserInformation() -> UserInfo?
     /// Выход из аккаунта
@@ -33,15 +29,16 @@ protocol ProfileViewPresenterProtocol: AnyObject {
 final class ProfilePresenter: ProfileViewPresenterProtocol {
     // MARK: - Public Properties
 
-    weak var coordinator: ProfileCoordinator?
-    weak var view: ProfileViewProtocol?
-    var infoSource: InfoSourceProtocol?
+    private weak var coordinator: ProfileCoordinator?
+    private weak var view: ProfileViewProtocol?
+    private var infoSource: InfoSourceProtocol?
 
     // MARK: - Initializers
 
-    required init(view: ProfileViewProtocol, infoSource: InfoSourceProtocol) {
+    required init(view: ProfileViewProtocol, infoSource: InfoSourceProtocol, coordinator: ProfileCoordinator) {
         self.view = view
         self.infoSource = infoSource
+        self.coordinator = coordinator
     }
 
     // MARK: - Public Methods

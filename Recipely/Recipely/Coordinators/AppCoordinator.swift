@@ -29,22 +29,19 @@ final class AppCoordinator: BaseCoodinator {
     private func toMain() {
         tabBarViewController = appBuilder.createTabBarModule()
 
-        let recipesViewController = appBuilder.createRecipesModule()
-        let recipesCoordinator = RecipesCoordinator(rootController: recipesViewController)
-        guard let recipesViewController = recipesViewController as? RecipesViewProtocol else { return }
-        recipesViewController.presenter?.coordinator = recipesCoordinator
+        let recipesCoordinator = RecipesCoordinator()
+        let recipesViewController = appBuilder.createRecipesModule(coordinator: recipesCoordinator)
+        recipesCoordinator.setRootViewController(view: recipesViewController, moduleBuilder: appBuilder)
         add(coordinator: recipesCoordinator)
 
-        let profileViewController = appBuilder.createProfileModule()
-        let profileCoordinator = ProfileCoordinator(rootController: profileViewController, moduleBulder: appBuilder)
-        guard let profileViewController = profileViewController as? ProfileViewProtocol else { return }
-        profileViewController.presenter?.coordinator = profileCoordinator
+        let profileCoordinator = ProfileCoordinator()
+        let profileViewController = appBuilder.createProfileModule(coordinator: profileCoordinator)
+        profileCoordinator.setRootViewController(view: profileViewController, moduleBuilder: appBuilder)
         add(coordinator: profileCoordinator)
 
-        let favoritesViewController = appBuilder.createFavoritesModule()
-        let favoritesCoordinator = FavoritesCoordinator(rootController: favoritesViewController)
-        guard let favoritesViewController = favoritesViewController as? FavoritesViewProtocol else { return }
-        favoritesViewController.presenter?.coordinator = favoritesCoordinator
+        let favoritesCoordinator = FavoritesCoordinator()
+        let favoritesViewController = appBuilder.createFavoritesModule(coordinator: favoritesCoordinator)
+        favoritesCoordinator.setRootViewController(view: favoritesViewController, moduleBuilder: appBuilder)
         add(coordinator: favoritesCoordinator)
 
         profileCoordinator.onFinishFlow = { [weak self] in
@@ -55,24 +52,23 @@ final class AppCoordinator: BaseCoodinator {
             self?.t​oAutorization()
         }
 
-        tabBarViewController?.setViewControllers(
-            [recipesCoordinator.rootController, favoritesCoordinator.rootController, profileCoordinator.rootController],
-            animated: false
-        )
+        guard let profileView = profileCoordinator.rootController,
+              let favoriteView = favoritesCoordinator.rootController,
+              let recipesCoordinator = recipesCoordinator.rootController else { return }
+        tabBarViewController?.setViewControllers([recipesCoordinator, favoriteView, profileView], animated: false)
         setAsRoot(tabBarViewController ?? UIViewController())
     }
 
     private func t​oAutorization() {
-        let autorizationViewController = appBuilder.createAutorizationModule()
-        let autorizationCoordinator = AutorizationCoordinator(rootController: autorizationViewController)
-        guard let autorizationViewController = autorizationViewController as? AutorizationViewProtocol else { return }
-        autorizationViewController.presenter?.coordinator = autorizationCoordinator
+        let autorizationCoordinator = AutorizationCoordinator()
+        let autorizationViewController = appBuilder.createAutorizationModule(coordinator: autorizationCoordinator)
+        autorizationCoordinator.setRootViewController(view: autorizationViewController, moduleBuilder: appBuilder)
         add(coordinator: autorizationCoordinator)
         autorizationCoordinator.onFinishFlow = { [weak self] in
             self?.remove(coordinator: autorizationCoordinator)
             self?.toMain()
         }
 
-        setAsRoot(autorizationCoordinator.rootController)
+        setAsRoot(autorizationCoordinator.rootController ?? UIViewController())
     }
 }
