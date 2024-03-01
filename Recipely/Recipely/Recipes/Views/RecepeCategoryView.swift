@@ -88,7 +88,7 @@ final class RecepeCategoryView: UIViewController {
         tableView.register(RecipeCell.self, forCellReuseIdentifier: Constants.recipeCellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.separatorStyle = .none
@@ -202,6 +202,10 @@ extension RecepeCategoryView: UITableViewDataSource {
         ) as? RecipeCell else { return UITableViewCell() }
         cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
     }
 }
 

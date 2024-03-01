@@ -19,6 +19,8 @@ protocol Builder {
     func createBonusesProfileModule(coordinator: ProfileCoordinator) -> UIViewController
     /// Функция создания модуля блюд категории
     func createRecepeCategoryModule(coordinator: RecipesCoordinator) -> UIViewController
+    /// Функция создания модуля деталей рецепта
+    func createRecipeDetailModule(coordinator: RecipesCoordinator, recipe: Recipe) -> UIViewController
 }
 
 /// Билдер модулей
@@ -98,6 +100,13 @@ final class ModuleBuilder: Builder {
             image: .favoritesIcon,
             selectedImage: .selectedFavoriteIcon
         )
+        return view
+    }
+
+    func createRecipeDetailModule(coordinator: RecipesCoordinator, recipe: Recipe) -> UIViewController {
+        let view = RecipeDetailView()
+        let presenter = RecipeDetailPresenter(view: view, coordinator: coordinator, recipe: recipe)
+        view.presenter = presenter
         return view
     }
 }

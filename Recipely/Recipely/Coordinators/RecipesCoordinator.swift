@@ -30,4 +30,11 @@ final class RecipesCoordinator: BaseCoodinator {
     func backToRecepies() {
         rootController?.popViewController(animated: true)
     }
+
+    func openRecipeDetails(recipe: Recipe) {
+        let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
+        rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
+    }
+    
+    
 }

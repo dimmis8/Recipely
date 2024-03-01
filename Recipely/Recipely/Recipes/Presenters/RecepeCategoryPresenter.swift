@@ -15,6 +15,8 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     func getRecipeInfo(forNumber number: Int) -> Recipe
     /// Получение информации о количестве рецептов
     func getRecipeCount() -> Int
+    /// Переход на экран деталей
+    func goToRecipeDetail(numberOfRecipe: Int)
 }
 
 /// Презентер экрана категории рецептов
@@ -71,5 +73,10 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
 
     func getRecipeCount() -> Int {
         sourceOfRecepies.fishRecepies.count
+    }
+
+    func goToRecipeDetail(numberOfRecipe: Int) {
+        let recipe = sourceOfRecepies.fishRecepies[numberOfRecipe]
+        coordinator?.openRecipeDetails(recipe: recipe)
     }
 }
