@@ -37,6 +37,8 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
 
     func getRecipeInfo() -> Recipe {
         recipe ?? Recipe()
+    }
+
     func back() {
         coordinator?.backToRecipes()
     }
