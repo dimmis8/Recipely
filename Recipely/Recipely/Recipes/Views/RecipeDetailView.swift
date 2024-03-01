@@ -178,6 +178,8 @@ final class RecipeDetailView: UIViewController {
     }
 }
 
+// MARK: - Extensions
+
 extension RecipeDetailView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         recipeCells.count
@@ -191,6 +193,7 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesImageDetailCell.identifier,
                 for: indexPath
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
+            cell.getInfo(recipe: presenter?.getRecipeInfo() ?? Recipe())
             return cell
         case .characteristics:
             guard let cell = tableView.dequeueReusableCell(
