@@ -15,7 +15,6 @@ final class RecipesViewController: UIViewController {
 
     enum Constants {
         static let viewTitleText = "Recipes"
-        static let recipesCollectionViewCellIdentifier = "RecipesCollectionViewCell"
         static let numberOfCellsInPattern = 7
     }
 
@@ -67,7 +66,7 @@ final class RecipesViewController: UIViewController {
         collectionView.delegate = self
         collectionView.register(
             RecipesCollectionViewCell.self,
-            forCellWithReuseIdentifier: Constants.recipesCollectionViewCellIdentifier
+            forCellWithReuseIdentifier: RecipesCollectionViewCell.identifier
         )
     }
 
@@ -95,7 +94,7 @@ extension RecipesViewController: UICollectionViewDataSource {
         let category = presenter?.getInfo(categoryNumber: indexPath.item)
         guard let cell = collectionView
             .dequeueReusableCell(
-                withReuseIdentifier: Constants.recipesCollectionViewCellIdentifier,
+                withReuseIdentifier: RecipesCollectionViewCell.identifier,
                 for: indexPath
             ) as? RecipesCollectionViewCell
         else { return UICollectionViewCell() }
