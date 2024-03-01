@@ -25,13 +25,19 @@ final class FavoritesCoordinator: BaseCoodinator {
 // MARK: - RecipesCoordinator + RecipesDetailCoordinatorProtocol
 
 extension FavoritesCoordinator: RecipesDetailCoordinatorProtocol {
-    func backToRecepies() {
+    func backToRecipes() {
         rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
         rootController?.popViewController(animated: true)
     }
 
     func openRecipeDetails(recipe: Recipe) {
         let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
+        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = true
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
+    }
+
+    func shareRecipe(text: String) {
+        let sharingView = moduleBuilder?.createSharingModule(sharingInfo: [text])
+        rootController?.viewControllers.last?.present(sharingView ?? UIViewController(), animated: true)
     }
 }

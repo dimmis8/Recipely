@@ -21,6 +21,8 @@ protocol Builder {
     func createRecepeCategoryModule(coordinator: RecipesCoordinator) -> UIViewController
     /// Функция создания модуля деталей рецепта
     func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController
+    /// Функция создания контроллера шеринка
+    func createSharingModule(sharingInfo: [Any]) -> UIViewController
 }
 
 /// Билдер модулей
@@ -108,5 +110,9 @@ final class ModuleBuilder: Builder {
         let presenter = RecipeDetailPresenter(view: view, coordinator: coordinator, recipe: recipe)
         view.presenter = presenter
         return view
+    }
+
+    func createSharingModule(sharingInfo: [Any]) -> UIViewController {
+        UIActivityViewController(activityItems: sharingInfo, applicationActivities: nil)
     }
 }

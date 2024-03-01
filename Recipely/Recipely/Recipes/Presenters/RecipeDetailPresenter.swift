@@ -7,6 +7,10 @@ import Foundation
 protocol RecipeDetailPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
     init(view: RecipeDetailViewProtocol, coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe)
+    /// Сохранение рецепта в исзбранное
+    func saveToFavorite()
+    /// Шеринг рецепта
+    func shareRecipe()
     /// Экшн кнопки назад
     func back()
 }
@@ -29,5 +33,15 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
 
     // MARK: - Public Methods
 
-    func back() {}
+    func back() {
+        coordinator?.backToRecipes()
+    }
+
+    func saveToFavorite() {
+        view?.showInDevelopAlert()
+    }
+
+    func shareRecipe() {
+        coordinator?.shareRecipe(text: recipe?.description ?? "")
+    }
 }

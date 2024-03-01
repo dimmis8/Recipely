@@ -7,8 +7,10 @@ import UIKit
 protocol RecipesDetailCoordinatorProtocol: AnyObject {
     /// Открыть экран деталей
     func openRecipeDetails(recipe: Recipe)
-    /// Вернуться на экран деталей
-    func backToRecepies()
+    /// Вернуться на экран рецептов
+    func backToRecipes()
+    /// Поделиться рецептом
+    func shareRecipe(text: String)
 }
 
 /// Координатор флоу рецептов
@@ -35,18 +37,31 @@ final class RecipesCoordinator: BaseCoodinator {
         recepeCategoryView?.navigationItem.title = category.rawValue
         rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
     }
+
+    func backToCategiries() {
+        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
+        rootController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - RecipesCoordinator + RecipesDetailCoordinatorProtocol
 
 extension RecipesCoordinator: RecipesDetailCoordinatorProtocol {
-    func backToRecepies() {
-        rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
+    func backToRecipes() {
+        if rootController?.viewControllers.first is FavoritesViewController {
+            rootController?.viewControllers.first?.hidesBottomBarWhenPushed = false
+        }
         rootController?.popViewController(animated: true)
     }
 
     func openRecipeDetails(recipe: Recipe) {
         let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
+
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
+    }
+
+    func shareRecipe(text: String) {
+        let sharingView = moduleBuilder?.createSharingModule(sharingInfo: [text])
+        rootController?.viewControllers.last?.present(sharingView ?? UIViewController(), animated: true)
     }
 }
