@@ -17,6 +17,7 @@ final class RecipeDetailView: UIViewController {
 
     enum Constants {
         static let verdanaBold = "Verdana-Bold"
+        static let verdana = "Verdana"
         static let inDevelopMassage = "Functionality in development"
         static let okAlertText = "OK"
     }
@@ -113,28 +114,18 @@ final class RecipeDetailView: UIViewController {
         barView.heightAnchor.constraint(equalToConstant: 24).isActive = true
     }
 
-    @objc private func back() {
-        presenter?.back()
-    }
-
-    @objc private func saveHandler() {
-        presenter?.saveToFavorite()
-    }
-
-    @objc private func shareRecipe() {
-        presenter?.shareRecipe()
-    }
-
     private func setConstraints() {
         makeTableViewConstraints()
     }
 
     private func setTableView() {
         tableView.backgroundColor = .white
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(DetailsTableViewHeader.self, forHeaderFooterViewReuseIdentifier: "DetailsTableViewHeader")
-
         tableView.register(RecipesImageDetailCell.self, forCellReuseIdentifier: RecipesImageDetailCell.identifier)
         tableView.register(
             RecipesCharacteristicsDetailsCell.self,
@@ -153,7 +144,21 @@ final class RecipeDetailView: UIViewController {
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+
+    @objc private func back() {
+        presenter?.back()
+    }
+
+    @objc private func saveHandler() {
+        presenter?.saveToFavorite()
+    }
+
+    @objc private func shareRecipe() {
+        presenter?.shareRecipe()
+    }
 }
+
+// MARK: - Extensions
 
 extension RecipeDetailView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -165,19 +170,20 @@ extension RecipeDetailView: UITableViewDataSource {
         switch cells {
         case .photo:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: "RecipesImageDetailCell",
+                withIdentifier: RecipesImageDetailCell.identifier,
                 for: indexPath
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
+            cell.getInfo(recipe: presenter?.getRecipeInfo() ?? Recipe())
             return cell
         case .characteristics:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: "RecipesCharacteristicsDetailsCell",
+                withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
             return cell
         case .description:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: "RecipesDescriptionDetailsCell",
+                withIdentifier: RecipesDescriptionDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
             return cell
@@ -187,13 +193,6 @@ extension RecipeDetailView: UITableViewDataSource {
 
 extension RecipeDetailView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        guard let header = tableView
-//            .dequeueReusableHeaderFooterView(withIdentifier: "DetailsTableViewHeader") as? DetailsTableViewHeader
-//        else { return UIView() }
-//
-//        header.textLabel?.text = presenter?.getRecipeInfo().title
-//
-//        return header
         let recipeLabel = UILabel()
         recipeLabel.text = presenter?.getRecipeInfo().title
         recipeLabel.font = .init(name: Constants.verdanaBold, size: 20)
