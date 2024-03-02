@@ -20,7 +20,6 @@ final class RecipesImageDetailCell: UITableViewCell {
     private let recipeImage: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 45
-        imageView.backgroundColor = .red
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -130,7 +129,7 @@ final class RecipesImageDetailCell: UITableViewCell {
 
     private func makeRecipeImageConstraints() {
         recipeImage.translatesAutoresizingMaskIntoConstraints = false
-        recipeImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 45).isActive = true
+        recipeImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         recipeImage.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         recipeImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         recipeImage.widthAnchor.constraint(equalToConstant: 300).isActive = true

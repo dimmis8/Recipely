@@ -224,7 +224,7 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
 
     private func makeEnercViewConstraints() {
         enercView.translatesAutoresizingMaskIntoConstraints = false
-        enercView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40).isActive = true
+        enercView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -125).isActive = true
         enercView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         enercView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         enercView.widthAnchor.constraint(equalToConstant: 78).isActive = true
@@ -237,7 +237,6 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         carbohydratesView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         carbohydratesView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         carbohydratesView.widthAnchor.constraint(equalToConstant: 78).isActive = true
-        carbohydratesView.heightAnchor.constraint(equalToConstant: 53).isActive = true
     }
 
     private func makeFatsViewConstraints() {
@@ -246,7 +245,6 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         fatsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         fatsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         fatsView.widthAnchor.constraint(equalToConstant: 78).isActive = true
-        fatsView.heightAnchor.constraint(equalToConstant: 53).isActive = true
     }
 
     private func makeProteinsViewConstraints() {
@@ -255,7 +253,6 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         proteinsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         proteinsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         proteinsView.widthAnchor.constraint(equalToConstant: 78).isActive = true
-        proteinsView.heightAnchor.constraint(equalToConstant: 53).isActive = true
     }
 
     private func makeEnercSubViewConstraints() {
