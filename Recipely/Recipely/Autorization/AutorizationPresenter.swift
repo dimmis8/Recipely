@@ -15,6 +15,8 @@ protocol AutorizationViewPresenterProtocol: AnyObject {
     func isValid(enteringEmail: String?, enteringPassword: String?) -> Bool?
     /// Функция изменения состояния видимости пароля
     func changePasswordVisableState()
+    /// Переход на главный экран приложения
+    func goToMainView()
 }
 
 /// Презентер экрана авторизации
@@ -47,5 +49,9 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
     func changePasswordVisableState() {
         isPasswordVisible = !isPasswordVisible
         view?.changePasswordvisableState(isVisable: isPasswordVisible)
+    }
+
+    func goToMainView() {
+        coordinator?.logIn()
     }
 }
