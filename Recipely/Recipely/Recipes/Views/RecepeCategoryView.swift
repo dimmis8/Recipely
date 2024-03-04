@@ -14,10 +14,7 @@ final class RecepeCategoryView: UIViewController {
     // MARK: - Constants
 
     enum Constants {
-        static let verdanaBold = "Verdana-Bold"
-        static let verdana = "Verdana"
         static let seatchBarText = "Search recipes"
-        static let recipeCellIdentifier = "RecipeCell"
         static let buttonSortHigh: CGFloat = 36
     }
 
@@ -31,7 +28,7 @@ final class RecepeCategoryView: UIViewController {
 
     private let categoryLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaBold, size: 28)
+        label.font = .verdanaBold(ofSize: 28)
         label.textColor = .black
         return label
     }()
@@ -85,10 +82,10 @@ final class RecepeCategoryView: UIViewController {
     }
 
     private func configureTableView() {
-        tableView.register(RecipeCell.self, forCellReuseIdentifier: Constants.recipeCellIdentifier)
+        tableView.register(RecipeCell.self, forCellReuseIdentifier: RecipeCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.separatorStyle = .none
@@ -160,7 +157,7 @@ final class RecepeCategoryView: UIViewController {
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: sortPickerView.bottomAnchor, constant: 15).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
     @objc private func back() {
@@ -197,7 +194,7 @@ extension RecepeCategoryView: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: Constants.recipeCellIdentifier,
+            withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
         cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
@@ -207,4 +204,8 @@ extension RecepeCategoryView: UITableViewDataSource {
 
 // MARK: - RecepeCategoryView + UITableViewDelegate
 
-extension RecepeCategoryView: UITableViewDelegate {}
+extension RecepeCategoryView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+    }
+}

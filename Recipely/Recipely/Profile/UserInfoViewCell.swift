@@ -11,6 +11,8 @@ final class UserInfoViewCell: UITableViewCell {
         static let profilePhotoHeigh: CGFloat = 160
     }
 
+    static let identifier = "UserInfoViewCell"
+
     // MARK: - Visual Components
 
     private let profilePhotoButton: UIButton = {
@@ -35,7 +37,7 @@ final class UserInfoViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .dirtyGreen
-        label.font = .init(name: "Verdana-Bold", size: 25)
+        label.font = .verdanaBold(ofSize: 25)
         return label
     }()
 

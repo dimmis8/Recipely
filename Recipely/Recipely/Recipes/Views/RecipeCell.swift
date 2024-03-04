@@ -7,9 +7,7 @@ import UIKit
 final class RecipeCell: UITableViewCell {
     // MARK: - Constants
 
-    enum Constants {
-        static let verdanaFont = "Verdana"
-    }
+    static let identifier = "RecipeCell"
 
     // MARK: - Visual Components
 
@@ -30,7 +28,7 @@ final class RecipeCell: UITableViewCell {
 
     private let recipeLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaFont, size: 14)
+        label.font = .verdana(ofSize: 14)
         label.numberOfLines = 2
         return label
     }()
@@ -43,7 +41,7 @@ final class RecipeCell: UITableViewCell {
 
     private let timerLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaFont, size: 12)
+        label.font = .verdana(ofSize: 12)
         return label
     }()
 
@@ -55,7 +53,7 @@ final class RecipeCell: UITableViewCell {
 
     private let caloriesLabel: UILabel = {
         let label = UILabel()
-        label.font = .init(name: Constants.verdanaFont, size: 12)
+        label.font = .verdana(ofSize: 12)
         return label
     }()
 
@@ -89,6 +87,7 @@ final class RecipeCell: UITableViewCell {
     // MARK: - Private Methods
 
     private func createView() {
+        selectionStyle = .none
         contentView.addSubview(background)
         background.addSubview(recipeImageView)
         background.addSubview(recipeLabel)
@@ -114,8 +113,8 @@ final class RecipeCell: UITableViewCell {
         background.translatesAutoresizingMaskIntoConstraints = false
         background.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
         background.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
-        background.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        background.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12).isActive = true
+        background.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6).isActive = true
+        background.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6).isActive = true
         background.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
 

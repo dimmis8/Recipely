@@ -5,6 +5,10 @@ import UIKit
 
 /// Ячейка с кнопками дополнительных опций
 final class ProfileFieldsViewCell: UITableViewCell {
+    // MARK: - Constants
+
+    static let identifier = "ProfileButtonViewCell"
+
     // MARK: - Visual Components
 
     private let buttonImageView: UIImageView = {
@@ -33,7 +37,7 @@ final class ProfileFieldsViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .dirtyGreen
-        label.font = .init(name: "Verdana", size: 18)
+        label.font = .verdana(ofSize: 18)
         return label
     }()
 

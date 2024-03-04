@@ -17,8 +17,6 @@ final class AutorizationViewController: UIViewController {
 
     enum Constants {
         static let loginText = "Login"
-        static let verdanaBold = "Verdana-Bold"
-        static let verdana = "Verdana"
         static let emailText = "Email Adress"
         static let passwordText = "Password"
         static let emailPlaceholder = " Enter Email Address"
@@ -39,7 +37,7 @@ final class AutorizationViewController: UIViewController {
         let label = UILabel()
         label.text = Constants.loginText
         label.textColor = .loginText
-        label.font = UIFont(name: Constants.verdanaBold, size: 28)
+        label.font = .verdanaBold(ofSize: 28)
         label.textAlignment = .left
         return label
     }()
@@ -48,7 +46,7 @@ final class AutorizationViewController: UIViewController {
         let label = UILabel()
         label.text = Constants.emailText
         label.textColor = .loginText
-        label.font = UIFont(name: Constants.verdanaBold, size: 18)
+        label.font = .verdanaBold(ofSize: 18)
         label.textAlignment = .left
         return label
     }()
@@ -57,7 +55,7 @@ final class AutorizationViewController: UIViewController {
         let label = UILabel()
         label.text = Constants.passwordText
         label.textColor = .loginText
-        label.font = UIFont(name: Constants.verdanaBold, size: 18)
+        label.font = .verdanaBold(ofSize: 18)
         label.textAlignment = .left
         return label
     }()
@@ -144,7 +142,7 @@ final class AutorizationViewController: UIViewController {
         let label = UILabel()
         label.text = Constants.incorrectPassword
         label.textColor = .red
-        label.font = UIFont(name: Constants.verdanaBold, size: 12)
+        label.font = .verdanaBold(ofSize: 12)
         label.textAlignment = .left
         label.isHidden = true
         return label
@@ -154,7 +152,7 @@ final class AutorizationViewController: UIViewController {
         let label = UILabel()
         label.text = Constants.incorrectEmail
         label.textColor = .red
-        label.font = UIFont(name: Constants.verdanaBold, size: 12)
+        label.font = .verdanaBold(ofSize: 12)
         label.textAlignment = .left
         label.isHidden = true
         return label
@@ -181,7 +179,7 @@ final class AutorizationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.numberOfLines = 0
-        label.font = .init(name: Constants.verdana, size: 18)
+        label.font = .verdana(ofSize: 18)
         label.text = Constants.errorLoginText
         return label
     }()

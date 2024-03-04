@@ -17,7 +17,6 @@ final class ProfileBonusesViewController: UIViewController {
 
     enum Constants {
         static let bonusesText = "Your bonuses"
-        static let verdanaBold = "Verdana-Bold"
     }
 
     // MARK: - Visual Components
@@ -25,7 +24,7 @@ final class ProfileBonusesViewController: UIViewController {
     private let yourBonusesLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.bonusesText
-        label.font = UIFont(name: Constants.verdanaBold, size: 20)
+        label.font = .verdanaBold(ofSize: 20)
         label.textColor = .dirtyGreen
         label.textAlignment = .center
         return label
@@ -33,7 +32,7 @@ final class ProfileBonusesViewController: UIViewController {
 
     private var bonusesCountLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: Constants.verdanaBold, size: 30)
+        label.font = .verdanaBold(ofSize: 30)
         label.textColor = .dirtyGreen
         label.textAlignment = .left
         return label

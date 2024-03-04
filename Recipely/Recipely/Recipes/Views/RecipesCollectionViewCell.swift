@@ -7,9 +7,7 @@ import UIKit
 final class RecipesCollectionViewCell: UICollectionViewCell {
     // MARK: - Constants
 
-    enum Constants {
-        static let verdana = "Verdana"
-    }
+    static let identifier = "RecipesCollectionViewCell"
 
     // MARK: - Visual Components
 
@@ -106,9 +104,9 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         recipesImageView.image = UIImage(named: info.imageName)
         titleLabel.text = info.type.rawValue
         if contentView.frame.width < 150 {
-            titleLabel.font = .init(name: Constants.verdana, size: 16)
+            titleLabel.font = .verdana(ofSize: 16)
         } else {
-            titleLabel.font = .init(name: Constants.verdana, size: 20)
+            titleLabel.font = .verdana(ofSize: 20)
         }
     }
 }

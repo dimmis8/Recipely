@@ -35,6 +35,7 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
     ) {
         self.view = view
         self.coordinator = coordinator
+        self.autorizationValidation = autorizationValidation
     }
 
     // MARK: - Public method

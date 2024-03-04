@@ -25,8 +25,6 @@ final class ProfileViewController: UIViewController {
 
     enum Constants {
         static let viewTitleText = "Profile"
-        static let userInfoViewCellIdentifier = "UserInfoViewCell"
-        static let profileFieldsViewCellIdentifier = "ProfileButtonViewCell"
         static let bonusesButtonText = "Bonuses"
         static let termsAndPrivacyButtonText = "Terms & Privacy Policy"
         static let logOutButtonText = "Log out"
@@ -41,6 +39,13 @@ final class ProfileViewController: UIViewController {
     }
 
     // MARK: - Visual Components
+
+    private let profileLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constants.viewTitleText
+        label.font = .verdanaBold(ofSize: 28)
+        return label
+    }()
 
     private let tableView = UITableView()
 
@@ -58,7 +63,6 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        configureNavigationItem()
         configureTableView()
     }
 
@@ -66,11 +70,7 @@ final class ProfileViewController: UIViewController {
 
     private func configureView() {
         view.backgroundColor = .white
-    }
-
-    private func configureNavigationItem() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = Constants.viewTitleText
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileLabel)
     }
 
     private func setNewName(_ newName: String) {
@@ -78,10 +78,10 @@ final class ProfileViewController: UIViewController {
     }
 
     private func configureTableView() {
-        tableView.register(UserInfoViewCell.self, forCellReuseIdentifier: Constants.userInfoViewCellIdentifier)
+        tableView.register(UserInfoViewCell.self, forCellReuseIdentifier: UserInfoViewCell.identifier)
         tableView.register(
             ProfileFieldsViewCell.self,
-            forCellReuseIdentifier: Constants.profileFieldsViewCellIdentifier
+            forCellReuseIdentifier: ProfileFieldsViewCell.identifier
         )
         tableView.dataSource = self
         tableView.allowsSelection = false
@@ -195,7 +195,7 @@ extension ProfileViewController: UITableViewDataSource {
         switch contentTypes[indexPath.section] {
         case .userInfo:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: Constants.userInfoViewCellIdentifier,
+                withIdentifier: UserInfoViewCell.identifier,
                 for: indexPath
             ) as? UserInfoViewCell, let userInfo = presenter?.getUserInformation() else { return UITableViewCell() }
             cell.setUserInformation(userInfo) { [weak self] in
@@ -208,7 +208,7 @@ extension ProfileViewController: UITableViewDataSource {
 
         case .profileButtons:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: Constants.profileFieldsViewCellIdentifier,
+                withIdentifier: ProfileFieldsViewCell.identifier,
                 for: indexPath
             ) as? ProfileFieldsViewCell else { return UITableViewCell() }
 

@@ -15,6 +15,8 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     func getRecipeInfo(forNumber number: Int) -> Recipe
     /// Получение информации о количестве рецептов
     func getRecipeCount() -> Int
+    /// Переход на экран деталей
+    func goToRecipeDetail(numberOfRecipe: Int)
 }
 
 /// Презентер экрана категории рецептов
@@ -43,7 +45,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     // MARK: - Public Methods
 
     func back() {
-        coordinator?.backToRecepies()
+        coordinator?.backToCategiries()
     }
 
     func selectedSort(_ sortType: SortTypes, previousState: Bool) -> String {
@@ -63,6 +65,11 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         default:
             return ""
         }
+    }
+
+    func goToRecipeDetail(numberOfRecipe: Int) {
+        let recipe = sourceOfRecepies.fishRecepies[numberOfRecipe]
+        coordinator?.openRecipeDetails(recipe: recipe)
     }
 
     func getRecipeInfo(forNumber number: Int) -> Recipe {
