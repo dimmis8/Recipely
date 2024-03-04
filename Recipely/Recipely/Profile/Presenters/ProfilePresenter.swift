@@ -19,10 +19,10 @@ protocol ProfileViewPresenterProtocol: AnyObject {
     func actionChangeName()
     /// Обработка нажатия кнопки изменения фото
     func actionChangePhoto()
-    /// Обработка нажатия кнопки Terms And Privacy
-    func termsAndPrivacyAction()
     /// Изменение имени пользователя
     func editNameSurname(name: String)
+    /// Открытие информации о приватности
+    func openPrivacyInfo()
 }
 
 /// Презентер экрана профиля
@@ -68,10 +68,10 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
         view?.setNewNameFromSource()
     }
 
-    func termsAndPrivacyAction() {
-        view?.showInDevelopAlert()
-    }
-
     // TODO:
     func actionChangePhoto() {}
+
+    func openPrivacyInfo() {
+        coordinator?.openPrivacyInfo()
+    }
 }

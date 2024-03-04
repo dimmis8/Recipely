@@ -9,8 +9,6 @@ protocol ProfileViewProtocol: AnyObject {
     var presenter: ProfileViewPresenterProtocol? { get set }
     /// Показ алерта с полем для измененеия имени
     func showChangeNameAlert()
-    /// Показ алерта с сообщением о разработки функциональности
-    func showInDevelopAlert()
     /// Показ алерта с сообщением о подтверждении выхода с аккаунта
     func showLogOutAlert()
     /// Установка нового имени из источника данных
@@ -102,7 +100,7 @@ final class ProfileViewController: UIViewController {
     }
 
     private func showTermsAndPrivacy() {
-        presenter?.termsAndPrivacyAction()
+        presenter?.openPrivacyInfo()
     }
 
     private func showLogOutAllert() {
@@ -141,10 +139,6 @@ extension ProfileViewController: ProfileViewProtocol {
         alertView.addTextField()
         alertView.textFields?.first?.placeholder = Constants.nameSurname
         present(alertView, animated: true)
-    }
-
-    func showInDevelopAlert() {
-        showAlert(title: Constants.termsAndPrivacyAlertMassage, buttonAgreeTitle: Constants.okButtonText, handler: nil)
     }
 
     // TODO:

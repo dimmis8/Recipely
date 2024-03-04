@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A6DEBB72B96021F0062F54C /* SortState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBB62B96021F0062F54C /* SortState.swift */; };
+		0A6DEBB92B963BD20062F54C /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBB82B963BD20062F54C /* PrivacyView.swift */; };
+		0A6DEBBB2B966CD60062F54C /* PrivacyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBBA2B966CD60062F54C /* PrivacyPresenter.swift */; };
 		0A85210D2B8CB1D4002BCE50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85210C2B8CB1D4002BCE50 /* AppDelegate.swift */; };
 		0A85210F2B8CB1D4002BCE50 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85210E2B8CB1D4002BCE50 /* SceneDelegate.swift */; };
 		0A8521112B8CB1D4002BCE50 /* AutorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521102B8CB1D4002BCE50 /* AutorizationView.swift */; };
@@ -78,6 +80,8 @@
 
 /* Begin PBXFileReference section */
 		0A6DEBB62B96021F0062F54C /* SortState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortState.swift; sourceTree = "<group>"; };
+		0A6DEBB82B963BD20062F54C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
+		0A6DEBBA2B966CD60062F54C /* PrivacyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPresenter.swift; sourceTree = "<group>"; };
 		0A8521092B8CB1D4002BCE50 /* Recipely.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipely.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A85210C2B8CB1D4002BCE50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A85210E2B8CB1D4002BCE50 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -306,6 +310,7 @@
 			children = (
 				0A8521522B8D26B5002BCE50 /* ProfileViewController.swift */,
 				52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */,
+				0A6DEBB82B963BD20062F54C /* PrivacyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -315,6 +320,7 @@
 			children = (
 				0A8521542B8D271A002BCE50 /* ProfilePresenter.swift */,
 				0A8521762B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift */,
+				0A6DEBBA2B966CD60062F54C /* PrivacyPresenter.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -559,11 +565,13 @@
 				52B0A91E2B9107F5006E01A3 /* DishCategory.swift in Sources */,
 				0A8521442B8CF005002BCE50 /* AutorizationCoordinator.swift in Sources */,
 				0A8521732B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift in Sources */,
+				0A6DEBBB2B966CD60062F54C /* PrivacyPresenter.swift in Sources */,
 				0A8521632B8DC194002BCE50 /* RecipesCoordinator.swift in Sources */,
 				0A8521112B8CB1D4002BCE50 /* AutorizationView.swift in Sources */,
 				0A8521532B8D26B5002BCE50 /* ProfileViewController.swift in Sources */,
 				0A85214C2B8CFF7C002BCE50 /* ModuleBuilder.swift in Sources */,
 				0A8521572B8DB45E002BCE50 /* BaseCoordinator.swift in Sources */,
+				0A6DEBB92B963BD20062F54C /* PrivacyView.swift in Sources */,
 				0A85216C2B8DF9AD002BCE50 /* UserInfoViewCell.swift in Sources */,
 				0A85216E2B8DFE7D002BCE50 /* UserInfo.swift in Sources */,
 				0A8521802B905A9D002BCE50 /* RecepeCategoryPresenter.swift in Sources */,

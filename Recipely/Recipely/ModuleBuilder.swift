@@ -23,6 +23,8 @@ protocol Builder {
     func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController
     /// Функция создания контроллера шеринка
     func createSharingModule(sharingInfo: [Any]) -> UIViewController
+    /// Функция создания модуля окна с информацией о приватности
+    func createPrivacyViewModule(coordinator: ProfileCoordinator) -> UIViewController
 }
 
 /// Билдер модулей
@@ -114,5 +116,12 @@ final class ModuleBuilder: Builder {
 
     func createSharingModule(sharingInfo: [Any]) -> UIViewController {
         UIActivityViewController(activityItems: sharingInfo, applicationActivities: nil)
+    }
+
+    func createPrivacyViewModule(coordinator: ProfileCoordinator) -> UIViewController {
+        let view = PrivacyView()
+        let presenter = PrivacyPresenter(view: view, coordinator: coordinator)
+        view.presenter = presenter
+        return view
     }
 }
