@@ -192,7 +192,6 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         fatsView.addSubview(fatsSubView)
         contentView.addSubview(proteinsView)
         proteinsView.addSubview(proteinsSubView)
-
         enercView.addSubview(enercViewLabel)
         enercSubView.addSubview(enercSubViewLabel)
         carbohydratesView.addSubview(carbohydratesViewLabel)
@@ -205,21 +204,21 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
 
     private func setConstraints() {
         makeEnercViewConstraints()
-        makeCarbohydratesViewConstraints()
-        makeFatsViewConstraints()
-        makeProteinsViewConstraints()
-        makeEnercSubViewConstraints()
-        makeCarbohydratesSubViewConstraints()
-        makeFatsSubViewConstraints()
-        makeProteinsSubViewConstraints()
-        makeEnercViewLabelConstraints()
-        makeCarbohydratesViewLabelConstraints()
-        makeFatsViewLabelConstraints()
-        makeProteinsViewLabelConstraints()
-        makeEnercSubViewLabelConstraints()
-        makeCarbohydratesSubViewLabelConstraints()
-        makeFatsSubViewLabelConstraints()
-        makeProteinsSubViewLabelConstraints()
+        makeBackViewConcntraints(view: carbohydratesView, equalTo: enercView)
+        makeBackViewConcntraints(view: fatsView, equalTo: carbohydratesView)
+        makeBackViewConcntraints(view: proteinsView, equalTo: fatsView)
+        makeSubViewConcntraints(view: enercSubView, equalTo: enercView)
+        makeSubViewConcntraints(view: carbohydratesSubView, equalTo: carbohydratesView)
+        makeSubViewConcntraints(view: fatsSubView, equalTo: fatsView)
+        makeSubViewConcntraints(view: proteinsSubView, equalTo: proteinsView)
+        makeViewLabelConcntraints(label: enercViewLabel, equalTo: enercView)
+        makeViewLabelConcntraints(label: carbohydratesViewLabel, equalTo: carbohydratesView)
+        makeViewLabelConcntraints(label: fatsViewLabel, equalTo: fatsView)
+        makeViewLabelConcntraints(label: proteinsViewLabel, equalTo: proteinsView)
+        makeSubViewLabelConcntraints(label: enercSubViewLabel, equalTo: enercSubView)
+        makeSubViewLabelConcntraints(label: carbohydratesSubViewLabel, equalTo: carbohydratesSubView)
+        makeSubViewLabelConcntraints(label: fatsSubViewLabel, equalTo: fatsSubView)
+        makeSubViewLabelConcntraints(label: proteinsSubViewLabel, equalTo: proteinsSubView)
     }
 
     private func makeEnercViewConstraints() {
@@ -231,124 +230,35 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         enercView.heightAnchor.constraint(equalToConstant: 53).isActive = true
     }
 
-    private func makeCarbohydratesViewConstraints() {
-        carbohydratesView.translatesAutoresizingMaskIntoConstraints = false
-        carbohydratesView.leadingAnchor.constraint(equalTo: enercView.trailingAnchor, constant: 5).isActive = true
-        carbohydratesView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        carbohydratesView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        carbohydratesView.widthAnchor.constraint(equalToConstant: 78).isActive = true
+    private func makeBackViewConcntraints(view: UIView, equalTo: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.leadingAnchor.constraint(equalTo: equalTo.trailingAnchor, constant: 5).isActive = true
+        view.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 78).isActive = true
     }
 
-    private func makeFatsViewConstraints() {
-        fatsView.translatesAutoresizingMaskIntoConstraints = false
-        fatsView.leadingAnchor.constraint(equalTo: carbohydratesView.trailingAnchor, constant: 5).isActive = true
-        fatsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        fatsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        fatsView.widthAnchor.constraint(equalToConstant: 78).isActive = true
+    private func makeSubViewConcntraints(view: UIView, equalTo: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.leadingAnchor.constraint(equalTo: equalTo.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: equalTo.trailingAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: equalTo.bottomAnchor).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
 
-    private func makeProteinsViewConstraints() {
-        proteinsView.translatesAutoresizingMaskIntoConstraints = false
-        proteinsView.leadingAnchor.constraint(equalTo: fatsView.trailingAnchor, constant: 5).isActive = true
-        proteinsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        proteinsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        proteinsView.widthAnchor.constraint(equalToConstant: 78).isActive = true
+    private func makeViewLabelConcntraints(label: UILabel, equalTo: UIView) {
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.leadingAnchor.constraint(equalTo: equalTo.leadingAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: equalTo.trailingAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: equalTo.topAnchor, constant: 8).isActive = true
+        label.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
 
-    private func makeEnercSubViewConstraints() {
-        enercSubView.translatesAutoresizingMaskIntoConstraints = false
-        enercSubView.leadingAnchor.constraint(equalTo: enercView.leadingAnchor).isActive = true
-        enercSubView.trailingAnchor.constraint(equalTo: enercView.trailingAnchor).isActive = true
-        enercSubView.bottomAnchor.constraint(equalTo: enercView.bottomAnchor).isActive = true
-        enercSubView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-
-    private func makeCarbohydratesSubViewConstraints() {
-        carbohydratesSubView.translatesAutoresizingMaskIntoConstraints = false
-        carbohydratesSubView.leadingAnchor.constraint(equalTo: carbohydratesView.leadingAnchor).isActive = true
-        carbohydratesSubView.trailingAnchor.constraint(equalTo: carbohydratesView.trailingAnchor).isActive = true
-        carbohydratesSubView.bottomAnchor.constraint(equalTo: carbohydratesView.bottomAnchor).isActive = true
-        carbohydratesSubView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-
-    private func makeFatsSubViewConstraints() {
-        fatsSubView.translatesAutoresizingMaskIntoConstraints = false
-        fatsSubView.leadingAnchor.constraint(equalTo: fatsView.leadingAnchor).isActive = true
-        fatsSubView.trailingAnchor.constraint(equalTo: fatsView.trailingAnchor).isActive = true
-        fatsSubView.bottomAnchor.constraint(equalTo: fatsView.bottomAnchor).isActive = true
-        fatsSubView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-
-    private func makeProteinsSubViewConstraints() {
-        proteinsSubView.translatesAutoresizingMaskIntoConstraints = false
-        proteinsSubView.leadingAnchor.constraint(equalTo: proteinsView.leadingAnchor).isActive = true
-        proteinsSubView.trailingAnchor.constraint(equalTo: proteinsView.trailingAnchor).isActive = true
-        proteinsSubView.bottomAnchor.constraint(equalTo: proteinsView.bottomAnchor).isActive = true
-        proteinsSubView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-
-    private func makeEnercViewLabelConstraints() {
-        enercViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        enercViewLabel.leadingAnchor.constraint(equalTo: enercView.leadingAnchor).isActive = true
-        enercViewLabel.trailingAnchor.constraint(equalTo: enercView.trailingAnchor).isActive = true
-        enercViewLabel.topAnchor.constraint(equalTo: enercView.topAnchor, constant: 8).isActive = true
-        enercViewLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
-    }
-
-    private func makeCarbohydratesViewLabelConstraints() {
-        carbohydratesViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        carbohydratesViewLabel.leadingAnchor.constraint(equalTo: carbohydratesView.leadingAnchor).isActive = true
-        carbohydratesViewLabel.trailingAnchor.constraint(equalTo: carbohydratesView.trailingAnchor).isActive = true
-        carbohydratesViewLabel.topAnchor.constraint(equalTo: carbohydratesView.topAnchor, constant: 8).isActive = true
-        carbohydratesViewLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
-    }
-
-    private func makeFatsViewLabelConstraints() {
-        fatsViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        fatsViewLabel.leadingAnchor.constraint(equalTo: fatsView.leadingAnchor).isActive = true
-        fatsViewLabel.trailingAnchor.constraint(equalTo: fatsView.trailingAnchor).isActive = true
-        fatsViewLabel.topAnchor.constraint(equalTo: fatsView.topAnchor, constant: 8).isActive = true
-        fatsViewLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
-    }
-
-    private func makeProteinsViewLabelConstraints() {
-        proteinsViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        proteinsViewLabel.leadingAnchor.constraint(equalTo: proteinsView.leadingAnchor).isActive = true
-        proteinsViewLabel.trailingAnchor.constraint(equalTo: proteinsView.trailingAnchor).isActive = true
-        proteinsViewLabel.topAnchor.constraint(equalTo: proteinsView.topAnchor, constant: 8).isActive = true
-        proteinsViewLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
-    }
-
-    private func makeEnercSubViewLabelConstraints() {
-        enercSubViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        enercSubViewLabel.leadingAnchor.constraint(equalTo: enercView.leadingAnchor).isActive = true
-        enercSubViewLabel.trailingAnchor.constraint(equalTo: enercView.trailingAnchor).isActive = true
-        enercSubViewLabel.bottomAnchor.constraint(equalTo: enercView.bottomAnchor, constant: -4).isActive = true
-        enercSubViewLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-
-    private func makeCarbohydratesSubViewLabelConstraints() {
-        carbohydratesSubViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        carbohydratesSubViewLabel.leadingAnchor.constraint(equalTo: carbohydratesView.leadingAnchor).isActive = true
-        carbohydratesSubViewLabel.trailingAnchor.constraint(equalTo: carbohydratesView.trailingAnchor).isActive = true
-        carbohydratesSubViewLabel.bottomAnchor.constraint(equalTo: carbohydratesView.bottomAnchor, constant: -4)
-            .isActive = true
-        carbohydratesSubViewLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-
-    private func makeFatsSubViewLabelConstraints() {
-        fatsSubViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        fatsSubViewLabel.leadingAnchor.constraint(equalTo: fatsView.leadingAnchor).isActive = true
-        fatsSubViewLabel.trailingAnchor.constraint(equalTo: fatsView.trailingAnchor).isActive = true
-        fatsSubViewLabel.bottomAnchor.constraint(equalTo: fatsView.bottomAnchor, constant: -4).isActive = true
-        fatsSubViewLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-
-    private func makeProteinsSubViewLabelConstraints() {
-        proteinsSubViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        proteinsSubViewLabel.leadingAnchor.constraint(equalTo: proteinsView.leadingAnchor).isActive = true
-        proteinsSubViewLabel.trailingAnchor.constraint(equalTo: proteinsView.trailingAnchor).isActive = true
-        proteinsSubViewLabel.bottomAnchor.constraint(equalTo: proteinsView.bottomAnchor, constant: -4).isActive = true
-        proteinsSubViewLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+    private func makeSubViewLabelConcntraints(label: UILabel, equalTo: UIView) {
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.leadingAnchor.constraint(equalTo: equalTo.leadingAnchor).isActive = true
+        label.trailingAnchor.constraint(equalTo: equalTo.trailingAnchor).isActive = true
+        label.bottomAnchor.constraint(equalTo: equalTo.bottomAnchor, constant: -4).isActive = true
+        label.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
 }
