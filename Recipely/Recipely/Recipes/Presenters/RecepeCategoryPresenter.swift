@@ -37,14 +37,13 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     private weak var view: RecepeCategoryViewProtocol?
     private var selectedSortMap: [SortTypes: SortState] = [.calories: .withoutSort, .time: .withoutSort] {
         didSet {
-            sourceOfRecepies.getSortedInfo(selectedSortMap: selectedSortMap)
+            sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
             view?.reloadTableView()
         }
     }
 
     private var sourceOfRecepies = SourceOfRecepies()
     private var isSearching = false
-    private var searchedRecipes: [Recipe] = []
 
     // MARK: - Initializers
 
@@ -77,36 +76,28 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     }
 
     func goToRecipeDetail(numberOfRecipe: Int) {
-        let recipe = sourceOfRecepies.fishRecepies[numberOfRecipe]
+        let recipe = sourceOfRecepies.recipesToShow[numberOfRecipe]
         coordinator?.openRecipeDetails(recipe: recipe)
     }
 
     func getRecipeInfo(forNumber number: Int) -> Recipe {
-        if isSearching {
-            return searchedRecipes[number]
-        } else {
-            return sourceOfRecepies.fishRecepies[number]
-        }
+        sourceOfRecepies.recipesToShow[number]
     }
 
     func getRecipeCount() -> Int {
-        if isSearching {
-            return searchedRecipes.count
-        } else {
-            return sourceOfRecepies.fishRecepies.count
-        }
+        sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+        return sourceOfRecepies.recipesToShow.count
     }
 
     func searchRecipes(withText text: String) {
         guard !text.isEmpty else {
             isSearching = false
-            searchedRecipes = []
+            sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
             view?.reloadTableView()
             return
         }
         isSearching = true
-        searchedRecipes = sourceOfRecepies.fishRecepies
-            .filter { $0.title.lowercased().prefix(text.count) == text.lowercased() }
+        sourceOfRecepies.searchRecipes(withText: text, selectedSortMap: selectedSortMap)
         view?.reloadTableView()
     }
 }

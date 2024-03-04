@@ -5,7 +5,20 @@ import Foundation
 
 /// Источник данных для рецептов
 struct SourceOfRecepies {
-    var fishRecepies: [Recipe] = [
+    // MARK: - Public Properties
+
+    lazy var recipesToShow: [Recipe] = fishRecepies
+    var favoriteRecipes: [Recipe] = [
+        Recipe(title: "Baked Fish with Lemon Herb Sauce", cookTime: 90, calories: 616, imageName: "backedFish"),
+        Recipe(title: "Chilli and Tomato Fish", cookTime: 100, calories: 174, imageName: "chilliAndTomato"),
+        Recipe(title: "Fast Roast Fish & Show Peas Recipes", cookTime: 80, calories: 94, imageName: "fastRoast")
+    ]
+
+    // MARK: - Private Properties
+
+    private var searchedRecipes: [Recipe] = []
+
+    private let fishRecepies: [Recipe] = [
         Recipe(title: "Baked Fish with Lemon Herb Sauce", cookTime: 90, calories: 616, imageName: "backedFish"),
         Recipe(title: "Chilli and Tomato Fish", cookTime: 100, calories: 174, imageName: "chilliAndTomato"),
         Recipe(title: "Fast Roast Fish & Show Peas Recipes", cookTime: 80, calories: 94, imageName: "fastRoast"),
@@ -55,34 +68,42 @@ struct SourceOfRecepies {
         ),
     ]
 
-    mutating func getSortedInfo(selectedSortMap: [SortTypes: SortState]) {
+    // MARK: - Public Methods
+
+    mutating func searchRecipes(withText text: String, selectedSortMap: [SortTypes: SortState]) {
+        searchedRecipes = fishRecepies.filter { $0.title.lowercased().prefix(text.count) == text.lowercased() }
+        setNeededInformation(selectedSortMap: selectedSortMap, isSerching: true)
+    }
+
+    mutating func setNeededInformation(selectedSortMap: [SortTypes: SortState], isSerching: Bool) {
+        let recipesForSort = isSerching ? searchedRecipes : fishRecepies
         switch (selectedSortMap[.calories], selectedSortMap[.time]) {
         case (.fromMostToLeast, .withoutSort):
-            fishRecepies.sort { $0.calories > $1.calories }
+            recipesToShow = recipesForSort.sorted { $0.calories > $1.calories }
         case (.fromLeastToMost, .withoutSort):
-            fishRecepies.sort { $0.calories < $1.calories }
+            recipesToShow = recipesForSort.sorted { $0.calories < $1.calories }
         case (.withoutSort, .fromMostToLeast):
-            fishRecepies.sort { $0.cookTime > $1.cookTime }
+            recipesToShow = recipesForSort.sorted { $0.cookTime > $1.cookTime }
         case (.withoutSort, .fromLeastToMost):
-            fishRecepies.sort { $0.cookTime < $1.cookTime }
+            recipesToShow = recipesForSort.sorted { $0.cookTime < $1.cookTime }
         case (.withoutSort, .withoutSort):
-            fishRecepies.sort { $0.title < $1.title }
+            recipesToShow = recipesForSort.sorted { $0.title < $1.title }
         case (.fromMostToLeast, .fromMostToLeast):
-            fishRecepies = fishRecepies
+            recipesToShow = recipesForSort
                 .sorted { $0.cookTime > $1.cookTime }
-                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories > $1.calories }
+                .sorted { $0.cookTime != $1.cookTime ? false : $0.calories > $1.calories }
         case (.fromLeastToMost, .fromMostToLeast):
-            fishRecepies = fishRecepies
+            recipesToShow = recipesForSort
                 .sorted { $0.cookTime > $1.cookTime }
-                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories < $1.calories }
+                .sorted { $0.cookTime != $1.cookTime ? false : $0.calories < $1.calories }
         case (.fromMostToLeast, .fromLeastToMost):
-            fishRecepies = fishRecepies
+            recipesToShow = recipesForSort
                 .sorted { $0.cookTime < $1.cookTime }
-                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories > $1.calories }
+                .sorted { $0.cookTime != $1.cookTime ? false : $0.calories > $1.calories }
         case (.fromLeastToMost, .fromLeastToMost):
-            fishRecepies = fishRecepies
+            recipesToShow = recipesForSort
                 .sorted { $0.cookTime < $1.cookTime }
-                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories < $1.calories }
+                .sorted { $0.cookTime != $1.cookTime ? false : $0.calories < $1.calories }
         default:
             break
         }
