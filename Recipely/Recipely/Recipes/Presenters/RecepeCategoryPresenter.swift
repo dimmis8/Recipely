@@ -10,7 +10,7 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Экшн кнопки назад
     func back()
     /// Изменение состояние сортировки рецептов
-    func selectedSort(_ sortType: SortTypes, previousState: Bool) -> String
+    func selectedSort(_ sortType: SortTypes) -> (String, Bool)
     /// Получение информации о рецепте для ячейки
     func getRecipeInfo(forNumber number: Int) -> Recipe
     /// Получение информации о количестве рецептов
@@ -26,14 +26,21 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     enum Constants {
         static let whiteSortDirectionRevers = "whiteSortDirectionRevers"
         static let whiteSortDirection = "whiteSortDirection"
+        static let blackSortDirection = "sortDirection"
     }
 
     // MARK: - Private Properties
 
     private weak var coordinator: RecipesCoordinator?
     private weak var view: RecepeCategoryViewProtocol?
-    private var selectedSortMap: [SortTypes: Bool] = [.calories: false, .time: false]
-    private let sourceOfRecepies = SourceOfRecepies()
+    private var selectedSortMap: [SortTypes: SortState] = [.calories: .withoutSort, .time: .withoutSort] {
+        didSet {
+            sourceOfRecepies.getSortedInfo(selectedSortMap: selectedSortMap)
+            view?.reloadTableView()
+        }
+    }
+
+    private var sourceOfRecepies = SourceOfRecepies()
 
     // MARK: - Initializers
 
@@ -48,22 +55,20 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         coordinator?.backToCategiries()
     }
 
-    func selectedSort(_ sortType: SortTypes, previousState: Bool) -> String {
-        switch previousState {
-        case true where selectedSortMap[sortType] == true:
-            selectedSortMap[sortType] = false
-            return Constants.whiteSortDirectionRevers
-        case true where selectedSortMap[sortType] == false:
-            selectedSortMap[sortType] = true
-            return Constants.whiteSortDirection
-        case false:
-            for key in selectedSortMap.keys {
-                selectedSortMap[key] = false
-            }
-            selectedSortMap[sortType] = true
-            return Constants.whiteSortDirection
+    func selectedSort(_ sortType: SortTypes) -> (String, Bool) {
+        let isSelected = true
+        switch selectedSortMap[sortType] {
+        case .withoutSort:
+            selectedSortMap.updateValue(.fromLeastToMost, forKey: sortType)
+            return (Constants.whiteSortDirection, isSelected)
+        case .fromLeastToMost:
+            selectedSortMap.updateValue(.fromMostToLeast, forKey: sortType)
+            return (Constants.whiteSortDirectionRevers, isSelected)
+        case .fromMostToLeast:
+            selectedSortMap.updateValue(.withoutSort, forKey: sortType)
+            return (Constants.blackSortDirection, !isSelected)
         default:
-            return ""
+            return ("", !isSelected)
         }
     }
 

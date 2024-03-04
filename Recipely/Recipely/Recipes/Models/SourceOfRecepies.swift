@@ -5,7 +5,12 @@ import Foundation
 
 /// Источник данных для рецептов
 struct SourceOfRecepies {
-    let fishRecepies: [Recipe] = [
+    var fishRecepies: [Recipe] = [
+        Recipe(title: "Baked Fish with Lemon Herb Sauce", cookTime: 90, calories: 616, imageName: "backedFish"),
+        Recipe(title: "Chilli and Tomato Fish", cookTime: 100, calories: 174, imageName: "chilliAndTomato"),
+        Recipe(title: "Fast Roast Fish & Show Peas Recipes", cookTime: 80, calories: 94, imageName: "fastRoast"),
+        Recipe(title: "Lemon and Chilli Fish Burrito", cookTime: 90, calories: 226, imageName: "lemonAndChilli"),
+        Recipe(title: "Salmon with Cantaloupe and Fried Shallots", cookTime: 100, calories: 410, imageName: "salmon"),
         Recipe(
             title: "Simple Fish And Corn",
             cookTime: 60,
@@ -48,10 +53,38 @@ struct SourceOfRecepies {
             Juice of 3 limes
             """
         ),
-        Recipe(title: "Baked Fish with Lemon Herb Sauce", cookTime: 90, calories: 616, imageName: "backedFish"),
-        Recipe(title: "Lemon and Chilli Fish Burrito", cookTime: 90, calories: 226, imageName: "lemonAndChilli"),
-        Recipe(title: "Fast Roast Fish & Show Peas Recipes", cookTime: 80, calories: 94, imageName: "fastRoast"),
-        Recipe(title: "Salmon with Cantaloupe and Fried Shallots", cookTime: 100, calories: 410, imageName: "salmon"),
-        Recipe(title: "Chilli and Tomato Fish", cookTime: 100, calories: 174, imageName: "chilliAndTomato")
     ]
+
+    mutating func getSortedInfo(selectedSortMap: [SortTypes: SortState]) {
+        switch (selectedSortMap[.calories], selectedSortMap[.time]) {
+        case (.fromMostToLeast, .withoutSort):
+            fishRecepies.sort { $0.calories > $1.calories }
+        case (.fromLeastToMost, .withoutSort):
+            fishRecepies.sort { $0.calories < $1.calories }
+        case (.withoutSort, .fromMostToLeast):
+            fishRecepies.sort { $0.cookTime > $1.cookTime }
+        case (.withoutSort, .fromLeastToMost):
+            fishRecepies.sort { $0.cookTime < $1.cookTime }
+        case (.withoutSort, .withoutSort):
+            fishRecepies.sort { $0.title < $1.title }
+        case (.fromMostToLeast, .fromMostToLeast):
+            fishRecepies = fishRecepies
+                .sorted { $0.cookTime > $1.cookTime }
+                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories > $1.calories }
+        case (.fromLeastToMost, .fromMostToLeast):
+            fishRecepies = fishRecepies
+                .sorted { $0.cookTime > $1.cookTime }
+                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories < $1.calories }
+        case (.fromMostToLeast, .fromLeastToMost):
+            fishRecepies = fishRecepies
+                .sorted { $0.cookTime < $1.cookTime }
+                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories > $1.calories }
+        case (.fromLeastToMost, .fromLeastToMost):
+            fishRecepies = fishRecepies
+                .sorted { $0.cookTime < $1.cookTime }
+                .sorted { $0.cookTime == $1.cookTime ? true : $0.calories < $1.calories }
+        default:
+            break
+        }
+    }
 }

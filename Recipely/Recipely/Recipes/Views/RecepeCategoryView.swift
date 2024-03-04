@@ -7,6 +7,8 @@ import UIKit
 protocol RecepeCategoryViewProtocol: AnyObject {
     ///  Презентер экрана
     var presenter: RecepeCategoryPresenterProtocol? { get set }
+    /// ОБновить таблицу
+    func reloadTableView()
 }
 
 /// Экран рецептов
@@ -167,13 +169,17 @@ final class RecepeCategoryView: UIViewController {
 
 // MARK: - RecepeCategoryView + RecepeCategoryViewProtocol
 
-extension RecepeCategoryView: RecepeCategoryViewProtocol {}
+extension RecepeCategoryView: RecepeCategoryViewProtocol {
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+}
 
 // MARK: - RecepeCategoryView + SortPickerViewDataSource
 
 extension RecepeCategoryView: SortPickerViewDataSource {
-    func sortPickerImage(indexPath: IndexPath, beforeSelected: Bool) -> String {
-        presenter?.selectedSort(sortTypes[indexPath.row], previousState: beforeSelected) ?? ""
+    func sortPickerImage(indexPath: IndexPath) -> (String, Bool) {
+        presenter?.selectedSort(sortTypes[indexPath.row]) ?? ("", false)
     }
 
     func sortPickerCount(_ sortPicker: SortPickerView) -> Int {

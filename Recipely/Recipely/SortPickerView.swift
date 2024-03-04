@@ -10,7 +10,7 @@ protocol SortPickerViewDataSource {
     /// Тайтлы для кнопок пикера
     func sortPickerTitle(_ sortPicker: SortPickerView, indexPath: IndexPath) -> String
     /// Картинка для кнопки пикера при нажатии на нее
-    func sortPickerImage(indexPath: IndexPath, beforeSelected: Bool) -> String
+    func sortPickerImage(indexPath: IndexPath) -> (String, Bool)
 }
 
 /// Пикер сортировки
@@ -78,16 +78,12 @@ final class SortPickerView: UIControl {
 
     @objc private func selectedButton(sender: UIButton) {
         let selectedButton = buttons[sender.tag]
-        let newImageName = dataSource?.sortPickerImage(
-            indexPath: IndexPath(row: sender.tag, section: 0),
-            beforeSelected: selectedButton.isSelected
-        )
-        selectedButton.setImage(UIImage(named: newImageName ?? ""), for: .selected)
-        for button in buttons {
-            button.isSelected = false
-            button.backgroundColor = .backgroundTeal
-        }
-        selectedButton.isSelected = true
-        selectedButton.backgroundColor = .selectedTitle
+        guard let (newImageName, isSelected) = dataSource?.sortPickerImage(
+            indexPath: IndexPath(row: sender.tag, section: 0)
+        ) else { return }
+
+        selectedButton.setImage(UIImage(named: newImageName), for: .selected)
+        selectedButton.isSelected = isSelected
+        selectedButton.backgroundColor = isSelected ? .selectedTitle : .backgroundTeal
     }
 }
