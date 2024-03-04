@@ -97,6 +97,7 @@ final class RecepeCategoryView: UIViewController {
         view.backgroundColor = .white
         view.addSubview(recipesSearchBar)
         sortPickerView.dataSource = self
+        recipesSearchBar.delegate = self
         view.addSubview(sortPickerView)
         view.addSubview(tableView)
     }
@@ -213,5 +214,21 @@ extension RecepeCategoryView: UITableViewDataSource {
 extension RecepeCategoryView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+    }
+}
+
+// MARK: - RecepeCategoryView + UISearchBarDelegate
+
+extension RecepeCategoryView: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count >= 3 {
+            presenter?.searchRecipes(withText: searchText)
+        } else {
+            presenter?.searchRecipes(withText: "")
+        }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter?.searchRecipes(withText: "")
     }
 }

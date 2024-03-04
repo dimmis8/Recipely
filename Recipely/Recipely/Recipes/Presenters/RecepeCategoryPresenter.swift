@@ -17,6 +17,8 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     func getRecipeCount() -> Int
     /// Переход на экран деталей
     func goToRecipeDetail(numberOfRecipe: Int)
+    /// Поиск рецептов по запросу
+    func searchRecipes(withText text: String)
 }
 
 /// Презентер экрана категории рецептов
@@ -41,6 +43,8 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     }
 
     private var sourceOfRecepies = SourceOfRecepies()
+    private var isSearching = false
+    private var searchedRecipes: [Recipe] = []
 
     // MARK: - Initializers
 
@@ -78,10 +82,31 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     }
 
     func getRecipeInfo(forNumber number: Int) -> Recipe {
-        sourceOfRecepies.fishRecepies[number]
+        if isSearching {
+            return searchedRecipes[number]
+        } else {
+            return sourceOfRecepies.fishRecepies[number]
+        }
     }
 
     func getRecipeCount() -> Int {
-        sourceOfRecepies.fishRecepies.count
+        if isSearching {
+            return searchedRecipes.count
+        } else {
+            return sourceOfRecepies.fishRecepies.count
+        }
+    }
+
+    func searchRecipes(withText text: String) {
+        guard !text.isEmpty else {
+            isSearching = false
+            searchedRecipes = []
+            view?.reloadTableView()
+            return
+        }
+        isSearching = true
+        searchedRecipes = sourceOfRecepies.fishRecepies
+            .filter { $0.title.lowercased().prefix(text.count) == text.lowercased() }
+        view?.reloadTableView()
     }
 }
