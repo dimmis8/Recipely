@@ -17,8 +17,6 @@ protocol ProfileViewPresenterProtocol: AnyObject {
     func showBonuses()
     /// Обработка нажатия кнопки изменения имени
     func actionChangeName()
-    /// Обработка нажатия кнопки изменения фото
-    func actionChangePhoto()
     /// Изменение имени пользователя
     func editNameSurname(name: String)
     /// Открытие информации о приватности
@@ -68,10 +66,7 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
         view?.setNewNameFromSource()
     }
 
-    // TODO:
-    func actionChangePhoto() {}
-
     func openPrivacyInfo() {
-        coordinator?.openPrivacyInfo()
+        view?.showPrivacyCard(privacyText: infoSource?.privacyText ?? "error")
     }
 }

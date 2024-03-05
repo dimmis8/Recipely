@@ -13,8 +13,8 @@ protocol ProfileViewProtocol: AnyObject {
     func showLogOutAlert()
     /// Установка нового имени из источника данных
     func setNewNameFromSource()
-    /// Установка нового фото из источника данных
-    func setPhotoFromSource()
+    /// Показ вью с информацией прайвеси
+    func showPrivacyCard(privacyText: String)
 }
 
 /// Экран профиля
@@ -44,6 +44,8 @@ final class ProfileViewController: UIViewController {
         label.font = .verdanaBold(ofSize: 28)
         return label
     }()
+
+    private lazy var backgroundView = UIView(frame: view.frame)
 
     private let tableView = UITableView()
 
@@ -107,7 +109,7 @@ final class ProfileViewController: UIViewController {
         presenter?.logOutAction()
     }
 
-    func showAlert(title: String, buttonAgreeTitle: String, handler: VoidHandler?) {
+    private func showAlert(title: String, buttonAgreeTitle: String, handler: VoidHandler?) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         let actionClose = UIAlertAction(title: Constants.closeButtonText, style: .default)
         let actionYes = UIAlertAction(title: buttonAgreeTitle, style: .default) { _ in
@@ -141,11 +143,39 @@ extension ProfileViewController: ProfileViewProtocol {
         present(alertView, animated: true)
     }
 
-    // TODO:
-    func setPhotoFromSource() {}
-
     func setNewNameFromSource() {
         tableView.reloadData()
+    }
+
+    func showPrivacyCard(privacyText: String) {
+        backgroundView.backgroundColor = UIColor(white: 0.2, alpha: 0.0)
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        let privacyView = PrivacyView(frame: CGRect(
+            origin: CGPoint(x: 0, y: view.frame.height),
+            size: view.frame.size
+        ), privacyText: privacyText) { [weak self] in
+            Timer.scheduledTimer(
+                timeInterval: 0.3,
+                target: self ?? UIViewController(),
+                selector: #selector(self?.closePrivacy),
+                userInfo: nil,
+                repeats: false
+            )
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                self?.backgroundView.backgroundColor = UIColor(white: 0.2, alpha: 0)
+            }
+        }
+
+        backgroundView.addSubview(privacyView)
+        windowScene?.windows.last?.addSubview(backgroundView)
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.backgroundView.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
+            privacyView.frame.origin.y = (self?.view.frame.height ?? 0) - 100
+        }
+    }
+
+    @objc private func closePrivacy() {
+        backgroundView.removeFromSuperview()
     }
 }
 
@@ -194,9 +224,7 @@ extension ProfileViewController: UITableViewDataSource {
             ) as? UserInfoViewCell, let userInfo = presenter?.getUserInformation() else { return UITableViewCell() }
             cell.setUserInformation(userInfo) { [weak self] in
                 self?.presenter?.actionChangeName()
-            } changePhotoComplition: { [weak self] in
-                self?.presenter?.actionChangePhoto()
-            }
+            } changePhotoComplition: {}
 
             return cell
 
