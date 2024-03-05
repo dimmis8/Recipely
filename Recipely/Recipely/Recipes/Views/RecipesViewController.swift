@@ -101,11 +101,12 @@ final class RecipesViewController: UIViewController {
 
 extension RecipesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let numerOfItems = presenter?.getCategoryCount() {
+        switch presenter?.getCategoryCount() {
+        case let .succes(categories):
             collectionView.isScrollEnabled = true
             collectionView.allowsSelection = true
-            return numerOfItems
-        } else {
+            return categories?.count ?? 0
+        default:
             collectionView.isScrollEnabled = false
             collectionView.allowsSelection = false
             return 8
@@ -116,14 +117,18 @@ extension RecipesViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let category = presenter?.getInfo(categoryNumber: indexPath.item)
         guard let cell = collectionView
             .dequeueReusableCell(
                 withReuseIdentifier: RecipesCollectionViewCell.identifier,
                 for: indexPath
             ) as? RecipesCollectionViewCell
         else { return UICollectionViewCell() }
-        cell.setInfo(info: category)
+        switch presenter?.getInfo() {
+        case let .succes(categories):
+            cell.setInfo(info: categories?[indexPath.item])
+        default:
+            cell.setInfo(info: nil)
+        }
         return cell
     }
 }

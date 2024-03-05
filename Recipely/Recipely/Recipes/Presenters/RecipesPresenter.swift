@@ -8,9 +8,9 @@ protocol RecipesViewPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
     init(view: RecipesViewProtocol, coordinator: RecipesCoordinator)
     /// Функция получения информации о ячейке
-    func getInfo(categoryNumber: Int) -> DishCategory?
+    func getInfo() -> ViewData<[DishCategory]>
     /// Получение информации о количестве категорий
-    func getCategoryCount() -> Int?
+    func getCategoryCount() -> ViewData<[DishCategory]>
     /// Переход на экран категории
     func goToCategory(_ category: RecipeCategories)
 }
@@ -23,12 +23,14 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
     private weak var coordinator: RecipesCoordinator?
     private weak var view: RecipesViewProtocol?
     private var isFirstRequest = true
+    private var stateOfLoading: ViewData<[DishCategory]>
 
     // MARK: - Initializers
 
     required init(view: RecipesViewProtocol, coordinator: RecipesCoordinator) {
         self.view = view
         self.coordinator = coordinator
+        stateOfLoading = .initial
     }
 
     // MARK: - Public Methods
@@ -37,16 +39,13 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
         coordinator?.goToCategory(category)
     }
 
-    func getInfo(categoryNumber: Int) -> DishCategory? {
-        if isFirstRequest {
-            return nil
-        } else {
-            return informationSource.categories[categoryNumber]
-        }
+    func getInfo() -> ViewData<[DishCategory]> {
+        stateOfLoading
     }
 
-    func getCategoryCount() -> Int? {
+    func getCategoryCount() -> ViewData<[DishCategory]> {
         if isFirstRequest {
+            stateOfLoading = .loading(nil)
             Timer.scheduledTimer(
                 timeInterval: 3,
                 target: self,
@@ -54,16 +53,15 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
                 userInfo: nil,
                 repeats: false
             )
-            return nil
-        } else {
-            return informationSource.categories.count
         }
+        return stateOfLoading
     }
 
     // MARK: - Private Methods
 
     @objc private func setInfo() {
         isFirstRequest = false
+        stateOfLoading = .succes(informationSource.categories)
         view?.reloadCollectionView()
     }
 }

@@ -53,9 +53,8 @@ final class RecipeDetailView: UIViewController {
 
     private let barView = UIView()
 
-    private lazy var recipeLabel: UILabel = {
+    private let recipeLabel: UILabel = {
         let recipeLabel = UILabel()
-        recipeLabel.text = presenter?.getRecipeInfo()?.title
         recipeLabel.font = .verdanaBold(ofSize: 20)
         recipeLabel.numberOfLines = 0
         recipeLabel.textAlignment = .center
@@ -196,11 +195,13 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesImageDetailCell.identifier,
                 for: indexPath
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
-            if let recipe = presenter?.getRecipeInfo() {
+            switch presenter?.getRecipeInfo() {
+            case let .succes(recipe):
+                recipeLabel.text = recipe?.title
                 tableView.isScrollEnabled = true
                 tableView.allowsSelection = true
                 cell.getInfo(recipe: recipe)
-            } else {
+            default:
                 tableView.isScrollEnabled = false
                 tableView.allowsSelection = false
                 cell.getInfo(recipe: nil)
@@ -211,14 +212,24 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
-            cell.getCharacteristics(recipe: presenter?.getRecipeInfo())
+            switch presenter?.getRecipeInfo() {
+            case let .succes(recipe):
+                cell.getCharacteristics(recipe: recipe)
+            default:
+                cell.getCharacteristics(recipe: nil)
+            }
             return cell
         case .description:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecipesDescriptionDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
-            cell.setText(presenter?.getRecipeInfo()?.description ?? "")
+            switch presenter?.getRecipeInfo() {
+            case let .succes(recipe):
+                cell.setText(recipe?.description ?? "")
+            default:
+                cell.setText("")
+            }
             return cell
         }
     }

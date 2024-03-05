@@ -228,20 +228,21 @@ extension ProfileViewController: UITableViewDataSource {
                 withIdentifier: UserInfoViewCell.identifier,
                 for: indexPath
             ) as? UserInfoViewCell else { return UITableViewCell() }
-            if let userInfo = presenter?.getUserInformation() {
+
+            switch presenter?.getUserInformation() {
+            case let .succes(userInfo):
                 tableView.isScrollEnabled = true
                 tableView.allowsSelection = true
                 cell.setUserInformation(userInfo) { [weak self] in
                     self?.presenter?.actionChangeName()
                 } changePhotoComplition: {}
-            } else {
+            default:
                 tableView.isScrollEnabled = false
                 tableView.allowsSelection = false
                 cell.setUserInformation(nil) { [weak self] in
                     self?.presenter?.actionChangeName()
                 } changePhotoComplition: {}
             }
-
             return cell
 
         case .profileButtons:

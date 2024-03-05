@@ -8,7 +8,7 @@ protocol ProfileViewPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью источника данных
     init(view: ProfileViewProtocol, infoSource: InfoSourceProtocol, coordinator: ProfileCoordinator)
     /// Получение информации о пользователе
-    func getUserInformation() -> UserInfo?
+    func getUserInformation() -> ViewData<UserInfo>
     /// Выход из аккаунта
     func logOut()
     /// Обработка нажатия кнопки Log out
@@ -31,6 +31,7 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
     private weak var view: ProfileViewProtocol?
     private var infoSource: InfoSourceProtocol?
     private var isFirstRequest = true
+    private var stateOfLoading: ViewData<UserInfo>
 
     // MARK: - Initializers
 
@@ -38,12 +39,14 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
         self.view = view
         self.infoSource = infoSource
         self.coordinator = coordinator
+        stateOfLoading = .initial
     }
 
     // MARK: - Public Methods
 
-    func getUserInformation() -> UserInfo? {
+    func getUserInformation() -> ViewData<UserInfo> {
         if isFirstRequest {
+            stateOfLoading = .loading(nil)
             Timer.scheduledTimer(
                 timeInterval: 3,
                 target: self,
@@ -51,10 +54,8 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
                 userInfo: nil,
                 repeats: false
             )
-            return nil
-        } else {
-            return infoSource?.getUserInfo()
         }
+        return stateOfLoading
     }
 
     func logOutAction() {
@@ -86,6 +87,7 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
 
     @objc private func setInfo() {
         isFirstRequest = false
+        stateOfLoading = .succes(infoSource?.getUserInfo())
         view?.reloadTableView()
     }
 }

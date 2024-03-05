@@ -12,9 +12,9 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Изменение состояние сортировки рецептов
     func selectedSort(_ sortType: SortTypes) -> (String, Bool)
     /// Получение информации о рецепте для ячейки
-    func getRecipeInfo(forNumber number: Int) -> Recipe?
+    func getRecipeInfo() -> ViewData<[Recipe]>
     /// Получение информации о количестве рецептов
-    func getRecipeCount() -> Int?
+    func getRecipeCount() -> ViewData<[Recipe]>
     /// Переход на экран деталей
     func goToRecipeDetail(numberOfRecipe: Int)
     /// Поиск рецептов по запросу
@@ -38,6 +38,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     private var selectedSortMap: [SortTypes: SortState] = [.calories: .withoutSort, .time: .withoutSort] {
         didSet {
             sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+            stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
             view?.reloadTableView()
         }
     }
@@ -52,7 +53,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     required init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator) {
         self.view = view
         self.coordinator = coordinator
-        self.stateOfLoading = .initial
+        stateOfLoading = .initial
     }
 
     // MARK: - Public Methods
@@ -83,16 +84,13 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         coordinator?.openRecipeDetails(recipe: recipe)
     }
 
-    func getRecipeInfo(forNumber number: Int) -> Recipe? {
-        if isFirstRequest {
-            return nil
-        } else {
-            return sourceOfRecepies.recipesToShow[number]
-        }
+    func getRecipeInfo() -> ViewData<[Recipe]> {
+        stateOfLoading
     }
 
-    func getRecipeCount() -> Int? {
+    func getRecipeCount() -> ViewData<[Recipe]> {
         if isFirstRequest {
+            stateOfLoading = .loading(nil)
             Timer.scheduledTimer(
                 timeInterval: 3,
                 target: self,
@@ -100,22 +98,21 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
                 userInfo: nil,
                 repeats: false
             )
-            return nil
-        } else {
-            sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
-            return sourceOfRecepies.recipesToShow.count
         }
+        return stateOfLoading
     }
 
     func searchRecipes(withText text: String) {
         guard !text.isEmpty else {
             isSearching = false
             sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+            stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
             view?.reloadTableView()
             return
         }
         isSearching = true
         sourceOfRecepies.searchRecipes(withText: text, selectedSortMap: selectedSortMap)
+        stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
         view?.reloadTableView()
     }
 
@@ -123,6 +120,8 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
 
     @objc private func setInfo() {
         isFirstRequest = false
+        sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+        stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
         view?.reloadTableView()
     }
 }

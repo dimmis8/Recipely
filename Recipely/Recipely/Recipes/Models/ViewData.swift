@@ -1,4 +1,4 @@
-// viewData.swift
+// ViewData.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
@@ -8,9 +8,9 @@ enum ViewData<T> {
     /// Инициализация
     case initial
     /// Загрузка
-    case loading(T)
+    case loading(T?)
     /// Данные получены
-    case succes(T)
+    case succes(T?)
     /// Ошибка
-    case failure(T)
+    case failure(T?)
 }

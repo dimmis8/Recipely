@@ -207,11 +207,12 @@ extension RecepeCategoryView: SortPickerViewDataSource {
 
 extension RecepeCategoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let numerOfRows = presenter?.getRecipeCount() {
+        switch presenter?.getRecipeCount() {
+        case let .succes(recipes):
             tableView.isScrollEnabled = true
             tableView.allowsSelection = true
-            return numerOfRows
-        } else {
+            return recipes?.count ?? 0
+        default:
             tableView.isScrollEnabled = false
             tableView.allowsSelection = false
             return 8
@@ -223,7 +224,12 @@ extension RecepeCategoryView: UITableViewDataSource {
             withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
-        cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row))
+        switch presenter?.getRecipeInfo() {
+        case let .succes(recipes):
+            cell.loadInfo(recipe: recipes?[indexPath.row])
+        default:
+            cell.loadInfo(recipe: nil)
+        }
         return cell
     }
 }
