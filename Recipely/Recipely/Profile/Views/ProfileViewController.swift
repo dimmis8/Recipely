@@ -5,7 +5,7 @@ import UIKit
 
 /// Протокол экрана профиля
 protocol ProfileViewProtocol: AnyObject {
-    ///  Презентер экрана
+    /// Презентер экрана
     var presenter: ProfileViewPresenterProtocol? { get set }
     /// Показ алерта с полем для измененеия имени
     func showChangeNameAlert()
@@ -15,6 +15,8 @@ protocol ProfileViewProtocol: AnyObject {
     func setNewNameFromSource()
     /// Показ вью с информацией прайвеси
     func showPrivacyCard(privacyText: String)
+    /// Обновление данных
+    func reloadTableView()
 }
 
 /// Экран профиля
@@ -174,6 +176,10 @@ extension ProfileViewController: ProfileViewProtocol {
         }
     }
 
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+
     @objc private func closePrivacy() {
         backgroundView.removeFromSuperview()
     }
@@ -221,10 +227,20 @@ extension ProfileViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: UserInfoViewCell.identifier,
                 for: indexPath
-            ) as? UserInfoViewCell, let userInfo = presenter?.getUserInformation() else { return UITableViewCell() }
-            cell.setUserInformation(userInfo) { [weak self] in
-                self?.presenter?.actionChangeName()
-            } changePhotoComplition: {}
+            ) as? UserInfoViewCell else { return UITableViewCell() }
+            if let userInfo = presenter?.getUserInformation() {
+                tableView.isScrollEnabled = true
+                tableView.allowsSelection = true
+                cell.setUserInformation(userInfo) { [weak self] in
+                    self?.presenter?.actionChangeName()
+                } changePhotoComplition: {}
+            } else {
+                tableView.isScrollEnabled = false
+                tableView.allowsSelection = false
+                cell.setUserInformation(nil) { [weak self] in
+                    self?.presenter?.actionChangeName()
+                } changePhotoComplition: {}
+            }
 
             return cell
 

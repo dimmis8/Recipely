@@ -10,6 +10,7 @@ final class PrivacyView: UIView {
     enum Constants {
         static let titleText = "Terms of Use"
         static let cardHandleAreaHeight: CGFloat = 34
+        static let closeHighRatio = 0.85
         static let startCardHeight: CGFloat = 100
     }
 
@@ -214,11 +215,20 @@ final class PrivacyView: UIView {
             fractionComplite = cardVisible ? fractionComplite : -fractionComplite
             updateInteractiveTransition(fractionCompleted: fractionComplite)
         case .ended:
-            let translation = recognizer.translation(in: handleArea).y
-            if translation > UIScreen.main.bounds.height - 250 {
+            runningAnimations.forEach { $0.stopAnimation(true) }
+            runningAnimations.removeAll()
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            guard let height = windowScene?.windows.last?.frame.height else { return }
+
+            switch recognizer.location(in: windowScene?.windows.last).y {
+            case let location where location > height * Constants.closeHighRatio:
                 dismissCard()
-            } else {
-                continueIntaractiveTransition()
+            case let location where location > height * 0.5:
+                cardVisible = true
+                animateTransitionIfNeeded(state: .collapsed, duration: 0.4)
+            default:
+                cardVisible = false
+                animateTransitionIfNeeded(state: .expanded, duration: 0.4)
             }
         default:
             break

@@ -30,6 +30,7 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
     private weak var coordinator: ProfileCoordinator?
     private weak var view: ProfileViewProtocol?
     private var infoSource: InfoSourceProtocol?
+    private var isFirstRequest = true
 
     // MARK: - Initializers
 
@@ -42,7 +43,18 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
     // MARK: - Public Methods
 
     func getUserInformation() -> UserInfo? {
-        infoSource?.getUserInfo()
+        if isFirstRequest {
+            Timer.scheduledTimer(
+                timeInterval: 3,
+                target: self,
+                selector: #selector(setInfo),
+                userInfo: nil,
+                repeats: false
+            )
+            return nil
+        } else {
+            return infoSource?.getUserInfo()
+        }
     }
 
     func logOutAction() {
@@ -68,5 +80,12 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
 
     func openPrivacyInfo() {
         view?.showPrivacyCard(privacyText: infoSource?.privacyText ?? "error")
+    }
+
+    // MARK: - Private Methods
+
+    @objc private func setInfo() {
+        isFirstRequest = false
+        view?.reloadTableView()
     }
 }

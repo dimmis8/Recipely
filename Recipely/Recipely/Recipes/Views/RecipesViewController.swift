@@ -7,6 +7,8 @@ import UIKit
 protocol RecipesViewProtocol: AnyObject {
     /// Презентер экрана
     var presenter: RecipesViewPresenterProtocol? { get set }
+    /// Перезагрузка коллекции
+    func reloadCollectionView()
 }
 
 /// Экран рецептов
@@ -54,6 +56,12 @@ final class RecipesViewController: UIViewController {
         deselectedSelectedRow()
     }
 
+    // MARK: - Public Methods
+
+    func reloadCollectionView() {
+        collectionView.reloadData()
+    }
+
     // MARK: - Private Methods
 
     private func setupView() {
@@ -92,12 +100,18 @@ final class RecipesViewController: UIViewController {
 // MARK: - Extension UICollectionViewDataSource
 
 extension RecipesViewController: UICollectionViewDataSource {
-    /// количество элементов в секции
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        presenter?.getCategoryCount() ?? 0
+        if let numerOfItems = presenter?.getCategoryCount() {
+            collectionView.isScrollEnabled = true
+            collectionView.allowsSelection = true
+            return numerOfItems
+        } else {
+            collectionView.isScrollEnabled = false
+            collectionView.allowsSelection = false
+            return 8
+        }
     }
 
-    /// создание и настройка ячейки
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
@@ -109,7 +123,7 @@ extension RecipesViewController: UICollectionViewDataSource {
                 for: indexPath
             ) as? RecipesCollectionViewCell
         else { return UICollectionViewCell() }
-        cell.setInfo(info: category ?? DishCategory(imageName: "", type: .chicken))
+        cell.setInfo(info: category)
         return cell
     }
 }

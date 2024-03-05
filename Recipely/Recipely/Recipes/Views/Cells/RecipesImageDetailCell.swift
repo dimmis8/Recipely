@@ -76,6 +76,10 @@ final class RecipesImageDetailCell: UITableViewCell {
         return label
     }()
 
+    // MARK: - Private Properties
+
+    private var isShimming = true
+
     // MARK: - Initialization
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -83,18 +87,37 @@ final class RecipesImageDetailCell: UITableViewCell {
         setUp()
     }
 
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUp()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if isShimming {
+            recipeImage.startShimmeringAnimation()
+        }
+        iconGram.isHidden = isShimming
+        iconCookingTime.isHidden = isShimming
+        gramView.isHidden = isShimming
+        cookingTimeView.isHidden = isShimming
+        gramLabel.isHidden = isShimming
+        cookingTimeTitleLabel.isHidden = isShimming
+        cookingTimeLabel.isHidden = isShimming
+    }
+
     // MARK: - Public Methods
 
-    func getInfo(recipe: Recipe) {
-        recipeImage.image = UIImage(named: recipe.imageName)
-        gramLabel.text = "\(recipe.weight) g"
-        cookingTimeLabel.text = "\(recipe.cookTime) min"
+    func getInfo(recipe: Recipe?) {
+        if let recipe = recipe {
+            isShimming = false
+            recipeImage.stopShimmeringAnimation()
+            recipeImage.image = UIImage(named: recipe.imageName)
+            gramLabel.text = "\(recipe.weight) g"
+            cookingTimeLabel.text = "\(recipe.cookTime) min"
+        } else {
+            isShimming = true
+        }
     }
 
     // MARK: - Private Methods

@@ -14,7 +14,7 @@ protocol RecipeDetailPresenterProtocol: AnyObject {
     /// Экшн кнопки назад
     func back()
     /// Получение данных рецепта
-    func getRecipeInfo() -> Recipe
+    func getRecipeInfo() -> Recipe?
 }
 
 /// Презентер экрана деталей рецептов
@@ -24,6 +24,7 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     private weak var coordinator: RecipesDetailCoordinatorProtocol?
     private weak var view: RecipeDetailViewProtocol?
     private var recipe: Recipe?
+    private var isFirstRequest = true
 
     // MARK: - Initializers
 
@@ -35,8 +36,19 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
 
     // MARK: - Public Methods
 
-    func getRecipeInfo() -> Recipe {
-        recipe ?? Recipe()
+    func getRecipeInfo() -> Recipe? {
+        if isFirstRequest {
+            Timer.scheduledTimer(
+                timeInterval: 3,
+                target: self,
+                selector: #selector(setInfo),
+                userInfo: nil,
+                repeats: false
+            )
+            return nil
+        } else {
+            return recipe
+        }
     }
 
     func back() {
@@ -49,5 +61,12 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
 
     func shareRecipe() {
         coordinator?.shareRecipe(text: recipe?.description ?? "")
+    }
+
+    // MARK: - Private Methods
+
+    @objc private func setInfo() {
+        isFirstRequest = false
+        view?.reloadTableView()
     }
 }

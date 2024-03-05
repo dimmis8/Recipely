@@ -9,6 +9,8 @@ protocol RecipeDetailViewProtocol: AnyObject {
     var presenter: RecipeDetailPresenterProtocol? { get set }
     /// Показать алерт о том, что функционал в разработке
     func showInDevelopAlert()
+    /// Перезагрузка данных
+    func reloadTableView()
 }
 
 /// Экран деталей рецепта
@@ -53,7 +55,7 @@ final class RecipeDetailView: UIViewController {
 
     private lazy var recipeLabel: UILabel = {
         let recipeLabel = UILabel()
-        recipeLabel.text = presenter?.getRecipeInfo().title
+        recipeLabel.text = presenter?.getRecipeInfo()?.title
         recipeLabel.font = .verdanaBold(ofSize: 20)
         recipeLabel.numberOfLines = 0
         recipeLabel.textAlignment = .center
@@ -194,21 +196,29 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesImageDetailCell.identifier,
                 for: indexPath
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
-            cell.getInfo(recipe: presenter?.getRecipeInfo() ?? Recipe())
+            if let recipe = presenter?.getRecipeInfo() {
+                tableView.isScrollEnabled = true
+                tableView.allowsSelection = true
+                cell.getInfo(recipe: recipe)
+            } else {
+                tableView.isScrollEnabled = false
+                tableView.allowsSelection = false
+                cell.getInfo(recipe: nil)
+            }
             return cell
         case .characteristics:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
-            cell.getCharacteristics(recipe: presenter?.getRecipeInfo() ?? Recipe())
+            cell.getCharacteristics(recipe: presenter?.getRecipeInfo())
             return cell
         case .description:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecipesDescriptionDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
-            cell.setText(presenter?.getRecipeInfo().description ?? "")
+            cell.setText(presenter?.getRecipeInfo()?.description ?? "")
             return cell
         }
     }
@@ -234,5 +244,9 @@ extension RecipeDetailView: RecipeDetailViewProtocol {
         let okAction = UIAlertAction(title: Constants.okAlertText, style: .cancel)
         alertController.addAction(okAction)
         present(alertController, animated: true)
+    }
+
+    func reloadTableView() {
+        tableView.reloadData()
     }
 }

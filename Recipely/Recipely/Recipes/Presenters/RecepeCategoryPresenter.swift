@@ -44,12 +44,15 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
 
     private var sourceOfRecepies = SourceOfRecepies()
     private var isSearching = false
+    private var isFirstRequest = true
+    private var stateOfLoading: ViewData<[Recipe]>
 
     // MARK: - Initializers
 
     required init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator) {
         self.view = view
         self.coordinator = coordinator
+        self.stateOfLoading = .initial
     }
 
     // MARK: - Public Methods
@@ -81,13 +84,27 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     }
 
     func getRecipeInfo(forNumber number: Int) -> Recipe? {
-        sourceOfRecepies.recipesToShow[number]
+        if isFirstRequest {
+            return nil
+        } else {
+            return sourceOfRecepies.recipesToShow[number]
+        }
     }
 
-
     func getRecipeCount() -> Int? {
-        sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
-        return sourceOfRecepies.recipesToShow.count
+        if isFirstRequest {
+            Timer.scheduledTimer(
+                timeInterval: 3,
+                target: self,
+                selector: #selector(setInfo),
+                userInfo: nil,
+                repeats: false
+            )
+            return nil
+        } else {
+            sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+            return sourceOfRecepies.recipesToShow.count
+        }
     }
 
     func searchRecipes(withText text: String) {
@@ -99,6 +116,13 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         }
         isSearching = true
         sourceOfRecepies.searchRecipes(withText: text, selectedSortMap: selectedSortMap)
+        view?.reloadTableView()
+    }
+
+    // MARK: - Private Methods
+
+    @objc private func setInfo() {
+        isFirstRequest = false
         view?.reloadTableView()
     }
 }

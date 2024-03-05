@@ -64,14 +64,6 @@ final class RecipeCell: UITableViewCell {
         return imageView
     }()
 
-    private let shimmersView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 12
-        view.backgroundColor = .systemGray6
-        view.isHidden = true
-        return view
-    }()
-
     // MARK: - Public Properties
 
     override var isSelected: Bool {
@@ -80,38 +72,58 @@ final class RecipeCell: UITableViewCell {
         }
     }
 
+    // MARK: - Private Properties
+
+    private var isShimming = true
+
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createView()
-//        createGradient()
         setConstraints()
-        makeShimmer()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if isShimming {
+            recipeImageView.startShimmeringAnimation()
+            recipeLabel.startShimmeringAnimation()
+            timerLabel.startShimmeringAnimation()
+            caloriesLabel.startShimmeringAnimation()
+        }
+        timerImageView.isHidden = isShimming
+        pizzaImageView.isHidden = isShimming
+        detailImageView.isHidden = isShimming
+    }
+
     // MARK: - Public Methods
 
     func loadInfo(recipe: Recipe?) {
         if let recipe = recipe {
+            isShimming = false
+            recipeImageView.stopShimmeringAnimation()
+            recipeLabel.stopShimmeringAnimation()
+            timerLabel.stopShimmeringAnimation()
+            caloriesLabel.stopShimmeringAnimation()
             recipeImageView.image = UIImage(named: recipe.imageName)
             recipeLabel.text = recipe.title
             timerLabel.text = "\(recipe.cookTime) min"
             caloriesLabel.text = "\(recipe.calories) kkal"
-        } else {}
+        } else {
+            isShimming = true
+        }
     }
 
     // MARK: - Private Methods
 
     private func createView() {
         selectionStyle = .none
-
         contentView.addSubview(background)
-        contentView.addSubview(shimmersView)
         background.addSubview(recipeImageView)
         background.addSubview(recipeLabel)
         background.addSubview(timerImageView)
@@ -122,7 +134,6 @@ final class RecipeCell: UITableViewCell {
     }
 
     private func setConstraints() {
-        setShimmersViewConstraints()
         setBackgroundViewConstraints()
         setRecipeImageViewConstraints()
         setRecipeLabelConstraints()
@@ -131,15 +142,6 @@ final class RecipeCell: UITableViewCell {
         setPizzaImageViewConstraints()
         setCaloriesLabelConstraints()
         setDetailImageViewConstraints()
-    }
-
-    private func setShimmersViewConstraints() {
-        shimmersView.translatesAutoresizingMaskIntoConstraints = false
-        shimmersView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
-        shimmersView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
-        shimmersView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6).isActive = true
-        shimmersView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6).isActive = true
-        shimmersView.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
 
     private func setBackgroundViewConstraints() {
@@ -205,91 +207,5 @@ final class RecipeCell: UITableViewCell {
         detailImageView.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -2).isActive = true
         detailImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         detailImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-
-    private func makeShimmer() {
-        Timer.scheduledTimer(
-            timeInterval: 3.0,
-            target: self,
-            selector: #selector(loadingHandler),
-            userInfo: nil,
-            repeats: false
-        )
-        shimmersView.isHidden = false
-        startShimmeringAnimation()
-    }
-
-    @objc private func loadingHandler() {
-        shimmersView.isHidden = true
-        stopShimmeringAnimation()
-    }
-}
-
-extension UIView {
-    // ->1
-    enum Direction: Int {
-        case topToBottom = 0
-        case bottomToTop
-        case leftToRight
-        case rightToLeft
-    }
-
-    func startShimmeringAnimation(
-        animationSpeed: Float = 1.4,
-        direction: Direction = .leftToRight,
-        repeatCount: Float = MAXFLOAT
-    ) {
-        // Create color  ->2
-        let lightColor = UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 0.1).cgColor
-        let blackColor = UIColor.black.cgColor
-
-        // Create a CAGradientLayer  ->3
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [blackColor, lightColor, blackColor]
-        gradientLayer.frame = CGRect(
-            x: -bounds.size.width,
-            y: -bounds.size.height,
-            width: 3 * bounds.size.width,
-            height: 4 * bounds.size.height
-        )
-
-        switch direction {
-        case .topToBottom:
-            gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-            gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-
-        case .bottomToTop:
-            gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
-            gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
-
-        case .leftToRight:
-            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
-            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
-
-        case .rightToLeft:
-            gradientLayer.startPoint = CGPoint(x: 1.0, y: 0.5)
-            gradientLayer.endPoint = CGPoint(x: 0.0, y: 0.5)
-        }
-
-        gradientLayer.locations = [0.35, 0.50, 0.1] // [0.4, 0.6]
-        layer.mask = gradientLayer
-
-        // Add animation over gradient Layer  ->4
-        CATransaction.begin()
-        let animation = CABasicAnimation(keyPath: "locations")
-        animation.fromValue = [0.0, 0.1, 0.2]
-        animation.toValue = [0.8, 0.9, 1.0]
-        animation.duration = CFTimeInterval(animationSpeed)
-        animation.repeatCount = repeatCount
-        CATransaction.setCompletionBlock { [weak self] in
-            guard let self = self else { return }
-            self.layer.mask = nil
-        }
-        gradientLayer.add(animation, forKey: "shimmerAnimation")
-        CATransaction.commit()
-    }
-
-    func stopShimmeringAnimation() {
-        layer.mask = nil
     }
 }

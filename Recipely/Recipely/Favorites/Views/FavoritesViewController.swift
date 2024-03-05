@@ -9,6 +9,8 @@ protocol FavoritesViewProtocol: AnyObject {
     var presenter: FavoritesViewPresenterProtocol? { get set }
     /// Скрытие коллекции
     func hideCollectionView(_ isHiden: Bool)
+    /// Обновление данных таблицы
+    func reloadTableView()
 }
 
 /// Экран избарнного
@@ -176,13 +178,25 @@ extension FavoritesViewController: FavoritesViewProtocol {
         emptyFavoritesLabel.isHidden = !isHiden
         emptyDescriptionLabel.isHidden = !isHiden
     }
+
+    func reloadTableView() {
+        tableView.reloadData()
+    }
 }
 
 // MARK: - FavoritesViewController + UITableViewDataSource
 
 extension FavoritesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.getRecipeCount() ?? 0
+        if let numerOfRows = presenter?.getRecipeCount() {
+            tableView.isScrollEnabled = true
+            tableView.allowsSelection = true
+            return numerOfRows
+        } else {
+            tableView.isScrollEnabled = false
+            tableView.allowsSelection = false
+            return 8
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -190,7 +204,7 @@ extension FavoritesViewController: UITableViewDataSource {
             withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
-        cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
+        cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row))
         return cell
     }
 }
