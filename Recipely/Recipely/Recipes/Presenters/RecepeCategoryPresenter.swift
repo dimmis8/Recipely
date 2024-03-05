@@ -84,6 +84,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         sourceOfRecepies.recipesToShow[number]
     }
 
+
     func getRecipeCount() -> Int? {
         sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
         return sourceOfRecepies.recipesToShow.count
