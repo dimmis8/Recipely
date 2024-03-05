@@ -12,9 +12,9 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Изменение состояние сортировки рецептов
     func selectedSort(_ sortType: SortTypes) -> (String, Bool)
     /// Получение информации о рецепте для ячейки
-    func getRecipeInfo(forNumber number: Int) -> Recipe
+    func getRecipeInfo(forNumber number: Int) -> Recipe?
     /// Получение информации о количестве рецептов
-    func getRecipeCount() -> Int
+    func getRecipeCount() -> Int?
     /// Переход на экран деталей
     func goToRecipeDetail(numberOfRecipe: Int)
     /// Поиск рецептов по запросу
@@ -80,11 +80,11 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         coordinator?.openRecipeDetails(recipe: recipe)
     }
 
-    func getRecipeInfo(forNumber number: Int) -> Recipe {
+    func getRecipeInfo(forNumber number: Int) -> Recipe? {
         sourceOfRecepies.recipesToShow[number]
     }
 
-    func getRecipeCount() -> Int {
+    func getRecipeCount() -> Int? {
         sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
         return sourceOfRecepies.recipesToShow.count
     }

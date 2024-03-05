@@ -77,6 +77,7 @@ final class RecipeCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createView()
+//        createGradient()
         setConstraints()
     }
 
@@ -86,11 +87,13 @@ final class RecipeCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func loadInfo(recipe: Recipe) {
-        recipeImageView.image = UIImage(named: recipe.imageName)
-        recipeLabel.text = recipe.title
-        timerLabel.text = "\(recipe.cookTime) min"
-        caloriesLabel.text = "\(recipe.calories) kkal"
+    func loadInfo(recipe: Recipe?) {
+        if let recipe = recipe {
+            recipeImageView.image = UIImage(named: recipe.imageName)
+            recipeLabel.text = recipe.title
+            timerLabel.text = "\(recipe.cookTime) min"
+            caloriesLabel.text = "\(recipe.calories) kkal"
+        } else {}
     }
 
     // MARK: - Private Methods

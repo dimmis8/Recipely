@@ -207,7 +207,7 @@ extension RecepeCategoryView: SortPickerViewDataSource {
 
 extension RecepeCategoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.getRecipeCount() ?? 0
+        presenter?.getRecipeCount() ?? 8
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -215,7 +215,7 @@ extension RecepeCategoryView: UITableViewDataSource {
             withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
-        cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
+        cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row))
         return cell
     }
 }
