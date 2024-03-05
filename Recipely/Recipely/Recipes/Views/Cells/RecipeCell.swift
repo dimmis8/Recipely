@@ -15,6 +15,7 @@ final class RecipeCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = .backgroundTeal
         view.layer.cornerRadius = 12
+        view.layer.borderColor = UIColor.selectedTitle.cgColor
         return view
     }()
 
@@ -63,13 +64,6 @@ final class RecipeCell: UITableViewCell {
         return imageView
     }()
 
-    private let gradient: CAGradientLayer = {
-        let gradient = CAGradientLayer()
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
-        return gradient
-    }()
-
     private let shimmersView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 12
@@ -77,6 +71,14 @@ final class RecipeCell: UITableViewCell {
         view.isHidden = true
         return view
     }()
+
+    // MARK: - Public Properties
+
+    override var isSelected: Bool {
+        didSet {
+            background.layer.borderWidth = isSelected ? 2 : 0
+        }
+    }
 
     // MARK: - Initializers
 

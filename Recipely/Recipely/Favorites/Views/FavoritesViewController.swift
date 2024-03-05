@@ -76,6 +76,11 @@ final class FavoritesViewController: UIViewController {
         createConstraints()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        deselectedSelectedRow()
+    }
+
     // MARK: - Private Methods
 
     private func setupView() {
@@ -104,6 +109,12 @@ final class FavoritesViewController: UIViewController {
         createEmptyDescriptionLabelConstraints()
         createEmptyIconBackgroundViewConstraints()
         createEmptyIconImageViewConstraints()
+    }
+
+    private func deselectedSelectedRow() {
+        if let selectedIndex = tableView.indexPathForSelectedRow {
+            tableView.cellForRow(at: selectedIndex)?.isSelected = false
+        }
     }
 
     private func createTableViewConstraints() {
@@ -189,6 +200,7 @@ extension FavoritesViewController: UITableViewDataSource {
 extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+        tableView.cellForRow(at: indexPath)?.isSelected = true
     }
 
     func tableView(
@@ -198,5 +210,9 @@ extension FavoritesViewController: UITableViewDelegate {
     ) {
         presenter?.removeRecipe(indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
     }
 }

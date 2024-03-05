@@ -70,6 +70,11 @@ final class RecepeCategoryView: UIViewController {
         createConstraints()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        deselectedSelectedRow()
+    }
+
     // MARK: - Private Methods
 
     private func setupNavigationBar() {
@@ -107,6 +112,12 @@ final class RecepeCategoryView: UIViewController {
         createBarViewConstraints()
         createSortPickerViewConstraints()
         createTableViewConstraints()
+    }
+
+    private func deselectedSelectedRow() {
+        if let selectedIndex = tableView.indexPathForSelectedRow {
+            tableView.cellForRow(at: selectedIndex)?.isSelected = false
+        }
     }
 
     private func createBackBarButtonConstraints() {
@@ -214,6 +225,11 @@ extension RecepeCategoryView: UITableViewDataSource {
 extension RecepeCategoryView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+        tableView.cellForRow(at: indexPath)?.isSelected = true
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
     }
 }
 

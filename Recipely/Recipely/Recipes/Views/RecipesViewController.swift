@@ -49,6 +49,11 @@ final class RecipesViewController: UIViewController {
         collectionView.backgroundColor = .white
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        deselectedSelectedRow()
+    }
+
     // MARK: - Private Methods
 
     private func setupView() {
@@ -75,6 +80,12 @@ final class RecipesViewController: UIViewController {
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+
+    private func deselectedSelectedRow() {
+        if let selectedIndex = collectionView.indexPathsForSelectedItems?.first {
+            collectionView.deselectItem(at: selectedIndex, animated: false)
+        }
     }
 }
 
