@@ -90,7 +90,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     }
 
     func getRecipeCount() -> Int {
-        if isSearching {
+        if isSearching == true {
             return searchedRecipes.count
         } else {
             return sourceOfRecepies.fishRecepies.count
