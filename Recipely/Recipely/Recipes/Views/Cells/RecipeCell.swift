@@ -15,6 +15,7 @@ final class RecipeCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = .backgroundTeal
         view.layer.cornerRadius = 12
+        view.layer.borderColor = UIColor.selectedTitle.cgColor
         return view
     }()
 
@@ -62,6 +63,14 @@ final class RecipeCell: UITableViewCell {
         imageView.image = .detailsIcon
         return imageView
     }()
+
+    // MARK: - Public Properties
+
+    override var isSelected: Bool {
+        didSet {
+            background.layer.borderWidth = isSelected ? 2 : 0
+        }
+    }
 
     // MARK: - Initializers
 

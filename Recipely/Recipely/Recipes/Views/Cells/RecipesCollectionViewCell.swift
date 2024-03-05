@@ -31,6 +31,15 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
+    // MARK: - Public Properties
+
+    override var isSelected: Bool {
+        didSet {
+            contentView.layer.borderWidth = isSelected ? 2 : 0
+            titleLabel.backgroundColor = isSelected ? .tappedButtonAlpha : .darkTitleView
+        }
+    }
+
     // MARK: - Initialization
 
     override init(frame: CGRect) {
@@ -40,7 +49,6 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         setConstraints()
     }
 
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupCell()
@@ -52,6 +60,8 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
 
     private func setupCell() {
         contentView.layer.cornerRadius = 18
+        contentView.layer.borderWidth = 0
+        contentView.layer.borderColor = UIColor.tappedButtonBounds.cgColor
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowOffset = CGSize(width: 2, height: 5)
         contentView.layer.shadowRadius = 3
@@ -92,12 +102,6 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         titleLabel.trailingAnchor.constraint(equalTo: darkTitleView.trailingAnchor).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: darkTitleView.bottomAnchor).isActive = true
         titleLabel.topAnchor.constraint(equalTo: darkTitleView.topAnchor).isActive = true
-    }
-
-    @objc private func addButtonTapped() {
-        titleLabel.backgroundColor = .tappedButtonAlpha
-        recipesImageView.layer.borderWidth = 2
-        recipesImageView.layer.borderColor = UIColor.tappedButtonBounds.cgColor
     }
 
     func setInfo(info: DishCategory) {
