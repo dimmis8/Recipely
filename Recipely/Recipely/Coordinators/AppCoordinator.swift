@@ -13,7 +13,7 @@ final class AppCoordinator: BaseCoodinator {
     // MARK: - Public Methods
 
     override func start() {
-        toMain()
+        t​oAutorization()
     }
 
     // MARK: - Initializers
