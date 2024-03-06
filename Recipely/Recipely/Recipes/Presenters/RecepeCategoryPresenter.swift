@@ -99,7 +99,15 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         }
         isSearching = true
         sourceOfRecepies.searchRecipes(withText: text, selectedSortMap: selectedSortMap)
-        stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
+        stateOfLoading = .loading(nil)
+        Timer.scheduledTimer(
+            timeInterval: 3,
+            target: self,
+            selector: #selector(setInfo),
+            userInfo: nil,
+            repeats: false
+        )
+        // stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
         view?.reloadTableView()
     }
 

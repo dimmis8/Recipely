@@ -95,6 +95,10 @@ final class RecipeCell: UITableViewCell {
             recipeLabel.startShimmeringAnimation()
             timerLabel.startShimmeringAnimation()
             caloriesLabel.startShimmeringAnimation()
+            recipeImageView.image = nil
+            recipeLabel.text = nil
+            timerLabel.text = nil
+            caloriesLabel.text = nil
         }
         timerImageView.isHidden = isShimming
         pizzaImageView.isHidden = isShimming

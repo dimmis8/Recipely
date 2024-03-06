@@ -109,6 +109,9 @@ final class SortPickerView: UIControl {
         selectedButton.setImage(UIImage(named: newImageName), for: .selected)
         selectedButton.isSelected = isSelected
         selectedButton.backgroundColor = isSelected ? .selectedTitle : .backgroundTeal
-        dataSource?.sortPickerAction(indexPath: IndexPath(item: sender.tag, section: 0), newSortState: selectedSortMap[selectedButton] ?? .withoutSort)
+        dataSource?.sortPickerAction(
+            indexPath: IndexPath(item: sender.tag, section: 0),
+            newSortState: selectedSortMap[selectedButton] ?? .withoutSort
+        )
     }
 }
