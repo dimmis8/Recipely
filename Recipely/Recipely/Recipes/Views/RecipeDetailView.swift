@@ -196,8 +196,8 @@ extension RecipeDetailView: UITableViewDataSource {
                 for: indexPath
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
             switch presenter?.getRecipeInfo() {
-            case let .succes(recipe):
-                recipeLabel.text = recipe?.title
+            case let .data(recipe):
+                recipeLabel.text = recipe.title
                 tableView.isScrollEnabled = true
                 tableView.allowsSelection = true
                 cell.getInfo(recipe: recipe)
@@ -213,7 +213,7 @@ extension RecipeDetailView: UITableViewDataSource {
                 for: indexPath
             ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
             switch presenter?.getRecipeInfo() {
-            case let .succes(recipe):
+            case let .data(recipe):
                 cell.getCharacteristics(recipe: recipe)
             default:
                 cell.getCharacteristics(recipe: nil)
@@ -225,8 +225,8 @@ extension RecipeDetailView: UITableViewDataSource {
                 for: indexPath
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
             switch presenter?.getRecipeInfo() {
-            case let .succes(recipe):
-                cell.setText(recipe?.description ?? "")
+            case let .data(recipe):
+                cell.setText(recipe.description)
             default:
                 cell.setText("")
             }

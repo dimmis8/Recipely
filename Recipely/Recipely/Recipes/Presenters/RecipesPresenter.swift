@@ -8,9 +8,9 @@ protocol RecipesViewPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
     init(view: RecipesViewProtocol, coordinator: RecipesCoordinator)
     /// Функция получения информации о ячейке
-    func getInfo() -> ViewData<[DishCategory]>
+    func getInfo() -> ViewState<[DishCategory]>
     /// Получение информации о количестве категорий
-    func getCategoryCount() -> ViewData<[DishCategory]>
+    func getCategoryCount() -> ViewState<[DishCategory]>
     /// Переход на экран категории
     func goToCategory(_ category: RecipeCategories)
 }
@@ -23,14 +23,14 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
     private weak var coordinator: RecipesCoordinator?
     private weak var view: RecipesViewProtocol?
     private var isFirstRequest = true
-    private var stateOfLoading: ViewData<[DishCategory]>
+    private var state: ViewState<[DishCategory]>
 
     // MARK: - Initializers
 
     required init(view: RecipesViewProtocol, coordinator: RecipesCoordinator) {
         self.view = view
         self.coordinator = coordinator
-        stateOfLoading = .initial
+        state = .noData()
     }
 
     // MARK: - Public Methods
@@ -39,15 +39,15 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
         coordinator?.goToCategory(category)
     }
 
-    func getInfo() -> ViewData<[DishCategory]> {
-        stateOfLoading
+    func getInfo() -> ViewState<[DishCategory]> {
+        state
     }
 
-    func getCategoryCount() -> ViewData<[DishCategory]> {
+    func getCategoryCount() -> ViewState<[DishCategory]> {
         if isFirstRequest {
             // Временно приходит сразу .succes, так как не решена проблема с высотой подложки под лейблы
             isFirstRequest = false
-            stateOfLoading = .succes(informationSource.categories)
+            state = .data(informationSource.categories)
 //            stateOfLoading = .loading(nil)
 //            Timer.scheduledTimer(
 //                timeInterval: 3,
@@ -57,14 +57,14 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
 //                repeats: false
 //            )
         }
-        return stateOfLoading
+        return state
     }
 
     // MARK: - Private Methods
 
     @objc private func setInfo() {
         isFirstRequest = false
-        stateOfLoading = .succes(informationSource.categories)
+        state = .data(informationSource.categories)
         view?.reloadCollectionView()
     }
 }

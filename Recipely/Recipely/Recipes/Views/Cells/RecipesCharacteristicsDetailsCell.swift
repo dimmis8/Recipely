@@ -172,10 +172,7 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         if isShimming {
-            enercView.startShimmeringAnimation()
-            carbohydratesView.startShimmeringAnimation()
-            fatsView.startShimmeringAnimation()
-            proteinsView.startShimmeringAnimation()
+            stopShimmers()
         }
         enercViewLabel.isHidden = isShimming
         enercSubViewLabel.isHidden = isShimming
@@ -254,6 +251,13 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         makeSubViewLabelConcntraints(label: carbohydratesSubViewLabel, equalTo: carbohydratesSubView)
         makeSubViewLabelConcntraints(label: fatsSubViewLabel, equalTo: fatsSubView)
         makeSubViewLabelConcntraints(label: proteinsSubViewLabel, equalTo: proteinsSubView)
+    }
+
+    private func stopShimmers() {
+        enercView.startShimmeringAnimation()
+        carbohydratesView.startShimmeringAnimation()
+        fatsView.startShimmeringAnimation()
+        proteinsView.startShimmeringAnimation()
     }
 
     private func makeEnercViewConstraints() {

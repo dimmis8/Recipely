@@ -12,9 +12,9 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Изменение состояние сортировки рецептов
     func selectedSort(_ sortType: SortTypes, newSortState: SortState)
     /// Получение информации о рецепте для ячейки
-    func getRecipeInfo() -> ViewData<[Recipe]>
+    func getRecipeInfo() -> ViewState<[Recipe]>
     /// Получение информации о количестве рецептов
-    func getRecipeCount() -> ViewData<[Recipe]>
+    func getRecipeCount() -> ViewState<[Recipe]>
     /// Переход на экран деталей
     func goToRecipeDetail(numberOfRecipe: Int)
     /// Поиск рецептов по запросу
@@ -38,7 +38,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     private var selectedSortMap: [SortTypes: SortState] = [.calories: .withoutSort, .time: .withoutSort] {
         didSet {
             sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
-            stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
+            state = .data(sourceOfRecepies.recipesToShow)
             view?.reloadTableView()
         }
     }
@@ -46,14 +46,14 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     private var sourceOfRecepies = SourceOfRecepies()
     private var isSearching = false
     private var isFirstRequest = true
-    private var stateOfLoading: ViewData<[Recipe]>
+    private var state: ViewState<[Recipe]>
 
     // MARK: - Initializers
 
     required init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator) {
         self.view = view
         self.coordinator = coordinator
-        stateOfLoading = .initial
+        state = .noData()
     }
 
     // MARK: - Public Methods
@@ -71,13 +71,13 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         coordinator?.openRecipeDetails(recipe: recipe)
     }
 
-    func getRecipeInfo() -> ViewData<[Recipe]> {
-        stateOfLoading
+    func getRecipeInfo() -> ViewState<[Recipe]> {
+        state
     }
 
-    func getRecipeCount() -> ViewData<[Recipe]> {
+    func getRecipeCount() -> ViewState<[Recipe]> {
         if isFirstRequest {
-            stateOfLoading = .loading(nil)
+            state = .loading
             Timer.scheduledTimer(
                 timeInterval: 3,
                 target: self,
@@ -86,20 +86,20 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
                 repeats: false
             )
         }
-        return stateOfLoading
+        return state
     }
 
     func searchRecipes(withText text: String) {
         guard !text.isEmpty else {
             isSearching = false
             sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
-            stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
+            state = .data(sourceOfRecepies.recipesToShow)
             view?.reloadTableView()
             return
         }
         isSearching = true
         sourceOfRecepies.searchRecipes(withText: text, selectedSortMap: selectedSortMap)
-        stateOfLoading = .loading(nil)
+        state = .loading
         Timer.scheduledTimer(
             timeInterval: 3,
             target: self,
@@ -107,7 +107,6 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
             userInfo: nil,
             repeats: false
         )
-        // stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
         view?.reloadTableView()
     }
 
@@ -116,7 +115,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     @objc private func setInfo() {
         isFirstRequest = false
         sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
-        stateOfLoading = .succes(sourceOfRecepies.recipesToShow)
+        state = .data(sourceOfRecepies.recipesToShow)
         view?.reloadTableView()
     }
 }

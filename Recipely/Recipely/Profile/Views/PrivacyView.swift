@@ -10,13 +10,13 @@ final class PrivacyView: UIView {
     enum Constants {
         static let titleText = "Terms of Use"
         static let cardHandleAreaHeight: CGFloat = 34
-        static let closeHighRatio = 0.85
+        static let closeHighRatio = 0.7
         static let startCardHeight: CGFloat = 100
     }
 
     // MARK: - Visual Components
 
-    private let handleArea = UIView()
+    private let handleAreaView = UIView()
 
     private let handleLine: UIImageView = {
         let imageView = UIImageView()
@@ -38,39 +38,44 @@ final class PrivacyView: UIView {
         return textView
     }()
 
-    private let dismissButton: UIButton = {
+    private lazy var dismissButton: UIButton = {
         let button = UIButton()
         button.setImage(.dismissButton, for: .normal)
+        dismissButton.addTarget(self, action: #selector(dismissCard), for: .touchUpInside)
         return button
     }()
 
     // MARK: - Private Properties
 
     private lazy var cardHeight: CGFloat = self.bounds.height - Constants.startCardHeight
-    private var cardVisible = false
+    private var isCardVisible = false
     private var nextState: CardState {
-        cardVisible ? .collapsed : .expanded
+        isCardVisible ? .collapsed : .expanded
     }
 
     private var runningAnimations: [UIViewPropertyAnimator] = []
     private var animationProgressWhenInterrupted: CGFloat = 0
-    private let closeHandler: VoidHandler
-    private let privacyText: String
+    private var closeHandler: VoidHandler?
+    private var privacyText: String?
 
     // MARK: - Initializers
 
-    init(frame: CGRect, privacyText: String, closeHandler: @escaping VoidHandler) {
-        self.closeHandler = closeHandler
-        self.privacyText = privacyText
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
 
     required init?(coder: NSCoder) {
-        closeHandler = {}
-        privacyText = ""
         super.init(coder: coder)
         setupView()
+    }
+
+    // MARK: - Public Methods
+
+    func set(privacyText: String, closeHandler: @escaping VoidHandler) {
+        self.closeHandler = closeHandler
+        self.privacyText = privacyText
+        setText()
     }
 
     // MARK: - Private Methods
@@ -78,30 +83,32 @@ final class PrivacyView: UIView {
     private func setupView() {
         backgroundColor = .white
         layer.cornerRadius = 30
-        addSubview(handleArea)
-        handleArea.addSubview(handleLine)
+        addSubview(handleAreaView)
+        handleAreaView.addSubview(handleLine)
         addSubview(termsLabel)
         addSubview(privacyTextView)
         addSubview(dismissButton)
-        dismissButton.addTarget(self, action: #selector(dismissCard), for: .touchUpInside)
-        setText()
         createConstraints()
 
         clipsToBounds = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCardTap(recognizer:)))
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan(recognizer:)))
-        handleArea.addGestureRecognizer(tapGestureRecognizer)
-        handleArea.addGestureRecognizer(panGestureRecognizer)
+        setupRecognizers()
     }
 
-    func setText() {
+    private func setupRecognizers() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCardTap(recognizer:)))
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan(recognizer:)))
+        handleAreaView.addGestureRecognizer(tapGestureRecognizer)
+        handleAreaView.addGestureRecognizer(panGestureRecognizer)
+    }
+
+    private func setText() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 5
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.verdana(ofSize: 14),
             .paragraphStyle: paragraphStyle
         ]
-        let attributedText = NSMutableAttributedString(string: privacyText, attributes: attributes)
+        let attributedText = NSMutableAttributedString(string: privacyText ?? "", attributes: attributes)
         privacyTextView.attributedText = attributedText
     }
 
@@ -114,24 +121,24 @@ final class PrivacyView: UIView {
     }
 
     private func createHandleAreaConstraints() {
-        handleArea.translatesAutoresizingMaskIntoConstraints = false
-        handleArea.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        handleArea.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        handleArea.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        handleArea.heightAnchor.constraint(equalToConstant: Constants.cardHandleAreaHeight).isActive = true
+        handleAreaView.translatesAutoresizingMaskIntoConstraints = false
+        handleAreaView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        handleAreaView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        handleAreaView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        handleAreaView.heightAnchor.constraint(equalToConstant: Constants.cardHandleAreaHeight).isActive = true
     }
 
     private func createHandleLineConstraints() {
         handleLine.translatesAutoresizingMaskIntoConstraints = false
-        handleLine.topAnchor.constraint(equalTo: handleArea.topAnchor, constant: 15).isActive = true
-        handleLine.centerXAnchor.constraint(equalTo: handleArea.centerXAnchor).isActive = true
+        handleLine.topAnchor.constraint(equalTo: handleAreaView.topAnchor, constant: 15).isActive = true
+        handleLine.centerXAnchor.constraint(equalTo: handleAreaView.centerXAnchor).isActive = true
         handleLine.widthAnchor.constraint(equalToConstant: 50).isActive = true
         handleLine.heightAnchor.constraint(equalToConstant: 5).isActive = true
     }
 
     private func createTermsLabelConstraints() {
         termsLabel.translatesAutoresizingMaskIntoConstraints = false
-        termsLabel.topAnchor.constraint(equalTo: handleArea.bottomAnchor, constant: 16).isActive = true
+        termsLabel.topAnchor.constraint(equalTo: handleAreaView.bottomAnchor, constant: 16).isActive = true
         termsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25).isActive = true
         termsLabel.widthAnchor.constraint(equalToConstant: 170).isActive = true
         termsLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -161,12 +168,12 @@ final class PrivacyView: UIView {
                 case .expanded:
                     self.frame.origin.y = UIScreen.main.bounds.height - self.cardHeight
                 case .collapsed:
-                    self.frame.origin.y = UIScreen.main.bounds.height - Constants.cardHandleAreaHeight * 3
+                    self.frame.origin.y = UIScreen.main.bounds.height / 2
                 }
             }
 
             frameAnimator.addCompletion { _ in
-                self.cardVisible = !self.cardVisible
+                self.isCardVisible = !self.isCardVisible
                 self.runningAnimations.removeAll()
             }
             frameAnimator.startAnimation()
@@ -210,9 +217,9 @@ final class PrivacyView: UIView {
         case .began:
             startInteractiveTransition(state: nextState, duration: 0.7)
         case .changed:
-            let translation = recognizer.translation(in: handleArea)
+            let translation = recognizer.translation(in: handleAreaView)
             var fractionComplite = translation.y / (cardHeight - Constants.cardHandleAreaHeight)
-            fractionComplite = cardVisible ? fractionComplite : -fractionComplite
+            fractionComplite = isCardVisible ? fractionComplite : -fractionComplite
             updateInteractiveTransition(fractionCompleted: fractionComplite)
         case .ended:
             runningAnimations.forEach { $0.stopAnimation(true) }
@@ -223,11 +230,11 @@ final class PrivacyView: UIView {
             switch recognizer.location(in: windowScene?.windows.last).y {
             case let location where location > height * Constants.closeHighRatio:
                 dismissCard()
-            case let location where location > height * 0.5:
-                cardVisible = true
+            case let location where location > height * 0.3:
+                isCardVisible = true
                 animateTransitionIfNeeded(state: .collapsed, duration: 0.4)
             default:
-                cardVisible = false
+                isCardVisible = false
                 animateTransitionIfNeeded(state: .expanded, duration: 0.4)
             }
         default:
@@ -238,7 +245,7 @@ final class PrivacyView: UIView {
     @objc private func dismissCard() {
         UIView.animate(withDuration: 0.2) { [weak self] in
             self?.frame.origin.y = UIScreen.main.bounds.height + Constants.cardHandleAreaHeight
-            self?.closeHandler()
+            (self?.closeHandler ?? {})()
         }
     }
 }
@@ -247,7 +254,9 @@ final class PrivacyView: UIView {
 
 extension PrivacyView {
     enum CardState {
+        /// Карточка расширена
         case expanded
+        /// Карточка свернута
         case collapsed
     }
 }

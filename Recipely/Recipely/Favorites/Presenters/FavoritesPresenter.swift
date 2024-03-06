@@ -8,9 +8,9 @@ protocol FavoritesViewPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
     init(view: FavoritesViewProtocol, coordinator: FavoritesCoordinator)
     /// Получение информации о рецепте для ячейки
-    func getRecipeInfo() -> ViewData<[Recipe]>
+    func getRecipeInfo() -> ViewState<[Recipe]>
     /// Получение информации о количестве рецептов
-    func getRecipeCount() -> ViewData<[Recipe]>
+    func getRecipeCount() -> ViewState<[Recipe]>
     /// Переход на экран деталей
     func goToRecipeDetail(numberOfRecipe: Int)
     /// Удаление рецепта из фаворита
@@ -25,25 +25,25 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
     private weak var view: FavoritesViewProtocol?
     private var favoriteRecipesStorage = FavoriteRecipesStorage()
     private var isFirstRequest = true
-    private var stateOfLoading: ViewData<[Recipe]>
+    private var state: ViewState<[Recipe]>
 
     // MARK: - Initializers
 
     required init(view: FavoritesViewProtocol, coordinator: FavoritesCoordinator) {
         self.view = view
         self.coordinator = coordinator
-        stateOfLoading = .initial
+        state = .noData()
     }
 
     // MARK: - Private Methods
 
-    func getRecipeInfo() -> ViewData<[Recipe]> {
-        stateOfLoading
+    func getRecipeInfo() -> ViewState<[Recipe]> {
+        state
     }
 
-    func getRecipeCount() -> ViewData<[Recipe]> {
+    func getRecipeCount() -> ViewState<[Recipe]> {
         if isFirstRequest {
-            stateOfLoading = .loading(nil)
+            state = .loading
             Timer.scheduledTimer(
                 timeInterval: 3,
                 target: self,
@@ -52,18 +52,18 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
                 repeats: false
             )
         }
-        return stateOfLoading
+        return state
     }
 
     func goToRecipeDetail(numberOfRecipe: Int) {
         let recipe = favoriteRecipesStorage.favoriteRecipes[numberOfRecipe]
         coordinator?.openRecipeDetails(recipe: recipe)
-        stateOfLoading = .succes(favoriteRecipesStorage.favoriteRecipes)
+        state = .data(favoriteRecipesStorage.favoriteRecipes)
     }
 
     func removeRecipe(_ recipeNumber: Int) {
         favoriteRecipesStorage.favoriteRecipes.remove(at: recipeNumber)
-        stateOfLoading = .succes(favoriteRecipesStorage.favoriteRecipes)
+        state = .data(favoriteRecipesStorage.favoriteRecipes)
         view?.hideCollectionView(favoriteRecipesStorage.favoriteRecipes.count == 0)
     }
 
@@ -71,7 +71,7 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
 
     @objc private func setInfo() {
         isFirstRequest = false
-        stateOfLoading = .succes(favoriteRecipesStorage.favoriteRecipes)
+        state = .data(favoriteRecipesStorage.favoriteRecipes)
         view?.reloadTableView()
     }
 }

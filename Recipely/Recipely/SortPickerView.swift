@@ -4,7 +4,7 @@
 import UIKit
 
 /// Протокол датасорса пикера сортировки
-protocol SortPickerViewDataSource {
+protocol SortPickerViewDataSource: AnyObject {
     /// Количество кнопок пикера
     func sortPickerCount(_ sortPicker: SortPickerView) -> Int
     /// Тайтлы для кнопок пикера
@@ -25,7 +25,7 @@ final class SortPickerView: UIControl {
 
     // MARK: - Public Properties
 
-    public var dataSource: SortPickerViewDataSource? {
+    weak var dataSource: SortPickerViewDataSource? {
         didSet {
             setupView()
         }
@@ -86,7 +86,7 @@ final class SortPickerView: UIControl {
         stackView.alignment = .fill
     }
 
-    private func setNewState(_ button: UIButton) -> (String, Bool) {
+    private func setState(_ button: UIButton) -> (String, Bool) {
         let isSelected = true
         switch selectedSortMap[button] {
         case .withoutSort:
@@ -105,7 +105,7 @@ final class SortPickerView: UIControl {
 
     @objc private func selectedButton(sender: UIButton) {
         let selectedButton = buttons[sender.tag]
-        let (newImageName, isSelected) = setNewState(selectedButton)
+        let (newImageName, isSelected) = setState(selectedButton)
         selectedButton.setImage(UIImage(named: newImageName), for: .selected)
         selectedButton.isSelected = isSelected
         selectedButton.backgroundColor = isSelected ? .selectedTitle : .backgroundTeal

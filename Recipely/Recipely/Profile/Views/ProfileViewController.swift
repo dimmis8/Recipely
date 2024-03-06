@@ -152,10 +152,8 @@ extension ProfileViewController: ProfileViewProtocol {
     func showPrivacyCard(privacyText: String) {
         backgroundView.backgroundColor = UIColor(white: 0.2, alpha: 0.0)
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        let privacyView = PrivacyView(frame: CGRect(
-            origin: CGPoint(x: 0, y: view.frame.height),
-            size: view.frame.size
-        ), privacyText: privacyText) { [weak self] in
+        let privacyView = PrivacyView(frame: CGRect(origin: CGPoint(x: 0, y: view.frame.height), size: view.frame.size))
+        privacyView.set(privacyText: privacyText) { [weak self] in
             Timer.scheduledTimer(
                 timeInterval: 0.3,
                 target: self ?? UIViewController(),
@@ -172,7 +170,7 @@ extension ProfileViewController: ProfileViewProtocol {
         windowScene?.windows.last?.addSubview(backgroundView)
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.backgroundView.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
-            privacyView.frame.origin.y = (self?.view.frame.height ?? 0) - 100
+            privacyView.frame.origin.y = (self?.view.frame.height ?? 0) / 2
         }
     }
 
@@ -230,7 +228,7 @@ extension ProfileViewController: UITableViewDataSource {
             ) as? UserInfoViewCell else { return UITableViewCell() }
 
             switch presenter?.getUserInformation() {
-            case let .succes(userInfo):
+            case let .data(userInfo):
                 tableView.isScrollEnabled = true
                 tableView.allowsSelection = true
                 cell.setUserInformation(userInfo) { [weak self] in

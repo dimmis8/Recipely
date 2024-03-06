@@ -110,10 +110,7 @@ final class RecipeCell: UITableViewCell {
     func loadInfo(recipe: Recipe?) {
         if let recipe = recipe {
             isShimming = false
-            recipeImageView.stopShimmeringAnimation()
-            recipeLabel.stopShimmeringAnimation()
-            timerLabel.stopShimmeringAnimation()
-            caloriesLabel.stopShimmeringAnimation()
+            stopShimmers()
             recipeImageView.image = UIImage(named: recipe.imageName)
             recipeLabel.text = recipe.title
             timerLabel.text = "\(recipe.cookTime) min"
@@ -146,6 +143,13 @@ final class RecipeCell: UITableViewCell {
         setPizzaImageViewConstraints()
         setCaloriesLabelConstraints()
         setDetailImageViewConstraints()
+    }
+
+    private func stopShimmers() {
+        recipeImageView.stopShimmeringAnimation()
+        recipeLabel.stopShimmeringAnimation()
+        timerLabel.stopShimmeringAnimation()
+        caloriesLabel.stopShimmeringAnimation()
     }
 
     private func setBackgroundViewConstraints() {

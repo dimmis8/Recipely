@@ -208,10 +208,10 @@ extension RecepeCategoryView: SortPickerViewDataSource {
 extension RecepeCategoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch presenter?.getRecipeCount() {
-        case let .succes(recipes):
+        case let .data(recipes):
             tableView.isScrollEnabled = true
             tableView.allowsSelection = true
-            return recipes?.count ?? 0
+            return recipes.count
         default:
             tableView.isScrollEnabled = false
             tableView.allowsSelection = false
@@ -225,8 +225,8 @@ extension RecepeCategoryView: UITableViewDataSource {
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
         switch presenter?.getRecipeInfo() {
-        case let .succes(recipes):
-            cell.loadInfo(recipe: recipes?[indexPath.row])
+        case let .data(recipes):
+            cell.loadInfo(recipe: recipes[indexPath.row])
         default:
             cell.loadInfo(recipe: nil)
         }
@@ -251,11 +251,7 @@ extension RecepeCategoryView: UITableViewDelegate {
 
 extension RecepeCategoryView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.count >= 3 {
-            presenter?.searchRecipes(withText: searchText)
-        } else {
-            presenter?.searchRecipes(withText: "")
-        }
+        presenter?.searchRecipes(withText: searchText.count >= 3 ? searchText : "")
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

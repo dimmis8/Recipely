@@ -189,10 +189,10 @@ extension FavoritesViewController: FavoritesViewProtocol {
 extension FavoritesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch presenter?.getRecipeCount() {
-        case let .succes(recipes):
+        case let .data(recipes):
             tableView.isScrollEnabled = true
             tableView.allowsSelection = true
-            return recipes?.count ?? 0
+            return recipes.count
         default:
             tableView.isScrollEnabled = false
             tableView.allowsSelection = false
@@ -206,8 +206,8 @@ extension FavoritesViewController: UITableViewDataSource {
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
         switch presenter?.getRecipeInfo() {
-        case let .succes(recipes):
-            cell.loadInfo(recipe: recipes?[indexPath.row])
+        case let .data(recipes):
+            cell.loadInfo(recipe: recipes[indexPath.row])
         default:
             cell.loadInfo(recipe: nil)
         }

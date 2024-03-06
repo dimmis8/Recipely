@@ -102,10 +102,10 @@ final class RecipesViewController: UIViewController {
 extension RecipesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch presenter?.getCategoryCount() {
-        case let .succes(categories):
+        case let .data(categories):
             collectionView.isScrollEnabled = true
             collectionView.allowsSelection = true
-            return categories?.count ?? 0
+            return categories.count
         default:
             collectionView.isScrollEnabled = false
             collectionView.allowsSelection = false
@@ -124,8 +124,8 @@ extension RecipesViewController: UICollectionViewDataSource {
             ) as? RecipesCollectionViewCell
         else { return UICollectionViewCell() }
         switch presenter?.getInfo() {
-        case let .succes(categories):
-            cell.setInfo(info: categories?[indexPath.item])
+        case let .data(categories):
+            cell.setInfo(info: categories[indexPath.item])
         default:
             cell.setInfo(info: nil)
         }
