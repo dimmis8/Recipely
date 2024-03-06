@@ -7,6 +7,8 @@ import UIKit
 protocol RecepeCategoryViewProtocol: AnyObject {
     ///  Презентер экрана
     var presenter: RecepeCategoryPresenterProtocol? { get set }
+    /// ОБновить таблицу
+    func reloadTableView()
 }
 
 /// Экран рецептов
@@ -68,6 +70,11 @@ final class RecepeCategoryView: UIViewController {
         createConstraints()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        deselectedSelectedRow()
+    }
+
     // MARK: - Private Methods
 
     private func setupNavigationBar() {
@@ -95,6 +102,7 @@ final class RecepeCategoryView: UIViewController {
         view.backgroundColor = .white
         view.addSubview(recipesSearchBar)
         sortPickerView.dataSource = self
+        recipesSearchBar.delegate = self
         view.addSubview(sortPickerView)
         view.addSubview(tableView)
     }
@@ -104,6 +112,12 @@ final class RecepeCategoryView: UIViewController {
         createBarViewConstraints()
         createSortPickerViewConstraints()
         createTableViewConstraints()
+    }
+
+    private func deselectedSelectedRow() {
+        if let selectedIndex = tableView.indexPathForSelectedRow {
+            tableView.cellForRow(at: selectedIndex)?.isSelected = false
+        }
     }
 
     private func createBackBarButtonConstraints() {
@@ -167,13 +181,17 @@ final class RecepeCategoryView: UIViewController {
 
 // MARK: - RecepeCategoryView + RecepeCategoryViewProtocol
 
-extension RecepeCategoryView: RecepeCategoryViewProtocol {}
+extension RecepeCategoryView: RecepeCategoryViewProtocol {
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+}
 
 // MARK: - RecepeCategoryView + SortPickerViewDataSource
 
 extension RecepeCategoryView: SortPickerViewDataSource {
-    func sortPickerImage(indexPath: IndexPath, beforeSelected: Bool) -> String {
-        presenter?.selectedSort(sortTypes[indexPath.row], previousState: beforeSelected) ?? ""
+    func sortPickerAction(indexPath: IndexPath, newSortState: SortState) {
+        presenter?.selectedSort(sortTypes[indexPath.row], newSortState: newSortState)
     }
 
     func sortPickerCount(_ sortPicker: SortPickerView) -> Int {
@@ -189,7 +207,16 @@ extension RecepeCategoryView: SortPickerViewDataSource {
 
 extension RecepeCategoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.getRecipeCount() ?? 0
+        switch presenter?.getRecipeCount() {
+        case let .data(recipes):
+            tableView.isScrollEnabled = true
+            tableView.allowsSelection = true
+            return recipes.count
+        default:
+            tableView.isScrollEnabled = false
+            tableView.allowsSelection = false
+            return 8
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -197,7 +224,12 @@ extension RecepeCategoryView: UITableViewDataSource {
             withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
-        cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
+        switch presenter?.getRecipeInfo() {
+        case let .data(recipes):
+            cell.loadInfo(recipe: recipes[indexPath.row])
+        default:
+            cell.loadInfo(recipe: nil)
+        }
         return cell
     }
 }
@@ -207,5 +239,22 @@ extension RecepeCategoryView: UITableViewDataSource {
 extension RecepeCategoryView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+        tableView.cellForRow(at: indexPath)?.isSelected = true
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+    }
+}
+
+// MARK: - RecepeCategoryView + UISearchBarDelegate
+
+extension RecepeCategoryView: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        presenter?.searchRecipes(withText: searchText.count >= 3 ? searchText : "")
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter?.searchRecipes(withText: "")
     }
 }

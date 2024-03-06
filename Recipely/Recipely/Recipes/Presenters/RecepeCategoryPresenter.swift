@@ -10,13 +10,15 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Экшн кнопки назад
     func back()
     /// Изменение состояние сортировки рецептов
-    func selectedSort(_ sortType: SortTypes, previousState: Bool) -> String
+    func selectedSort(_ sortType: SortTypes, newSortState: SortState)
     /// Получение информации о рецепте для ячейки
-    func getRecipeInfo(forNumber number: Int) -> Recipe
+    func getRecipeInfo() -> ViewState<[Recipe]>
     /// Получение информации о количестве рецептов
-    func getRecipeCount() -> Int
+    func getRecipeCount() -> ViewState<[Recipe]>
     /// Переход на экран деталей
     func goToRecipeDetail(numberOfRecipe: Int)
+    /// Поиск рецептов по запросу
+    func searchRecipes(withText text: String)
 }
 
 /// Презентер экрана категории рецептов
@@ -26,20 +28,32 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     enum Constants {
         static let whiteSortDirectionRevers = "whiteSortDirectionRevers"
         static let whiteSortDirection = "whiteSortDirection"
+        static let blackSortDirection = "sortDirection"
     }
 
     // MARK: - Private Properties
 
     private weak var coordinator: RecipesCoordinator?
     private weak var view: RecepeCategoryViewProtocol?
-    private var selectedSortMap: [SortTypes: Bool] = [.calories: false, .time: false]
-    private let sourceOfRecepies = SourceOfRecepies()
+    private var selectedSortMap: [SortTypes: SortState] = [.calories: .withoutSort, .time: .withoutSort] {
+        didSet {
+            sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+            state = .data(sourceOfRecepies.recipesToShow)
+            view?.reloadTableView()
+        }
+    }
+
+    private var sourceOfRecepies = SourceOfRecepies()
+    private var isSearching = false
+    private var isFirstRequest = true
+    private var state: ViewState<[Recipe]>
 
     // MARK: - Initializers
 
     required init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator) {
         self.view = view
         self.coordinator = coordinator
+        state = .noData()
     }
 
     // MARK: - Public Methods
@@ -48,35 +62,60 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         coordinator?.backToCategiries()
     }
 
-    func selectedSort(_ sortType: SortTypes, previousState: Bool) -> String {
-        switch previousState {
-        case true where selectedSortMap[sortType] == true:
-            selectedSortMap[sortType] = false
-            return Constants.whiteSortDirectionRevers
-        case true where selectedSortMap[sortType] == false:
-            selectedSortMap[sortType] = true
-            return Constants.whiteSortDirection
-        case false:
-            for key in selectedSortMap.keys {
-                selectedSortMap[key] = false
-            }
-            selectedSortMap[sortType] = true
-            return Constants.whiteSortDirection
-        default:
-            return ""
-        }
+    func selectedSort(_ sortType: SortTypes, newSortState: SortState) {
+        selectedSortMap.updateValue(newSortState, forKey: sortType)
     }
 
     func goToRecipeDetail(numberOfRecipe: Int) {
-        let recipe = sourceOfRecepies.fishRecepies[numberOfRecipe]
+        let recipe = sourceOfRecepies.recipesToShow[numberOfRecipe]
         coordinator?.openRecipeDetails(recipe: recipe)
     }
 
-    func getRecipeInfo(forNumber number: Int) -> Recipe {
-        sourceOfRecepies.fishRecepies[number]
+    func getRecipeInfo() -> ViewState<[Recipe]> {
+        state
     }
 
-    func getRecipeCount() -> Int {
-        sourceOfRecepies.fishRecepies.count
+    func getRecipeCount() -> ViewState<[Recipe]> {
+        if isFirstRequest {
+            state = .loading
+            Timer.scheduledTimer(
+                timeInterval: 3,
+                target: self,
+                selector: #selector(setInfo),
+                userInfo: nil,
+                repeats: false
+            )
+        }
+        return state
+    }
+
+    func searchRecipes(withText text: String) {
+        guard !text.isEmpty else {
+            isSearching = false
+            sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+            state = .data(sourceOfRecepies.recipesToShow)
+            view?.reloadTableView()
+            return
+        }
+        isSearching = true
+        sourceOfRecepies.searchRecipes(withText: text, selectedSortMap: selectedSortMap)
+        state = .loading
+        Timer.scheduledTimer(
+            timeInterval: 3,
+            target: self,
+            selector: #selector(setInfo),
+            userInfo: nil,
+            repeats: false
+        )
+        view?.reloadTableView()
+    }
+
+    // MARK: - Private Methods
+
+    @objc private func setInfo() {
+        isFirstRequest = false
+        sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
+        state = .data(sourceOfRecepies.recipesToShow)
+        view?.reloadTableView()
     }
 }

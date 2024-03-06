@@ -50,6 +50,7 @@ final class UserInfoViewCell: UITableViewCell {
 
     // MARK: - Private Properties
 
+    private var isShimming = true
     private var buttonChangeHandler: VoidHandler?
     private var buttonChangePhotoHandler: VoidHandler?
 
@@ -67,15 +68,32 @@ final class UserInfoViewCell: UITableViewCell {
         setConstraints()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if isShimming {
+            profilePhotoButton.startShimmeringAnimation()
+            nameView.startShimmeringAnimation()
+        }
+        fullNameLabel.isHidden = isShimming
+        changeNameButton.isHidden = isShimming
+    }
+
     // MARK: - Public Methods
 
     func setUserInformation(
-        _ userInfo: UserInfo,
+        _ userInfo: UserInfo?,
         changeNameComplition: @escaping VoidHandler,
         changePhotoComplition: @escaping VoidHandler
     ) {
-        profilePhotoButton.setImage(UIImage(named: userInfo.userPhotoName), for: .normal)
-        fullNameLabel.text = "\(userInfo.nameSurname)"
+        if let userInfo = userInfo {
+            isShimming = false
+            profilePhotoButton.stopShimmeringAnimation()
+            nameView.stopShimmeringAnimation()
+            profilePhotoButton.setImage(UIImage(named: userInfo.userPhotoName), for: .normal)
+            fullNameLabel.text = "\(userInfo.nameSurname)"
+        } else {
+            isShimming = true
+        }
         buttonChangeHandler = changeNameComplition
         buttonChangePhotoHandler = changePhotoComplition
     }
@@ -124,6 +142,7 @@ final class UserInfoViewCell: UITableViewCell {
 
     private func setNameViewConstraints() {
         nameView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        nameView.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.profilePhotoHeigh).isActive = true
         nameView.topAnchor.constraint(equalTo: profilePhotoButton.bottomAnchor, constant: 26).isActive = true
         nameView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         nameView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -29).isActive = true

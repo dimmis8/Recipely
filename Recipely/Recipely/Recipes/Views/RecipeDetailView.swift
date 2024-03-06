@@ -9,6 +9,8 @@ protocol RecipeDetailViewProtocol: AnyObject {
     var presenter: RecipeDetailPresenterProtocol? { get set }
     /// Показать алерт о том, что функционал в разработке
     func showInDevelopAlert()
+    /// Перезагрузка данных
+    func reloadTableView()
 }
 
 /// Экран деталей рецепта
@@ -51,9 +53,8 @@ final class RecipeDetailView: UIViewController {
 
     private let barView = UIView()
 
-    private lazy var recipeLabel: UILabel = {
+    private let recipeLabel: UILabel = {
         let recipeLabel = UILabel()
-        recipeLabel.text = presenter?.getRecipeInfo().title
         recipeLabel.font = .verdanaBold(ofSize: 20)
         recipeLabel.numberOfLines = 0
         recipeLabel.textAlignment = .center
@@ -194,21 +195,41 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesImageDetailCell.identifier,
                 for: indexPath
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
-            cell.getInfo(recipe: presenter?.getRecipeInfo() ?? Recipe())
+            switch presenter?.getRecipeInfo() {
+            case let .data(recipe):
+                recipeLabel.text = recipe.title
+                tableView.isScrollEnabled = true
+                tableView.allowsSelection = true
+                cell.getInfo(recipe: recipe)
+            default:
+                tableView.isScrollEnabled = false
+                tableView.allowsSelection = false
+                cell.getInfo(recipe: nil)
+            }
             return cell
         case .characteristics:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
-            cell.getCharacteristics(recipe: presenter?.getRecipeInfo() ?? Recipe())
+            switch presenter?.getRecipeInfo() {
+            case let .data(recipe):
+                cell.getCharacteristics(recipe: recipe)
+            default:
+                cell.getCharacteristics(recipe: nil)
+            }
             return cell
         case .description:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecipesDescriptionDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
-            cell.setText(presenter?.getRecipeInfo().description ?? "")
+            switch presenter?.getRecipeInfo() {
+            case let .data(recipe):
+                cell.setText(recipe.description)
+            default:
+                cell.setText("")
+            }
             return cell
         }
     }
@@ -234,5 +255,9 @@ extension RecipeDetailView: RecipeDetailViewProtocol {
         let okAction = UIAlertAction(title: Constants.okAlertText, style: .cancel)
         alertController.addAction(okAction)
         present(alertController, animated: true)
+    }
+
+    func reloadTableView() {
+        tableView.reloadData()
     }
 }

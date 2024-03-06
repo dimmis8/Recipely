@@ -13,8 +13,6 @@ final class AppCoordinator: BaseCoodinator {
     // MARK: - Public Methods
 
     override func start() {
-        // пока что используется для выбора стартового экрана
-//        t​oAutorization()
         toMain()
     }
 

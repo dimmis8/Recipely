@@ -15,6 +15,7 @@ final class RecipeCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = .backgroundTeal
         view.layer.cornerRadius = 12
+        view.layer.borderColor = UIColor.selectedTitle.cgColor
         return view
     }()
 
@@ -63,6 +64,18 @@ final class RecipeCell: UITableViewCell {
         return imageView
     }()
 
+    // MARK: - Public Properties
+
+    override var isSelected: Bool {
+        didSet {
+            background.layer.borderWidth = isSelected ? 2 : 0
+        }
+    }
+
+    // MARK: - Private Properties
+
+    private var isShimming = true
+
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -75,13 +88,36 @@ final class RecipeCell: UITableViewCell {
         super.init(coder: coder)
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if isShimming {
+            recipeImageView.startShimmeringAnimation()
+            recipeLabel.startShimmeringAnimation()
+            timerLabel.startShimmeringAnimation()
+            caloriesLabel.startShimmeringAnimation()
+            recipeImageView.image = nil
+            recipeLabel.text = nil
+            timerLabel.text = nil
+            caloriesLabel.text = nil
+        }
+        timerImageView.isHidden = isShimming
+        pizzaImageView.isHidden = isShimming
+        detailImageView.isHidden = isShimming
+    }
+
     // MARK: - Public Methods
 
-    func loadInfo(recipe: Recipe) {
-        recipeImageView.image = UIImage(named: recipe.imageName)
-        recipeLabel.text = recipe.title
-        timerLabel.text = "\(recipe.cookTime) min"
-        caloriesLabel.text = "\(recipe.calories) kkal"
+    func loadInfo(recipe: Recipe?) {
+        if let recipe = recipe {
+            isShimming = false
+            stopShimmers()
+            recipeImageView.image = UIImage(named: recipe.imageName)
+            recipeLabel.text = recipe.title
+            timerLabel.text = "\(recipe.cookTime) min"
+            caloriesLabel.text = "\(recipe.calories) kkal"
+        } else {
+            isShimming = true
+        }
     }
 
     // MARK: - Private Methods
@@ -107,6 +143,13 @@ final class RecipeCell: UITableViewCell {
         setPizzaImageViewConstraints()
         setCaloriesLabelConstraints()
         setDetailImageViewConstraints()
+    }
+
+    private func stopShimmers() {
+        recipeImageView.stopShimmeringAnimation()
+        recipeLabel.stopShimmeringAnimation()
+        timerLabel.stopShimmeringAnimation()
+        caloriesLabel.stopShimmeringAnimation()
     }
 
     private func setBackgroundViewConstraints() {

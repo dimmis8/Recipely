@@ -31,6 +31,21 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
+    // MARK: - Private Properties
+
+    private var isShimming = true
+    private var isFirstInit = true
+    private var textBackgroundHeight: CGFloat = 0
+
+    // MARK: - Public Properties
+
+    override var isSelected: Bool {
+        didSet {
+            contentView.layer.borderWidth = isSelected ? 2 : 0
+            titleLabel.backgroundColor = isSelected ? .tappedButtonAlpha : .darkTitleView
+        }
+    }
+
     // MARK: - Initialization
 
     override init(frame: CGRect) {
@@ -40,7 +55,6 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         setConstraints()
     }
 
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupCell()
@@ -48,10 +62,39 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         setConstraints()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if isShimming {
+            recipesImageView.startShimmeringAnimation()
+        }
+        titleLabel.isHidden = isShimming
+    }
+
+    // MARK: - Public Methods
+
+    func setInfo(info: DishCategory?) {
+        if let info = info {
+            isShimming = false
+            recipesImageView.stopShimmeringAnimation()
+            recipesImageView.image = UIImage(named: info.imageName)
+            titleLabel.text = info.type.rawValue
+            if contentView.frame.width < 150 {
+                titleLabel.font = .verdana(ofSize: 16)
+            } else {
+                titleLabel.font = .verdana(ofSize: 20)
+            }
+            print("\(contentView.frame.size.height) \(info.imageName)")
+        } else {
+            isShimming = true
+        }
+    }
+
     // MARK: - Private Methods
 
     private func setupCell() {
         contentView.layer.cornerRadius = 18
+        contentView.layer.borderWidth = 0
+        contentView.layer.borderColor = UIColor.tappedButtonBounds.cgColor
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowOffset = CGSize(width: 2, height: 5)
         contentView.layer.shadowRadius = 3
@@ -65,6 +108,10 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
     }
 
     private func setConstraints() {
+        if isFirstInit {
+            textBackgroundHeight = contentView.frame.size.height / 5
+            isFirstInit = false
+        }
         makeRecipesButtonConstraints()
         makeDarkTitleViewConstraints()
         makeDarkTitleLabelConstraints()
@@ -83,7 +130,7 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         darkTitleView.leadingAnchor.constraint(equalTo: recipesImageView.leadingAnchor).isActive = true
         darkTitleView.trailingAnchor.constraint(equalTo: recipesImageView.trailingAnchor).isActive = true
         darkTitleView.bottomAnchor.constraint(equalTo: recipesImageView.bottomAnchor).isActive = true
-        darkTitleView.heightAnchor.constraint(equalToConstant: contentView.frame.size.height / 5).isActive = true
+        darkTitleView.heightAnchor.constraint(equalToConstant: textBackgroundHeight).isActive = true
     }
 
     private func makeDarkTitleLabelConstraints() {
@@ -92,21 +139,5 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         titleLabel.trailingAnchor.constraint(equalTo: darkTitleView.trailingAnchor).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: darkTitleView.bottomAnchor).isActive = true
         titleLabel.topAnchor.constraint(equalTo: darkTitleView.topAnchor).isActive = true
-    }
-
-    @objc private func addButtonTapped() {
-        titleLabel.backgroundColor = .tappedButtonAlpha
-        recipesImageView.layer.borderWidth = 2
-        recipesImageView.layer.borderColor = UIColor.tappedButtonBounds.cgColor
-    }
-
-    func setInfo(info: DishCategory) {
-        recipesImageView.image = UIImage(named: info.imageName)
-        titleLabel.text = info.type.rawValue
-        if contentView.frame.width < 150 {
-            titleLabel.font = .verdana(ofSize: 16)
-        } else {
-            titleLabel.font = .verdana(ofSize: 20)
-        }
     }
 }

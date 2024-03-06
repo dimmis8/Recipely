@@ -4,20 +4,28 @@
 import UIKit
 
 /// Протокол датасорса пикера сортировки
-protocol SortPickerViewDataSource {
+protocol SortPickerViewDataSource: AnyObject {
     /// Количество кнопок пикера
     func sortPickerCount(_ sortPicker: SortPickerView) -> Int
     /// Тайтлы для кнопок пикера
     func sortPickerTitle(_ sortPicker: SortPickerView, indexPath: IndexPath) -> String
-    /// Картинка для кнопки пикера при нажатии на нее
-    func sortPickerImage(indexPath: IndexPath, beforeSelected: Bool) -> String
+    /// Действие для нажатого состояния кнопки
+    func sortPickerAction(indexPath: IndexPath, newSortState: SortState)
 }
 
 /// Пикер сортировки
 final class SortPickerView: UIControl {
+    // MARK: - Constants
+
+    enum Constants {
+        static let whiteSortDirectionRevers = "whiteSortDirectionRevers"
+        static let whiteSortDirection = "whiteSortDirection"
+        static let blackSortDirection = "sortDirection"
+    }
+
     // MARK: - Public Properties
 
-    public var dataSource: SortPickerViewDataSource? {
+    weak var dataSource: SortPickerViewDataSource? {
         didSet {
             setupView()
         }
@@ -26,6 +34,7 @@ final class SortPickerView: UIControl {
     // MARK: - Private Properties
 
     private var buttons: [UIButton] = []
+    private var selectedSortMap: [UIButton: SortState] = [:]
     private var stackView: UIStackView!
 
     // MARK: - Initializers
@@ -66,6 +75,7 @@ final class SortPickerView: UIControl {
             button.setImage(.whiteSortDirection, for: .selected)
             button.addTarget(self, action: #selector(selectedButton(sender:)), for: .touchUpInside)
             buttons.append(button)
+            selectedSortMap[button] = .withoutSort
             addSubview(button)
         }
         stackView = UIStackView(arrangedSubviews: buttons)
@@ -76,18 +86,32 @@ final class SortPickerView: UIControl {
         stackView.alignment = .fill
     }
 
+    private func setState(_ button: UIButton) -> (String, Bool) {
+        let isSelected = true
+        switch selectedSortMap[button] {
+        case .withoutSort:
+            selectedSortMap.updateValue(.fromLeastToMost, forKey: button)
+            return (Constants.whiteSortDirection, isSelected)
+        case .fromLeastToMost:
+            selectedSortMap.updateValue(.fromMostToLeast, forKey: button)
+            return (Constants.whiteSortDirectionRevers, isSelected)
+        case .fromMostToLeast:
+            selectedSortMap.updateValue(.withoutSort, forKey: button)
+            return (Constants.blackSortDirection, !isSelected)
+        default:
+            return ("", !isSelected)
+        }
+    }
+
     @objc private func selectedButton(sender: UIButton) {
         let selectedButton = buttons[sender.tag]
-        let newImageName = dataSource?.sortPickerImage(
-            indexPath: IndexPath(row: sender.tag, section: 0),
-            beforeSelected: selectedButton.isSelected
+        let (newImageName, isSelected) = setState(selectedButton)
+        selectedButton.setImage(UIImage(named: newImageName), for: .selected)
+        selectedButton.isSelected = isSelected
+        selectedButton.backgroundColor = isSelected ? .selectedTitle : .backgroundTeal
+        dataSource?.sortPickerAction(
+            indexPath: IndexPath(item: sender.tag, section: 0),
+            newSortState: selectedSortMap[selectedButton] ?? .withoutSort
         )
-        selectedButton.setImage(UIImage(named: newImageName ?? ""), for: .selected)
-        for button in buttons {
-            button.isSelected = false
-            button.backgroundColor = .backgroundTeal
-        }
-        selectedButton.isSelected = true
-        selectedButton.backgroundColor = .selectedTitle
     }
 }

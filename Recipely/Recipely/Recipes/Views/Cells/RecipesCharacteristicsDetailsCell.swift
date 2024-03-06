@@ -78,7 +78,7 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         return view
     }()
 
-    let proteinsSubView: UIView = {
+    private let proteinsSubView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
@@ -152,6 +152,10 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         return label
     }()
 
+    // MARK: - Private Properties
+
+    private var isShimming = true
+
     // MARK: - Initialization
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -165,13 +169,41 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         setUp()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if isShimming {
+            stopShimmers()
+        }
+        enercViewLabel.isHidden = isShimming
+        enercSubViewLabel.isHidden = isShimming
+        carbohydratesViewLabel.isHidden = isShimming
+        carbohydratesSubViewLabel.isHidden = isShimming
+        fatsViewLabel.isHidden = isShimming
+        fatsSubViewLabel.isHidden = isShimming
+        proteinsViewLabel.isHidden = isShimming
+        proteinsSubViewLabel.isHidden = isShimming
+    }
+
     // MARK: - Public Methods
 
-    func getCharacteristics(recipe: Recipe) {
-        enercSubViewLabel.text = "\(recipe.calories) kkal"
-        carbohydratesSubViewLabel.text = "\(recipe.carbohydrates) g"
-        fatsSubViewLabel.text = "\(recipe.fats) g"
-        proteinsSubViewLabel.text = "\(recipe.proteins) g"
+    func getCharacteristics(recipe: Recipe?) {
+        if let recipe = recipe {
+            isShimming = false
+            enercView.stopShimmeringAnimation()
+            enercView.backgroundColor = .characteristics
+            carbohydratesView.stopShimmeringAnimation()
+            carbohydratesView.backgroundColor = .characteristics
+            fatsView.stopShimmeringAnimation()
+            fatsView.backgroundColor = .characteristics
+            proteinsView.stopShimmeringAnimation()
+            proteinsView.backgroundColor = .characteristics
+            enercSubViewLabel.text = "\(recipe.calories) kkal"
+            carbohydratesSubViewLabel.text = "\(recipe.carbohydrates) g"
+            fatsSubViewLabel.text = "\(recipe.fats) g"
+            proteinsSubViewLabel.text = "\(recipe.proteins) g"
+        } else {
+            isShimming = true
+        }
     }
 
     // MARK: - Private Methods
@@ -219,6 +251,13 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
         makeSubViewLabelConcntraints(label: carbohydratesSubViewLabel, equalTo: carbohydratesSubView)
         makeSubViewLabelConcntraints(label: fatsSubViewLabel, equalTo: fatsSubView)
         makeSubViewLabelConcntraints(label: proteinsSubViewLabel, equalTo: proteinsSubView)
+    }
+
+    private func stopShimmers() {
+        enercView.startShimmeringAnimation()
+        carbohydratesView.startShimmeringAnimation()
+        fatsView.startShimmeringAnimation()
+        proteinsView.startShimmeringAnimation()
     }
 
     private func makeEnercViewConstraints() {

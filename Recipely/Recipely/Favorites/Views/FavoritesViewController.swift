@@ -9,6 +9,8 @@ protocol FavoritesViewProtocol: AnyObject {
     var presenter: FavoritesViewPresenterProtocol? { get set }
     /// Скрытие коллекции
     func hideCollectionView(_ isHiden: Bool)
+    /// Обновление данных таблицы
+    func reloadTableView()
 }
 
 /// Экран избарнного
@@ -76,6 +78,11 @@ final class FavoritesViewController: UIViewController {
         createConstraints()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        deselectedSelectedRow()
+    }
+
     // MARK: - Private Methods
 
     private func setupView() {
@@ -104,6 +111,12 @@ final class FavoritesViewController: UIViewController {
         createEmptyDescriptionLabelConstraints()
         createEmptyIconBackgroundViewConstraints()
         createEmptyIconImageViewConstraints()
+    }
+
+    private func deselectedSelectedRow() {
+        if let selectedIndex = tableView.indexPathForSelectedRow {
+            tableView.cellForRow(at: selectedIndex)?.isSelected = false
+        }
     }
 
     private func createTableViewConstraints() {
@@ -165,13 +178,26 @@ extension FavoritesViewController: FavoritesViewProtocol {
         emptyFavoritesLabel.isHidden = !isHiden
         emptyDescriptionLabel.isHidden = !isHiden
     }
+
+    func reloadTableView() {
+        tableView.reloadData()
+    }
 }
 
 // MARK: - FavoritesViewController + UITableViewDataSource
 
 extension FavoritesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter?.getRecipeCount() ?? 0
+        switch presenter?.getRecipeCount() {
+        case let .data(recipes):
+            tableView.isScrollEnabled = true
+            tableView.allowsSelection = true
+            return recipes.count
+        default:
+            tableView.isScrollEnabled = false
+            tableView.allowsSelection = false
+            return 8
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -179,7 +205,12 @@ extension FavoritesViewController: UITableViewDataSource {
             withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
-        cell.loadInfo(recipe: presenter?.getRecipeInfo(forNumber: indexPath.row) ?? Recipe())
+        switch presenter?.getRecipeInfo() {
+        case let .data(recipes):
+            cell.loadInfo(recipe: recipes[indexPath.row])
+        default:
+            cell.loadInfo(recipe: nil)
+        }
         return cell
     }
 }
@@ -189,6 +220,7 @@ extension FavoritesViewController: UITableViewDataSource {
 extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.goToRecipeDetail(numberOfRecipe: indexPath.row)
+        tableView.cellForRow(at: indexPath)?.isSelected = true
     }
 
     func tableView(
@@ -198,5 +230,9 @@ extension FavoritesViewController: UITableViewDelegate {
     ) {
         presenter?.removeRecipe(indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
     }
 }

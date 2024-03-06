@@ -7,6 +7,8 @@ import UIKit
 protocol RecipesViewProtocol: AnyObject {
     /// Презентер экрана
     var presenter: RecipesViewPresenterProtocol? { get set }
+    /// Перезагрузка коллекции
+    func reloadCollectionView()
 }
 
 /// Экран рецептов
@@ -49,6 +51,17 @@ final class RecipesViewController: UIViewController {
         collectionView.backgroundColor = .white
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        deselectedSelectedRow()
+    }
+
+    // MARK: - Public Methods
+
+    func reloadCollectionView() {
+        collectionView.reloadData()
+    }
+
     // MARK: - Private Methods
 
     private func setupView() {
@@ -76,29 +89,46 @@ final class RecipesViewController: UIViewController {
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+
+    private func deselectedSelectedRow() {
+        if let selectedIndex = collectionView.indexPathsForSelectedItems?.first {
+            collectionView.deselectItem(at: selectedIndex, animated: false)
+        }
+    }
 }
 
 // MARK: - Extension UICollectionViewDataSource
 
 extension RecipesViewController: UICollectionViewDataSource {
-    /// количество элементов в секции
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        presenter?.getCategoryCount() ?? 0
+        switch presenter?.getCategoryCount() {
+        case let .data(categories):
+            collectionView.isScrollEnabled = true
+            collectionView.allowsSelection = true
+            return categories.count
+        default:
+            collectionView.isScrollEnabled = false
+            collectionView.allowsSelection = false
+            return 8
+        }
     }
 
-    /// создание и настройка ячейки
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let category = presenter?.getInfo(categoryNumber: indexPath.item)
         guard let cell = collectionView
             .dequeueReusableCell(
                 withReuseIdentifier: RecipesCollectionViewCell.identifier,
                 for: indexPath
             ) as? RecipesCollectionViewCell
         else { return UICollectionViewCell() }
-        cell.setInfo(info: category ?? DishCategory(imageName: "", type: .chicken))
+        switch presenter?.getInfo() {
+        case let .data(categories):
+            cell.setInfo(info: categories[indexPath.item])
+        default:
+            cell.setInfo(info: nil)
+        }
         return cell
     }
 }

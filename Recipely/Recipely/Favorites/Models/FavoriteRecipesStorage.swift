@@ -9,9 +9,7 @@ struct FavoriteRecipesStorage {
 
     var favoriteRecipes: [Recipe] = {
         var favoriteRecipes: [Recipe] = []
-        for recipe in SourceOfRecepies().fishRecepies where favoriteRecipes.count < 3 {
-            favoriteRecipes.append(recipe)
-        }
+        favoriteRecipes = SourceOfRecepies().favoriteRecipes
         return favoriteRecipes
     }()
 }

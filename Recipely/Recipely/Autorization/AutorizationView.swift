@@ -328,7 +328,7 @@ final class AutorizationViewController: UIViewController {
             Timer.scheduledTimer(
                 timeInterval: 3.0,
                 target: self,
-                selector: #selector(stopLoadLogin),
+                selector: #selector(loadingHandler),
                 userInfo: nil,
                 repeats: false
             )
@@ -339,9 +339,10 @@ final class AutorizationViewController: UIViewController {
         }
     }
 
-    @objc private func stopLoadLogin() {
+    @objc private func loadingHandler() {
         spinner.stopAnimating()
         loginButton.setTitle(Constants.loginText, for: .normal)
+        presenter?.goToMainView()
     }
 
     @objc private func keyboardWillShow(notification: Notification) {
