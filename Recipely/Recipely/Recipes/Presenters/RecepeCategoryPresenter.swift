@@ -10,7 +10,7 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Экшн кнопки назад
     func back()
     /// Изменение состояние сортировки рецептов
-    func selectedSort(_ sortType: SortTypes) -> (String, Bool)
+    func selectedSort(_ sortType: SortTypes, newSortState: SortState)
     /// Получение информации о рецепте для ячейки
     func getRecipeInfo() -> ViewData<[Recipe]>
     /// Получение информации о количестве рецептов
@@ -62,21 +62,8 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         coordinator?.backToCategiries()
     }
 
-    func selectedSort(_ sortType: SortTypes) -> (String, Bool) {
-        let isSelected = true
-        switch selectedSortMap[sortType] {
-        case .withoutSort:
-            selectedSortMap.updateValue(.fromLeastToMost, forKey: sortType)
-            return (Constants.whiteSortDirection, isSelected)
-        case .fromLeastToMost:
-            selectedSortMap.updateValue(.fromMostToLeast, forKey: sortType)
-            return (Constants.whiteSortDirectionRevers, isSelected)
-        case .fromMostToLeast:
-            selectedSortMap.updateValue(.withoutSort, forKey: sortType)
-            return (Constants.blackSortDirection, !isSelected)
-        default:
-            return ("", !isSelected)
-        }
+    func selectedSort(_ sortType: SortTypes, newSortState: SortState) {
+        selectedSortMap.updateValue(newSortState, forKey: sortType)
     }
 
     func goToRecipeDetail(numberOfRecipe: Int) {

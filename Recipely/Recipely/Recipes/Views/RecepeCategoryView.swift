@@ -190,8 +190,8 @@ extension RecepeCategoryView: RecepeCategoryViewProtocol {
 // MARK: - RecepeCategoryView + SortPickerViewDataSource
 
 extension RecepeCategoryView: SortPickerViewDataSource {
-    func sortPickerImage(indexPath: IndexPath) -> (String, Bool) {
-        presenter?.selectedSort(sortTypes[indexPath.row]) ?? ("", false)
+    func sortPickerAction(indexPath: IndexPath, newSortState: SortState) {
+        presenter?.selectedSort(sortTypes[indexPath.row], newSortState: newSortState)
     }
 
     func sortPickerCount(_ sortPicker: SortPickerView) -> Int {
