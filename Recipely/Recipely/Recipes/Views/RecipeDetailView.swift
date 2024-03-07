@@ -83,6 +83,11 @@ final class RecipeDetailView: UIViewController {
         setConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addLogs()
+    }
+
     // MARK: - Private Methods
 
     private func setupView() {
@@ -127,6 +132,10 @@ final class RecipeDetailView: UIViewController {
             forCellReuseIdentifier: RecipesDescriptionDetailsCell.identifier
         )
         recipeLabelView.addSubview(recipeLabel)
+    }
+
+    private func addLogs() {
+        presenter?.sendLog(message: .openDetailsRecipe)
     }
 
     private func createRecipeLabelConstraints() {
@@ -176,7 +185,7 @@ final class RecipeDetailView: UIViewController {
     }
 
     @objc private func shareRecipe() {
-        presenter?.shareRecipe()
+        presenter?.shareRecipe(message: .tapShareButton)
     }
 }
 

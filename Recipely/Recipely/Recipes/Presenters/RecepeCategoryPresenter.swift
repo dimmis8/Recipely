@@ -6,7 +6,7 @@ import Foundation
 /// Протокол презентера экрана категории рецептов
 protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
-    init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator)
+    init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator, loggerManager: LoggerManagerProtocol)
     /// Экшн кнопки назад
     func back()
     /// Изменение состояние сортировки рецептов
@@ -19,6 +19,8 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     func goToRecipeDetail(numberOfRecipe: Int)
     /// Поиск рецептов по запросу
     func searchRecipes(withText text: String)
+    /// Добавление логов
+    func sendLog(message: LogActions)
 }
 
 /// Презентер экрана категории рецептов
@@ -35,6 +37,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
 
     private weak var coordinator: RecipesCoordinator?
     private weak var view: RecepeCategoryViewProtocol?
+    private var loggerManager: LoggerManagerProtocol?
     private var selectedSortMap: [SortTypes: SortState] = [.calories: .withoutSort, .time: .withoutSort] {
         didSet {
             sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
@@ -50,9 +53,14 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
 
     // MARK: - Initializers
 
-    required init(view: RecepeCategoryViewProtocol, coordinator: RecipesCoordinator) {
+    required init(
+        view: RecepeCategoryViewProtocol,
+        coordinator: RecipesCoordinator,
+        loggerManager: LoggerManagerProtocol
+    ) {
         self.view = view
         self.coordinator = coordinator
+        self.loggerManager = loggerManager
         state = .noData()
     }
 
@@ -108,6 +116,10 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
             repeats: false
         )
         view?.reloadTableView()
+    }
+
+    func sendLog(message: LogActions) {
+        loggerManager?.log(message)
     }
 
     // MARK: - Private Methods

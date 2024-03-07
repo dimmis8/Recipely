@@ -51,6 +51,11 @@ final class RecipesViewController: UIViewController {
         collectionView.backgroundColor = .white
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addLogs()
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         deselectedSelectedRow()
@@ -94,6 +99,10 @@ final class RecipesViewController: UIViewController {
         if let selectedIndex = collectionView.indexPathsForSelectedItems?.first {
             collectionView.deselectItem(at: selectedIndex, animated: false)
         }
+    }
+
+    private func addLogs() {
+        presenter?.sendLog(message: .openRecipe)
     }
 }
 

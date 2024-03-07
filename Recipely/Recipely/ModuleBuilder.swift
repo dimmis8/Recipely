@@ -35,6 +35,11 @@ final class ModuleBuilder: Builder {
         static let titleProfile = "Profile"
     }
 
+    private let loggerManager: LoggerManagerProtocol
+    init(loggerManager: LoggerManagerProtocol) {
+        self.loggerManager = loggerManager
+    }
+
     // MARK: - Public Methods
 
     func createAutorizationModule(coordinator: AutorizationCoordinator) -> UIViewController {
@@ -76,7 +81,11 @@ final class ModuleBuilder: Builder {
 
     func createRecipesModule(coordinator: RecipesCoordinator) -> UIViewController {
         let view = RecipesViewController()
-        let presenter = RecipesPresenter(view: view, coordinator: coordinator)
+        let presenter = RecipesPresenter(
+            view: view,
+            coordinator: coordinator,
+            loggerManager: loggerManager
+        )
         view.presenter = presenter
         view.tabBarItem = UITabBarItem(
             title: Constants.titleRecipes,
@@ -88,7 +97,11 @@ final class ModuleBuilder: Builder {
 
     func createRecepeCategoryModule(coordinator: RecipesCoordinator) -> UIViewController {
         let view = RecepeCategoryView()
-        let presenter = RecepeCategoryPresenter(view: view, coordinator: coordinator)
+        let presenter = RecepeCategoryPresenter(
+            view: view,
+            coordinator: coordinator,
+            loggerManager: loggerManager
+        )
         view.presenter = presenter
         return view
     }
@@ -107,7 +120,12 @@ final class ModuleBuilder: Builder {
 
     func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController {
         let view = RecipeDetailView()
-        let presenter = RecipeDetailPresenter(view: view, coordinator: coordinator, recipe: recipe)
+        let presenter = RecipeDetailPresenter(
+            view: view,
+            coordinator: coordinator,
+            recipe: recipe,
+            loggerManager: loggerManager
+        )
         view.presenter = presenter
         return view
     }

@@ -70,6 +70,11 @@ final class RecepeCategoryView: UIViewController {
         createConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addLogs()
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         deselectedSelectedRow()
@@ -118,6 +123,10 @@ final class RecepeCategoryView: UIViewController {
         if let selectedIndex = tableView.indexPathForSelectedRow {
             tableView.cellForRow(at: selectedIndex)?.isSelected = false
         }
+    }
+
+    private func addLogs() {
+        presenter?.sendLog(message: .openCatagoryOfRecipe)
     }
 
     private func createBackBarButtonConstraints() {
