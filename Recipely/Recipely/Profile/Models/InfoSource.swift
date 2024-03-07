@@ -2,6 +2,7 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
+import UIKit
 
 /// Протокол источника информации
 protocol InfoSourceProtocol: AnyObject {
@@ -45,8 +46,13 @@ final class InfoSource: InfoSourceProtocol {
     Thank you for being a part of our culinary community! Enjoy exploring and cooking up a storm!
     """
 
+    private let imageData = UIImage(named: "voznyak")?.pngData() ?? Data()
     // Информация о пользователе
-    private var personInfo = UserInfo(nameSurname: "Steve Wozniak", userPhotoName: "voznyak", bonusesCount: 200)
+    private lazy var personInfo: UserInfo = .init(
+        nameSurname: "Steve Wozniak",
+        userImageData: imageData,
+        bonusesCount: 200
+    )
 
     func getUserInfo() -> UserInfo {
         personInfo

@@ -59,6 +59,7 @@ final class ProfileViewController: UIViewController {
 
     private let contentTypes: [ContentTypes] = [.userInfo, .profileButtons]
     private let fields: [FieldsType] = [.bonuses, .termsAndPrivacy, .logOut]
+    private let imagePicker = ImagePicker()
 
     // MARK: - Life Cycle
 
@@ -233,13 +234,34 @@ extension ProfileViewController: UITableViewDataSource {
                 tableView.allowsSelection = true
                 cell.setUserInformation(userInfo) { [weak self] in
                     self?.presenter?.actionChangeName()
-                } changePhotoComplition: {}
+                } changePhotoComplition: {
+                    self.imagePicker.showImagePicker(in: self) { image in
+                        guard let imageData = image.pngData() else { return }
+                        self.presenter?.actionChangePhoto(imageData: imageData)
+                    }
+                }
+            case .noData:
+                tableView.isScrollEnabled = true
+                tableView.allowsSelection = true
+                cell.setUserInformation(UserInfo()) { [weak self] in
+                    self?.presenter?.actionChangeName()
+                } changePhotoComplition: {
+                    self.imagePicker.showImagePicker(in: self) { image in
+                        guard let imageData = image.pngData() else { return }
+                        self.presenter?.actionChangePhoto(imageData: imageData)
+                    }
+                }
             default:
                 tableView.isScrollEnabled = false
                 tableView.allowsSelection = false
                 cell.setUserInformation(nil) { [weak self] in
                     self?.presenter?.actionChangeName()
-                } changePhotoComplition: {}
+                } changePhotoComplition: {
+                    self.imagePicker.showImagePicker(in: self) { image in
+                        guard let imageData = image.pngData() else { return }
+                        self.presenter?.actionChangePhoto(imageData: imageData)
+                    }
+                }
             }
             return cell
 

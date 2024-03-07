@@ -2,6 +2,7 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
+import UIKit
 
 /// Протокол презентера экрана профиля
 protocol ProfileViewPresenterProtocol: AnyObject {
@@ -17,6 +18,8 @@ protocol ProfileViewPresenterProtocol: AnyObject {
     func showBonuses()
     /// Обработка нажатия кнопки изменения имени
     func actionChangeName()
+    /// Обработка нажатия кнопки изменения фото
+    func actionChangePhoto(imageData: Data)
     /// Изменение имени пользователя
     func editNameSurname(name: String)
     /// Открытие информации о приватности
@@ -30,8 +33,8 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
     private weak var coordinator: ProfileCoordinator?
     private weak var view: ProfileViewProtocol?
     private var infoSource: InfoSourceProtocol?
-    private var isFirstRequest = true
     private var state: ViewState<UserInfo>
+    private var storageService = StorageService<UserInfo>(key: .userInfo)
 
     // MARK: - Initializers
 
@@ -39,22 +42,20 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
         self.view = view
         self.infoSource = infoSource
         self.coordinator = coordinator
-        state = .noData()
+        if storageService.getContent() == nil {
+            storageService.setContent(UserInfo())
+        }
+        state = .data(storageService.getContent() ?? UserInfo(nameSurname: "error"))
     }
 
     // MARK: - Public Methods
 
     func getUserInformation() -> ViewState<UserInfo> {
-        if isFirstRequest {
-            state = .loading
-            Timer.scheduledTimer(
-                timeInterval: 3,
-                target: self,
-                selector: #selector(setInfo),
-                userInfo: nil,
-                repeats: false
-            )
+        guard let userInfo = storageService.getContent() else {
+            state = .noData(nil)
+            return state
         }
+        state = .data(userInfo)
         return state
     }
 
@@ -74,20 +75,22 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
         view?.showChangeNameAlert()
     }
 
+    let imagePicker = ImagePicker()
+    func actionChangePhoto(imageData: Data) {
+        guard var userInfo = storageService.getContent() else { return }
+        userInfo.userImageData = imageData
+        storageService.setContent(userInfo)
+        view?.setNewNameFromSource()
+    }
+
     func editNameSurname(name: String) {
-        infoSource?.changeUserName(nameSurname: name)
+        guard var userInfo = storageService.getContent() else { return }
+        userInfo.nameSurname = name
+        storageService.setContent(userInfo)
         view?.setNewNameFromSource()
     }
 
     func openPrivacyInfo() {
         view?.showPrivacyCard(privacyText: infoSource?.privacyText ?? "error")
-    }
-
-    // MARK: - Private Methods
-
-    @objc private func setInfo() {
-        isFirstRequest = false
-        state = .data(infoSource?.getUserInfo() ?? UserInfo(nameSurname: "", bonusesCount: 0))
-        view?.reloadTableView()
     }
 }
