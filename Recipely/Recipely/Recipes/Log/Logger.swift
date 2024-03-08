@@ -34,4 +34,18 @@ final class Logger {
             contents: data
         )
     }
+
+    func saveScreenshot(_ screenshotData: Data) {
+        let manager = FileManager.default
+        let url = manager.urls(for: .documentDirectory, in: .userDomainMask)
+        let screenshotsSessionUrl = url[0].appendingPathComponent("LogSession").appendingPathComponent("Screenshots")
+        do {
+            try manager.createDirectory(at: screenshotsSessionUrl, withIntermediateDirectories: true)
+        } catch {}
+        let screenFileUrl = screenshotsSessionUrl.appendingPathComponent("Screenshot_\(Date()).png")
+        manager.createFile(
+            atPath: screenFileUrl.path(percentEncoded: true),
+            contents: screenshotData
+        )
+    }
 }
