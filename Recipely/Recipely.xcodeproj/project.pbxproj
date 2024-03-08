@@ -198,6 +198,79 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		0A6DEBCF2B9B1B900062F54C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */,
+				0A8521722B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		0A6DEBD02B9B1BAB0062F54C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0ADBED722B927A4F009FAA2A /* Font+Extension.swift */,
+				0A6DEBBC2B978B3F0062F54C /* UIView+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		0A6DEBD12B9B1BBC0062F54C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0A6DEBD22B9B1BD90062F54C /* StorageService */,
+				52B0A94B2B9A275E006E01A3 /* LoggerService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		0A6DEBD22B9B1BD90062F54C /* StorageService */ = {
+			isa = PBXGroup;
+			children = (
+				0A6DEBC82B9A0B510062F54C /* StorageService.swift */,
+				0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */,
+				0A6DEBC22B99AB330062F54C /* Memento.swift */,
+				0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */,
+			);
+			path = StorageService;
+			sourceTree = "<group>";
+		};
+		0A6DEBD32B9B1C560062F54C /* CustomClass */ = {
+			isa = PBXGroup;
+			children = (
+				0A8521842B90BC4A002BCE50 /* SortPickerView.swift */,
+				0A6DEBCD2B9A4FE20062F54C /* ImagePicker.swift */,
+				0A85214B2B8CFF7C002BCE50 /* ModuleBuilder.swift */,
+			);
+			path = CustomClass;
+			sourceTree = "<group>";
+		};
+		0A6DEBD42B9B1C890062F54C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0A8521102B8CB1D4002BCE50 /* AutorizationView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0A6DEBD52B9B1C930062F54C /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				0A85214D2B8D002C002BCE50 /* AutorizationPresenter.swift */,
+			);
+			name = Presenters;
+			sourceTree = "<group>";
+		};
+		0A6DEBD62B9B1CA10062F54C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */,
+				0A6DEBC42B99ABD80062F54C /* LoginPassword.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		0A8521002B8CB1D4002BCE50 = {
 			isa = PBXGroup;
 			children = (
@@ -221,21 +294,16 @@
 		0A85210B2B8CB1D4002BCE50 /* Recipely */ = {
 			isa = PBXGroup;
 			children = (
-				0ADBED722B927A4F009FAA2A /* Font+Extension.swift */,
-				0A6DEBBC2B978B3F0062F54C /* UIView+Extension.swift */,
-				0A6DEBC82B9A0B510062F54C /* StorageService.swift */,
-				0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */,
-				0A6DEBC22B99AB330062F54C /* Memento.swift */,
-				0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */,
+				0A6DEBD02B9B1BAB0062F54C /* Extensions */,
+				0A6DEBD12B9B1BBC0062F54C /* Services */,
+				0A6DEBD32B9B1C560062F54C /* CustomClass */,
 				0A8521782B8F512B002BCE50 /* VoidHandler.swift */,
 				0A85210C2B8CB1D4002BCE50 /* AppDelegate.swift */,
 				0A85210E2B8CB1D4002BCE50 /* SceneDelegate.swift */,
-				0A85214B2B8CFF7C002BCE50 /* ModuleBuilder.swift */,
 				0A8521402B8CEEF5002BCE50 /* Coordinators */,
 				0A8521472B8CFB47002BCE50 /* Autorization */,
 				0A85215A2B8DB930002BCE50 /* MainTabBar */,
 				0A85215D2B8DBFF9002BCE50 /* Recipes */,
-				0A8521842B90BC4A002BCE50 /* SortPickerView.swift */,
 				0A8521642B8DC2D3002BCE50 /* Favorites */,
 				0A8521512B8D2653002BCE50 /* Profile */,
 				0A8521152B8CB1D5002BCE50 /* Assets.xcassets */,
@@ -278,10 +346,9 @@
 		0A8521472B8CFB47002BCE50 /* Autorization */ = {
 			isa = PBXGroup;
 			children = (
-				0A8521102B8CB1D4002BCE50 /* AutorizationView.swift */,
-				0A85214D2B8D002C002BCE50 /* AutorizationPresenter.swift */,
-				52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */,
-				0A6DEBC42B99ABD80062F54C /* LoginPassword.swift */,
+				0A6DEBD42B9B1C890062F54C /* Views */,
+				0A6DEBD52B9B1C930062F54C /* Presenters */,
+				0A6DEBD62B9B1CA10062F54C /* Models */,
 			);
 			path = Autorization;
 			sourceTree = "<group>";
@@ -291,8 +358,6 @@
 			children = (
 				0A8521742B8E9A11002BCE50 /* Views */,
 				0A8521752B8E9A2C002BCE50 /* Presenters */,
-				0A85216B2B8DF9AD002BCE50 /* UserInfoViewCell.swift */,
-				0A8521722B8E1B7C002BCE50 /* ProfileFieldsViewCell.swift */,
 				0A85216F2B8E000A002BCE50 /* Models */,
 			);
 			path = Profile;
@@ -309,7 +374,6 @@
 		0A85215D2B8DBFF9002BCE50 /* Recipes */ = {
 			isa = PBXGroup;
 			children = (
-				52B0A94B2B9A275E006E01A3 /* Log */,
 				0ADBED652B913A39009FAA2A /* Views */,
 				0ADBED662B913A4E009FAA2A /* Presenters */,
 				0ADBED672B913A6A009FAA2A /* Models */,
@@ -332,7 +396,6 @@
 			children = (
 				0A85216D2B8DFE7D002BCE50 /* UserInfo.swift */,
 				0A8521702B8E0031002BCE50 /* InfoSource.swift */,
-				0A6DEBCD2B9A4FE20062F54C /* ImagePicker.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -343,6 +406,7 @@
 				0A8521522B8D26B5002BCE50 /* ProfileViewController.swift */,
 				52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */,
 				0A6DEBB82B963BD20062F54C /* PrivacyView.swift */,
+				0A6DEBCF2B9B1B900062F54C /* Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -416,16 +480,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		52B0A94B2B9A275E006E01A3 /* Log */ = {
+		52B0A94B2B9A275E006E01A3 /* LoggerService */ = {
 			isa = PBXGroup;
 			children = (
+				52B0A9542B9A5B2C006E01A3 /* LoggerService.swift */,
 				52B0A94C2B9A2784006E01A3 /* LogActions.swift */,
 				52B0A94E2B9A287C006E01A3 /* Logger.swift */,
 				52B0A9522B9A2899006E01A3 /* LoggerInvoker.swift */,
 				52B0A9502B9A2889006E01A3 /* LogCommand.swift */,
-				52B0A9542B9A5B2C006E01A3 /* LoggerService.swift */,
 			);
-			path = Log;
+			path = LoggerService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
