@@ -311,12 +311,16 @@ final class AutorizationViewController: UIViewController {
             if presenter?.isValid(enteringEmail: emailText, enteringPassword: passwordText) == false {
                 incorrectPasswordLabel.isHidden = false
                 passwordLabel.textColor = .red
+                emailLabel.textColor = .red
                 passwordTextField.layer.borderColor = UIColor.red.cgColor
+                emailTextField.layer.borderColor = UIColor.red.cgColor
                 return false
             } else {
                 incorrectPasswordLabel.isHidden = true
                 passwordLabel.textColor = .loginText
+                emailLabel.textColor = .loginText
                 passwordTextField.layer.borderColor = UIColor.systemGray5.cgColor
+                emailTextField.layer.borderColor = UIColor.systemGray5.cgColor
             }
         }
         return true

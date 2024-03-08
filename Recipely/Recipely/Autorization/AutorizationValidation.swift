@@ -19,7 +19,7 @@ final class AutorizationValidation: AutorizationValidationProtocol {
 
     // MARK: - Private Properties
 
-    private let accounts = ["123@mm.mm": "123"]
+    private let accountManager = StorageService<LoginPassword>(key: .loginPassword)
 
     // MARK: - Public method
 
@@ -27,12 +27,15 @@ final class AutorizationValidation: AutorizationValidationProtocol {
         let format = "SELF MATCHES %@"
         switch (enteringEmail, enteringPassword) {
         case (.some(let email), nil):
-            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) &&
-                accounts.keys.contains(email)
+            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email)
         case let (.some(email), .some(password)):
-            return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) &&
-                accounts.keys.contains(email) &&
-                accounts[email] == password
+            if let loginPassword = accountManager.getContent() {
+                return NSPredicate(format: format, Constants.regexForEmail).evaluate(with: email) &&
+                    loginPassword.login == email && loginPassword.password == password
+            } else {
+                accountManager.setContent(LoginPassword(login: email, password: password))
+                return false
+            }
         default:
             return false
         }
