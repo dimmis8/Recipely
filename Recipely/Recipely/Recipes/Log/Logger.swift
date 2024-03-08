@@ -5,6 +5,13 @@ import Foundation
 
 /// Ресивер
 final class Logger {
+    
+    // MARK: - Constants
+    enum Constants {
+        static let logSessionFolderName = "LogSession"
+        static let screenshotsFolderName = "Screenshots"
+    }
+    
     // MARK: - Public Properties
 
     static var logFileDate = Date()
@@ -19,7 +26,7 @@ final class Logger {
         messages.append(message)
         let manager = FileManager.default
         let url = manager.urls(for: .documentDirectory, in: .userDomainMask)
-        let logSessionUrl = url[0].appendingPathComponent("LogSession")
+        let logSessionUrl = url[0].appendingPathComponent(Constants.logSessionFolderName)
         do {
             try manager.createDirectory(at: logSessionUrl, withIntermediateDirectories: true)
         } catch {}
@@ -39,7 +46,8 @@ final class Logger {
     func saveScreenshot(_ screenshotData: Data) {
         let manager = FileManager.default
         let url = manager.urls(for: .documentDirectory, in: .userDomainMask)
-        let screenshotsSessionUrl = url[0].appendingPathComponent("LogSession").appendingPathComponent("Screenshots")
+        let screenshotsSessionUrl = url[0].appendingPathComponent(Constants.logSessionFolderName)
+            .appendingPathComponent(Constants.screenshotsFolderName)
         do {
             try manager.createDirectory(at: screenshotsSessionUrl, withIntermediateDirectories: true)
         } catch {}
