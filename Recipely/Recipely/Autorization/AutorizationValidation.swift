@@ -34,7 +34,7 @@ final class AutorizationValidation: AutorizationValidationProtocol {
                     loginPassword.login == email && loginPassword.password == password
             } else {
                 accountManager.setContent(LoginPassword(login: email, password: password))
-                return false
+                return true
             }
         default:
             return false

@@ -24,6 +24,7 @@ final class Logger {
             try manager.createDirectory(at: logSessionUrl, withIntermediateDirectories: true)
         } catch {}
         let logFileUrl = logSessionUrl.appendingPathComponent("Log_\(Logger.logFileDate).txt")
+        print(logSessionUrl)
         var logsText = ""
         for log in messages {
             logsText.append("\(Date()) : \(log) \n")
