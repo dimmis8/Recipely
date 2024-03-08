@@ -83,7 +83,6 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
             } else {
                 titleLabel.font = .verdana(ofSize: 20)
             }
-            print("\(contentView.frame.size.height) \(info.imageName)")
         } else {
             isShimming = true
         }

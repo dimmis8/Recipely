@@ -15,6 +15,8 @@ protocol FavoritesViewPresenterProtocol: AnyObject {
     func goToRecipeDetail(numberOfRecipe: Int)
     /// Удаление рецепта из фаворита
     func removeRecipe(_ recipeNumber: Int)
+    /// Добавление логов
+    func sendLog()
 }
 
 /// Презентер экрана избранного
@@ -24,6 +26,7 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
     private weak var coordinator: FavoritesCoordinator?
     private weak var view: FavoritesViewProtocol?
     private var favoriteRecipesStorage = FavoriteRecipesStorage()
+    private var loggerService = LoggerService()
     private var isFirstRequest = true
     private var state: ViewState<[Recipe]>
 
@@ -59,6 +62,10 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
         let recipe = favoriteRecipesStorage.favoriteRecipes[numberOfRecipe]
         coordinator?.openRecipeDetails(recipe: recipe)
         state = .data(favoriteRecipesStorage.favoriteRecipes)
+    }
+
+    func sendLog() {
+        loggerService.log(.openFavorites)
     }
 
     func removeRecipe(_ recipeNumber: Int) {

@@ -209,6 +209,11 @@ final class AutorizationViewController: UIViewController {
         setupKeyboard()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addLogs()
+    }
+
     // MARK: - Private methods
 
     private func setupUI() {
@@ -286,6 +291,10 @@ final class AutorizationViewController: UIViewController {
         ]
     }
 
+    private func addLogs() {
+        presenter?.sendLog()
+    }
+
     @objc private func hideKeyboard() {
         view.endEditing(true)
     }
@@ -311,12 +320,16 @@ final class AutorizationViewController: UIViewController {
             if presenter?.isValid(enteringEmail: emailText, enteringPassword: passwordText) == false {
                 incorrectPasswordLabel.isHidden = false
                 passwordLabel.textColor = .red
+                emailLabel.textColor = .red
                 passwordTextField.layer.borderColor = UIColor.red.cgColor
+                emailTextField.layer.borderColor = UIColor.red.cgColor
                 return false
             } else {
                 incorrectPasswordLabel.isHidden = true
                 passwordLabel.textColor = .loginText
+                emailLabel.textColor = .loginText
                 passwordTextField.layer.borderColor = UIColor.systemGray5.cgColor
+                emailTextField.layer.borderColor = UIColor.systemGray5.cgColor
             }
         }
         return true

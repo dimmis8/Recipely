@@ -89,7 +89,7 @@ final class UserInfoViewCell: UITableViewCell {
             isShimming = false
             profilePhotoButton.stopShimmeringAnimation()
             nameView.stopShimmeringAnimation()
-            profilePhotoButton.setImage(UIImage(named: userInfo.userPhotoName), for: .normal)
+            profilePhotoButton.setImage(UIImage(data: userInfo.userImageData), for: .normal)
             fullNameLabel.text = "\(userInfo.nameSurname)"
         } else {
             isShimming = true

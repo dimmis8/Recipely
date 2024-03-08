@@ -13,6 +13,8 @@ protocol RecipesViewPresenterProtocol: AnyObject {
     func getCategoryCount() -> ViewState<[DishCategory]>
     /// Переход на экран категории
     func goToCategory(_ category: RecipeCategories)
+    /// Добавление логов
+    func sendLog()
 }
 
 /// Презентер экрана м
@@ -22,12 +24,16 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
     private let informationSource = InformationSource()
     private weak var coordinator: RecipesCoordinator?
     private weak var view: RecipesViewProtocol?
+    private var loggerService = LoggerService()
     private var isFirstRequest = true
     private var state: ViewState<[DishCategory]>
 
     // MARK: - Initializers
 
-    required init(view: RecipesViewProtocol, coordinator: RecipesCoordinator) {
+    required init(
+        view: RecipesViewProtocol,
+        coordinator: RecipesCoordinator
+    ) {
         self.view = view
         self.coordinator = coordinator
         state = .noData()
@@ -58,6 +64,10 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
 //            )
         }
         return state
+    }
+
+    func sendLog() {
+        loggerService.log(.openRecipe)
     }
 
     // MARK: - Private Methods

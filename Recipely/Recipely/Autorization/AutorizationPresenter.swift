@@ -17,6 +17,8 @@ protocol AutorizationViewPresenterProtocol: AnyObject {
     func changePasswordVisableState()
     /// Переход на главный экран приложения
     func goToMainView()
+    /// Добавление логов
+    func sendLog()
 }
 
 /// Презентер экрана авторизации
@@ -26,6 +28,7 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
     private var autorizationValidation: AutorizationValidationProtocol?
     private weak var coordinator: AutorizationCoordinator?
     private weak var view: AutorizationViewProtocol?
+    private var loggerService = LoggerService()
     private var isPasswordVisible = false
 
     // MARK: - Initializers
@@ -53,5 +56,9 @@ final class AutorizationPresenter: AutorizationViewPresenterProtocol {
 
     func goToMainView() {
         coordinator?.logIn()
+    }
+
+    func sendLog() {
+        loggerService.log(.openAutorization)
     }
 }

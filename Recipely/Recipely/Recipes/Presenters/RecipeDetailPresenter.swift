@@ -6,7 +6,11 @@ import Foundation
 /// Протокол презентера экрана деталей рецептов
 protocol RecipeDetailPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
-    init(view: RecipeDetailViewProtocol, coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe)
+    init(
+        view: RecipeDetailViewProtocol,
+        coordinator: RecipesDetailCoordinatorProtocol,
+        recipe: Recipe
+    )
     /// Сохранение рецепта в исзбранное
     func saveToFavorite()
     /// Шеринг рецепта
@@ -15,6 +19,8 @@ protocol RecipeDetailPresenterProtocol: AnyObject {
     func back()
     /// Получение данных рецепта
     func getRecipeInfo() -> ViewState<Recipe>
+    /// Добавление логов
+    func sendLog()
 }
 
 /// Презентер экрана деталей рецептов
@@ -23,13 +29,18 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
 
     private weak var coordinator: RecipesDetailCoordinatorProtocol?
     private weak var view: RecipeDetailViewProtocol?
+    private var loggerService = LoggerService()
     private var recipe: Recipe?
     private var isFirstRequest = true
     private var state: ViewState<Recipe>
 
     // MARK: - Initializers
 
-    required init(view: RecipeDetailViewProtocol, coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) {
+    required init(
+        view: RecipeDetailViewProtocol,
+        coordinator: RecipesDetailCoordinatorProtocol,
+        recipe: Recipe
+    ) {
         self.view = view
         self.coordinator = coordinator
         self.recipe = recipe
@@ -61,7 +72,12 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     }
 
     func shareRecipe() {
+        loggerService.log(.tapShareButton)
         coordinator?.shareRecipe(text: recipe?.description ?? "")
+    }
+
+    func sendLog() {
+        loggerService.log(.openDetailsRecipe)
     }
 
     // MARK: - Private Methods

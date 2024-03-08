@@ -38,3 +38,14 @@ extension UIView {
         layer.mask = nil
     }
 }
+
+extension UIView {
+    /// Создание скриншота
+    func takeScreenshot() -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
+        drawHierarchy(in: bounds, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image ?? UIImage()
+    }
+}

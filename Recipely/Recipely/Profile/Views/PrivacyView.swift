@@ -41,7 +41,7 @@ final class PrivacyView: UIView {
     private lazy var dismissButton: UIButton = {
         let button = UIButton()
         button.setImage(.dismissButton, for: .normal)
-        dismissButton.addTarget(self, action: #selector(dismissCard), for: .touchUpInside)
+        button.addTarget(self, action: #selector(dismissCard), for: .touchUpInside)
         return button
     }()
 

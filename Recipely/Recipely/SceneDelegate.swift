@@ -6,7 +6,6 @@ import UIKit
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     private var appCoordinator: AppCoordinator?
-
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
@@ -14,6 +13,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         createRootViewController(windowScene)
+        Logger.logFileDate = Date()
     }
 
     private func createRootViewController(_ windowScene: UIWindowScene) {

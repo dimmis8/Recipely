@@ -78,6 +78,11 @@ final class FavoritesViewController: UIViewController {
         createConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addLogs()
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         deselectedSelectedRow()
@@ -165,6 +170,10 @@ final class FavoritesViewController: UIViewController {
             .isActive = true
         emptyIconImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
         emptyIconImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+    }
+
+    private func addLogs() {
+        presenter?.sendLog()
     }
 }
 
