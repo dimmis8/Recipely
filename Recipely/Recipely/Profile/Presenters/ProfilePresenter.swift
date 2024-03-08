@@ -2,7 +2,6 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
-import UIKit
 
 /// Протокол презентера экрана профиля
 protocol ProfileViewPresenterProtocol: AnyObject {
@@ -24,6 +23,8 @@ protocol ProfileViewPresenterProtocol: AnyObject {
     func editNameSurname(name: String)
     /// Открытие информации о приватности
     func openPrivacyInfo()
+    /// Добавление логов
+    func sendLog()
 }
 
 /// Презентер экрана профиля
@@ -34,6 +35,7 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
     private weak var view: ProfileViewProtocol?
     private var infoSource: InfoSourceProtocol?
     private var state: ViewState<UserInfo>
+    private var loggerService = LoggerService()
     private var storageService = StorageService<UserInfo>(key: .userInfo)
 
     // MARK: - Initializers
@@ -69,10 +71,12 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
 
     func showBonuses() {
         coordinator?.showBonuses()
+        loggerService.log(.openBonuses)
     }
 
     func actionChangeName() {
         view?.showChangeNameAlert()
+        loggerService.log(.openChangeNameAlert)
     }
 
     let imagePicker = ImagePicker()
@@ -81,6 +85,7 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
         userInfo.userImageData = imageData
         storageService.setContent(userInfo)
         view?.setNewNameFromSource()
+        loggerService.log(.openImagePicker)
     }
 
     func editNameSurname(name: String) {
@@ -92,5 +97,10 @@ final class ProfilePresenter: ProfileViewPresenterProtocol {
 
     func openPrivacyInfo() {
         view?.showPrivacyCard(privacyText: infoSource?.privacyText ?? "error")
+        loggerService.log(.openPrivacy)
+    }
+
+    func sendLog() {
+        loggerService.log(.openProfile)
     }
 }

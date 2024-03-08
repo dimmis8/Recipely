@@ -126,7 +126,7 @@ final class RecepeCategoryView: UIViewController {
     }
 
     private func addLogs() {
-        presenter?.sendLog(message: .openCatagoryOfRecipe)
+        presenter?.sendLog()
     }
 
     private func createBackBarButtonConstraints() {

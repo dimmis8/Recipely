@@ -135,7 +135,7 @@ final class RecipeDetailView: UIViewController {
     }
 
     private func addLogs() {
-        presenter?.sendLog(message: .openDetailsRecipe)
+        presenter?.sendLog()
     }
 
     private func createRecipeLabelConstraints() {
@@ -185,7 +185,7 @@ final class RecipeDetailView: UIViewController {
     }
 
     @objc private func shareRecipe() {
-        presenter?.shareRecipe(message: .tapShareButton)
+        presenter?.shareRecipe()
     }
 }
 

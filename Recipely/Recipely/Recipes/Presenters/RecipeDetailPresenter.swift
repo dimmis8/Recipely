@@ -9,19 +9,18 @@ protocol RecipeDetailPresenterProtocol: AnyObject {
     init(
         view: RecipeDetailViewProtocol,
         coordinator: RecipesDetailCoordinatorProtocol,
-        recipe: Recipe,
-        loggerManager: LoggerManagerProtocol
+        recipe: Recipe
     )
     /// Сохранение рецепта в исзбранное
     func saveToFavorite()
     /// Шеринг рецепта
-    func shareRecipe(message: LogActions)
+    func shareRecipe()
     /// Экшн кнопки назад
     func back()
     /// Получение данных рецепта
     func getRecipeInfo() -> ViewState<Recipe>
     /// Добавление логов
-    func sendLog(message: LogActions)
+    func sendLog()
 }
 
 /// Презентер экрана деталей рецептов
@@ -30,7 +29,7 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
 
     private weak var coordinator: RecipesDetailCoordinatorProtocol?
     private weak var view: RecipeDetailViewProtocol?
-    private var loggerManager: LoggerManagerProtocol?
+    private var loggerService = LoggerService()
     private var recipe: Recipe?
     private var isFirstRequest = true
     private var state: ViewState<Recipe>
@@ -40,13 +39,11 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     required init(
         view: RecipeDetailViewProtocol,
         coordinator: RecipesDetailCoordinatorProtocol,
-        recipe: Recipe,
-        loggerManager: LoggerManagerProtocol
+        recipe: Recipe
     ) {
         self.view = view
         self.coordinator = coordinator
         self.recipe = recipe
-        self.loggerManager = loggerManager
         state = .noData()
     }
 
@@ -74,13 +71,13 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
         view?.showInDevelopAlert()
     }
 
-    func shareRecipe(message: LogActions) {
-        loggerManager?.log(message)
+    func shareRecipe() {
+        loggerService.log(.tapShareButton)
         coordinator?.shareRecipe(text: recipe?.description ?? "")
     }
 
-    func sendLog(message: LogActions) {
-        loggerManager?.log(message)
+    func sendLog() {
+        loggerService.log(.openDetailsRecipe)
     }
 
     // MARK: - Private Methods

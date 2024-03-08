@@ -6,7 +6,7 @@ import Foundation
 /// Протокол презентера экрана рецептов
 protocol RecipesViewPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
-    init(view: RecipesViewProtocol, coordinator: RecipesCoordinator, loggerManager: LoggerManagerProtocol)
+    init(view: RecipesViewProtocol, coordinator: RecipesCoordinator)
     /// Функция получения информации о ячейке
     func getInfo() -> ViewState<[DishCategory]>
     /// Получение информации о количестве категорий
@@ -14,7 +14,7 @@ protocol RecipesViewPresenterProtocol: AnyObject {
     /// Переход на экран категории
     func goToCategory(_ category: RecipeCategories)
     /// Добавление логов
-    func sendLog(message: LogActions)
+    func sendLog()
 }
 
 /// Презентер экрана м
@@ -24,7 +24,7 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
     private let informationSource = InformationSource()
     private weak var coordinator: RecipesCoordinator?
     private weak var view: RecipesViewProtocol?
-    private var loggerManager: LoggerManagerProtocol?
+    private var loggerService = LoggerService()
     private var isFirstRequest = true
     private var state: ViewState<[DishCategory]>
 
@@ -32,12 +32,10 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
 
     required init(
         view: RecipesViewProtocol,
-        coordinator: RecipesCoordinator,
-        loggerManager: LoggerManagerProtocol
+        coordinator: RecipesCoordinator
     ) {
         self.view = view
         self.coordinator = coordinator
-        self.loggerManager = loggerManager
         state = .noData()
     }
 
@@ -68,8 +66,8 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
         return state
     }
 
-    func sendLog(message: LogActions) {
-        loggerManager?.log(message)
+    func sendLog() {
+        loggerService.log(.openRecipe)
     }
 
     // MARK: - Private Methods

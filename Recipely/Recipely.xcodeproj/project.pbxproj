@@ -67,10 +67,10 @@
 		52B0A9262B924A49006E01A3 /* RecipesCharacteristicsDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9252B924A49006E01A3 /* RecipesCharacteristicsDetailsCell.swift */; };
 		52B0A9282B924A71006E01A3 /* RecipesDescriptionDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9272B924A71006E01A3 /* RecipesDescriptionDetailsCell.swift */; };
 		52B0A94D2B9A2784006E01A3 /* LogActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A94C2B9A2784006E01A3 /* LogActions.swift */; };
-		52B0A94F2B9A287C006E01A3 /* Receiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A94E2B9A287C006E01A3 /* Receiver.swift */; };
-		52B0A9512B9A2889006E01A3 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9502B9A2889006E01A3 /* Command.swift */; };
-		52B0A9532B9A2899006E01A3 /* Invoker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9522B9A2899006E01A3 /* Invoker.swift */; };
-		52B0A9552B9A5B2C006E01A3 /* LoggerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9542B9A5B2C006E01A3 /* LoggerManager.swift */; };
+		52B0A94F2B9A287C006E01A3 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A94E2B9A287C006E01A3 /* Logger.swift */; };
+		52B0A9512B9A2889006E01A3 /* LogCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9502B9A2889006E01A3 /* LogCommand.swift */; };
+		52B0A9532B9A2899006E01A3 /* LoggerInvoker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9522B9A2899006E01A3 /* LoggerInvoker.swift */; };
+		52B0A9552B9A5B2C006E01A3 /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9542B9A5B2C006E01A3 /* LoggerService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,10 +155,10 @@
 		52B0A9252B924A49006E01A3 /* RecipesCharacteristicsDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesCharacteristicsDetailsCell.swift; sourceTree = "<group>"; };
 		52B0A9272B924A71006E01A3 /* RecipesDescriptionDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesDescriptionDetailsCell.swift; sourceTree = "<group>"; };
 		52B0A94C2B9A2784006E01A3 /* LogActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogActions.swift; sourceTree = "<group>"; };
-		52B0A94E2B9A287C006E01A3 /* Receiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receiver.swift; sourceTree = "<group>"; };
-		52B0A9502B9A2889006E01A3 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
-		52B0A9522B9A2899006E01A3 /* Invoker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invoker.swift; sourceTree = "<group>"; };
-		52B0A9542B9A5B2C006E01A3 /* LoggerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerManager.swift; sourceTree = "<group>"; };
+		52B0A94E2B9A287C006E01A3 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		52B0A9502B9A2889006E01A3 /* LogCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCommand.swift; sourceTree = "<group>"; };
+		52B0A9522B9A2899006E01A3 /* LoggerInvoker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerInvoker.swift; sourceTree = "<group>"; };
+		52B0A9542B9A5B2C006E01A3 /* LoggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -420,10 +420,10 @@
 			isa = PBXGroup;
 			children = (
 				52B0A94C2B9A2784006E01A3 /* LogActions.swift */,
-				52B0A94E2B9A287C006E01A3 /* Receiver.swift */,
-				52B0A9502B9A2889006E01A3 /* Command.swift */,
-				52B0A9522B9A2899006E01A3 /* Invoker.swift */,
-				52B0A9542B9A5B2C006E01A3 /* LoggerManager.swift */,
+				52B0A94E2B9A287C006E01A3 /* Logger.swift */,
+				52B0A9522B9A2899006E01A3 /* LoggerInvoker.swift */,
+				52B0A9502B9A2889006E01A3 /* LogCommand.swift */,
+				52B0A9542B9A5B2C006E01A3 /* LoggerService.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -622,14 +622,14 @@
 				0A8521802B905A9D002BCE50 /* RecepeCategoryPresenter.swift in Sources */,
 				0A85210D2B8CB1D4002BCE50 /* AppDelegate.swift in Sources */,
 				0A6DEBB72B96021F0062F54C /* SortState.swift in Sources */,
-				52B0A9512B9A2889006E01A3 /* Command.swift in Sources */,
+				52B0A9512B9A2889006E01A3 /* LogCommand.swift in Sources */,
 				0A6DEBC52B99ABD80062F54C /* LoginPassword.swift in Sources */,
 				52B0A9262B924A49006E01A3 /* RecipesCharacteristicsDetailsCell.swift in Sources */,
 				0A8521822B905B1F002BCE50 /* RecepeCategoryView.swift in Sources */,
 				0A85218C2B90EF65002BCE50 /* SourceOfRecepies.swift in Sources */,
 				0A8521682B8DC356002BCE50 /* FavoritesViewController.swift in Sources */,
 				0ADBED692B91E13F009FAA2A /* RecipeDetailView.swift in Sources */,
-				52B0A94F2B9A287C006E01A3 /* Receiver.swift in Sources */,
+				52B0A94F2B9A287C006E01A3 /* Logger.swift in Sources */,
 				0A8521772B8E9A5B002BCE50 /* ProfileBonusesPresenter.swift in Sources */,
 				0A85215F2B8DC034002BCE50 /* RecipesViewController.swift in Sources */,
 				0A85215C2B8DBA97002BCE50 /* ProfileCoordinator.swift in Sources */,
@@ -650,7 +650,7 @@
 				0A8521612B8DC086002BCE50 /* RecipesPresenter.swift in Sources */,
 				0A85210F2B8CB1D4002BCE50 /* SceneDelegate.swift in Sources */,
 				0A8521852B90BC4A002BCE50 /* SortPickerView.swift in Sources */,
-				52B0A9532B9A2899006E01A3 /* Invoker.swift in Sources */,
+				52B0A9532B9A2899006E01A3 /* LoggerInvoker.swift in Sources */,
 				52B0A9242B9249F8006E01A3 /* RecipesImageDetailCell.swift in Sources */,
 				0A8521662B8DC2F9002BCE50 /* FavoritesPresenter.swift in Sources */,
 				52073D992B905A2300A1DA9C /* RecipesCollectionViewCell.swift in Sources */,
@@ -658,7 +658,7 @@
 				0A6DEBC92B9A0B510062F54C /* StorageService.swift in Sources */,
 				52073D972B9055A900A1DA9C /* InformationSource.swift in Sources */,
 				0A8521552B8D271A002BCE50 /* ProfilePresenter.swift in Sources */,
-				52B0A9552B9A5B2C006E01A3 /* LoggerManager.swift in Sources */,
+				52B0A9552B9A5B2C006E01A3 /* LoggerService.swift in Sources */,
 				0A85218A2B90EEF1002BCE50 /* Recipe.swift in Sources */,
 				52B0A94D2B9A2784006E01A3 /* LogActions.swift in Sources */,
 				0ADBED6B2B91E1D6009FAA2A /* RecipeDetailPresenter.swift in Sources */,

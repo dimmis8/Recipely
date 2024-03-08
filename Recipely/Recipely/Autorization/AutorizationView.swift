@@ -209,6 +209,11 @@ final class AutorizationViewController: UIViewController {
         setupKeyboard()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addLogs()
+    }
+
     // MARK: - Private methods
 
     private func setupUI() {
@@ -284,6 +289,10 @@ final class AutorizationViewController: UIViewController {
             UIColor.white.cgColor,
             UIColor.loginGradient.cgColor
         ]
+    }
+
+    private func addLogs() {
+        presenter?.sendLog()
     }
 
     @objc private func hideKeyboard() {

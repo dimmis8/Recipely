@@ -69,6 +69,11 @@ final class ProfileViewController: UIViewController {
         configureTableView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addLogs()
+    }
+
     // MARK: - Private Methods
 
     private func configureView() {
@@ -121,6 +126,10 @@ final class ProfileViewController: UIViewController {
         alertController.addAction(actionClose)
         alertController.addAction(actionYes)
         present(alertController, animated: true)
+    }
+
+    private func addLogs() {
+        presenter?.sendLog()
     }
 }
 

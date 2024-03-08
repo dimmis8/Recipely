@@ -102,7 +102,7 @@ final class RecipesViewController: UIViewController {
     }
 
     private func addLogs() {
-        presenter?.sendLog(message: .openRecipe)
+        presenter?.sendLog()
     }
 }
 

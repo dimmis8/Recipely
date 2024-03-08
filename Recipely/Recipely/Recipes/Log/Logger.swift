@@ -1,10 +1,14 @@
-// Receiver.swift
+// Logger.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
 
 /// Ресивер
 final class Logger {
+    // MARK: - Public Properties
+
+    static var logFileDate = Date()
+
     // MARK: - Private Properties
 
     private var messages: [String] = []
@@ -18,15 +22,16 @@ final class Logger {
         let logSessionUrl = url[0].appendingPathComponent("LogSession")
         do {
             try manager.createDirectory(at: logSessionUrl, withIntermediateDirectories: true)
-        } catch {
-            print(error)
+        } catch {}
+        let logFileUrl = logSessionUrl.appendingPathComponent("Log_\(Logger.logFileDate).txt")
+        var logsText = ""
+        for log in messages {
+            logsText.append("\(Date()) : \(log) \n")
         }
-        let logFileUrl = logSessionUrl.appendingPathComponent("Log.txt")
-        let data = "\(messages)".data(using: .utf8)
+        let data = logsText.data(using: .utf8)
         manager.createFile(
             atPath: logFileUrl.path(percentEncoded: true),
             contents: data
         )
-        print(message)
     }
 }
