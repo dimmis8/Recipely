@@ -5,13 +5,13 @@ import Foundation
 
 /// Ресивер
 final class Logger {
-    
     // MARK: - Constants
+
     enum Constants {
         static let logSessionFolderName = "LogSession"
         static let screenshotsFolderName = "Screenshots"
     }
-    
+
     // MARK: - Public Properties
 
     static var logFileDate = Date()

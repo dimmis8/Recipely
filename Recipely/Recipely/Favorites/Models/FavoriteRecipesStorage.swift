@@ -5,11 +5,18 @@ import Foundation
 
 /// Хранилище избранных рецептов
 struct FavoriteRecipesStorage {
+    // MARK: - Singleton
+
+    static var shared = FavoriteRecipesStorage()
+
     // MARK: - Public Properties
 
-    var favoriteRecipes: [Recipe] = {
-        var favoriteRecipes: [Recipe] = []
-        favoriteRecipes = SourceOfRecepies().favoriteRecipes
-        return favoriteRecipes
-    }()
+    @Storage()
+    var favoriteRecipes: [Recipe]?
+
+    // MARK: - Initializers
+
+    private init() {
+        _favoriteRecipes.key = StorageKeys.favorite.rawValue
+    }
 }

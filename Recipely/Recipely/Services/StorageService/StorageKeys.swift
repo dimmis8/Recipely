@@ -9,4 +9,6 @@ enum StorageKeys: String {
     case loginPassword
     /// Ключ для данных пользователя
     case userInfo
+    /// Ключ для фаворитов
+    case favorite
 }

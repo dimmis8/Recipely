@@ -45,6 +45,20 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
         self.coordinator = coordinator
         self.recipe = recipe
         state = .noData()
+
+        var favoriteRecipes = FavoriteRecipesStorage.shared.favoriteRecipes
+        if favoriteRecipes == nil {
+            favoriteRecipes = []
+        }
+        guard let favoriteRecipes = favoriteRecipes else { return }
+
+        if favoriteRecipes.contains(where: { favoriteRecipe in
+            favoriteRecipe.title == recipe.title
+        }) {
+            view.changeFavoriteButtonColor(isFavorite: true)
+        } else {
+            view.changeFavoriteButtonColor(isFavorite: false)
+        }
     }
 
     // MARK: - Public Methods
@@ -68,7 +82,19 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     }
 
     func saveToFavorite() {
-        view?.showInDevelopAlert()
+        guard let recipe = recipe, let favoritesStorage = FavoriteRecipesStorage.shared.favoriteRecipes else { return }
+
+        if favoritesStorage.contains(where: { favoriteRecipe in
+            favoriteRecipe.title == recipe.title
+        }) {
+            FavoriteRecipesStorage.shared.favoriteRecipes?.removeAll { favoriteRecipe in
+                favoriteRecipe.title == recipe.title
+            }
+            view?.changeFavoriteButtonColor(isFavorite: false)
+        } else {
+            FavoriteRecipesStorage.shared.favoriteRecipes?.append(recipe)
+            view?.changeFavoriteButtonColor(isFavorite: true)
+        }
     }
 
     func shareRecipe() {
