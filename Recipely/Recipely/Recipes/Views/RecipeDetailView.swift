@@ -7,8 +7,8 @@ import UIKit
 protocol RecipeDetailViewProtocol: AnyObject {
     /// Презентер экрана
     var presenter: RecipeDetailPresenterProtocol? { get set }
-    /// Показать алерт о том, что функционал в разработке
-    func showInDevelopAlert()
+    /// Установка цвета кнопки фаворита
+    func changeFavoriteButtonColor(isFavorite: Bool)
     /// Перезагрузка данных
     func reloadTableView()
 }
@@ -47,7 +47,7 @@ final class RecipeDetailView: UIViewController {
 
     private let setFavorite: UIButton = {
         let button = UIButton()
-        button.setImage(.savedIcon, for: .normal)
+        button.setImage(.saveIcon, for: .normal)
         return button
     }()
 
@@ -259,14 +259,12 @@ extension RecipeDetailView: UITableViewDelegate {
 // MARK: - RecipeDetailView + RecipeDetailViewProtocol
 
 extension RecipeDetailView: RecipeDetailViewProtocol {
-    func showInDevelopAlert() {
-        let alertController = UIAlertController(title: Constants.inDevelopMassage, message: nil, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: Constants.okAlertText, style: .cancel)
-        alertController.addAction(okAction)
-        present(alertController, animated: true)
-    }
-
     func reloadTableView() {
         tableView.reloadData()
+    }
+
+    func changeFavoriteButtonColor(isFavorite: Bool) {
+        let saveImage: UIImage = isFavorite ? .saved : .saveIcon
+        setFavorite.setImage(saveImage, for: .normal)
     }
 }

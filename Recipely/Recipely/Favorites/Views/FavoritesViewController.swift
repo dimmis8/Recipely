@@ -49,7 +49,7 @@ final class FavoritesViewController: UIViewController {
 
     private let emptyIconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = .savedIcon
+        imageView.image = .saveIcon
         return imageView
     }()
 
@@ -80,6 +80,7 @@ final class FavoritesViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tableView.reloadData()
         addLogs()
     }
 
@@ -197,12 +198,17 @@ extension FavoritesViewController: FavoritesViewProtocol {
 
 extension FavoritesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch presenter?.getRecipeCount() {
+        switch presenter?.getRecipeInfo() {
         case let .data(recipes):
+            hideCollectionView(false)
             tableView.isScrollEnabled = true
             tableView.allowsSelection = true
             return recipes.count
+        case .noData:
+            hideCollectionView(true)
+            return 0
         default:
+            hideCollectionView(false)
             tableView.isScrollEnabled = false
             tableView.allowsSelection = false
             return 8

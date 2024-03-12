@@ -60,6 +60,13 @@ final class ProfileViewController: UIViewController {
     private let contentTypes: [ContentTypes] = [.userInfo, .profileButtons]
     private let fields: [FieldsType] = [.bonuses, .termsAndPrivacy, .logOut]
     private let imagePicker = ImagePicker()
+    private lazy var changePhotoHandler = { [weak self] in
+        guard let self = self else { return }
+        self.imagePicker.showImagePicker(in: self) { [weak self] image in
+            guard let imageData = image.jpegData(compressionQuality: 0.1) else { return }
+            self?.presenter?.actionChangePhoto(imageData: imageData)
+        }
+    }
 
     // MARK: - Life Cycle
 
@@ -145,8 +152,8 @@ extension ProfileViewController: ProfileViewProtocol {
     func showChangeNameAlert() {
         let alertView = UIAlertController(title: Constants.alertText, message: nil, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: Constants.cancelButtonText, style: .cancel)
-        let okAction = UIAlertAction(title: Constants.okButtonText, style: .default) { _ in
-            self.setNewName(alertView.textFields?.first?.text ?? "")
+        let okAction = UIAlertAction(title: Constants.okButtonText, style: .default) { [weak self] _ in
+            self?.setNewName(alertView.textFields?.first?.text ?? "")
         }
         alertView.addAction(cancelAction)
         alertView.addAction(okAction)
@@ -241,35 +248,20 @@ extension ProfileViewController: UITableViewDataSource {
             case let .data(userInfo):
                 tableView.isScrollEnabled = true
                 tableView.allowsSelection = true
-                cell.setUserInformation(userInfo) { [weak self] in
+                cell.setUserInformation(userInfo, changePhotoComplition: changePhotoHandler) { [weak self] in
                     self?.presenter?.actionChangeName()
-                } changePhotoComplition: {
-                    self.imagePicker.showImagePicker(in: self) { image in
-                        guard let imageData = image.pngData() else { return }
-                        self.presenter?.actionChangePhoto(imageData: imageData)
-                    }
                 }
             case .noData:
                 tableView.isScrollEnabled = true
                 tableView.allowsSelection = true
-                cell.setUserInformation(UserInfo()) { [weak self] in
+                cell.setUserInformation(UserInfo(), changePhotoComplition: changePhotoHandler) { [weak self] in
                     self?.presenter?.actionChangeName()
-                } changePhotoComplition: {
-                    self.imagePicker.showImagePicker(in: self) { image in
-                        guard let imageData = image.pngData() else { return }
-                        self.presenter?.actionChangePhoto(imageData: imageData)
-                    }
                 }
             default:
                 tableView.isScrollEnabled = false
                 tableView.allowsSelection = false
-                cell.setUserInformation(nil) { [weak self] in
+                cell.setUserInformation(nil, changePhotoComplition: changePhotoHandler) { [weak self] in
                     self?.presenter?.actionChangeName()
-                } changePhotoComplition: {
-                    self.imagePicker.showImagePicker(in: self) { image in
-                        guard let imageData = image.pngData() else { return }
-                        self.presenter?.actionChangePhoto(imageData: imageData)
-                    }
                 }
             }
             return cell

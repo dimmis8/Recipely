@@ -4,7 +4,7 @@
 import Foundation
 
 // Рецепт
-struct Recipe {
+struct Recipe: Codable {
     /// Название рецепта
     var title: String
     /// Время на приготовление

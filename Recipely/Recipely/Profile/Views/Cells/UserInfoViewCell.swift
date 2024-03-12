@@ -82,8 +82,8 @@ final class UserInfoViewCell: UITableViewCell {
 
     func setUserInformation(
         _ userInfo: UserInfo?,
-        changeNameComplition: @escaping VoidHandler,
-        changePhotoComplition: @escaping VoidHandler
+        changePhotoComplition: @escaping VoidHandler,
+        changeNameComplition: @escaping VoidHandler
     ) {
         if let userInfo = userInfo {
             isShimming = false

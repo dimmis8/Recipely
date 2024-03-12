@@ -172,7 +172,8 @@ final class PrivacyView: UIView {
                 }
             }
 
-            frameAnimator.addCompletion { _ in
+            frameAnimator.addCompletion { [weak self] _ in
+                guard let self = self else { return }
                 self.isCardVisible = !self.isCardVisible
                 self.runningAnimations.removeAll()
             }
