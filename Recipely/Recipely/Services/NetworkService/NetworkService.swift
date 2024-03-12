@@ -9,10 +9,10 @@ protocol NetworkServiceProtocol {
     func getRecipes(
         category: RecipeCategories,
         search: String?,
-        complitionHandler: @escaping (Result<[RecipeCard]?, Error>) -> ()
+        complitionHandler: @escaping (Result<[RecipeDTO]?, Error>) -> ()
     )
     /// Функция получения деталей рецепта
-    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails?, Error>) -> ())
+    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDTO?, Error>) -> ())
     /// Функция получения данных изображения
     func getImageData(url: URL?, complitionHandler: @escaping (Result<Data, Error>) -> ())
 }
@@ -43,7 +43,7 @@ final class NetworkService: NetworkServiceProtocol {
     func getRecipes(
         category: RecipeCategories,
         search: String?,
-        complitionHandler: @escaping (Result<[RecipeCard]?, Error>) -> ()
+        complitionHandler: @escaping (Result<[RecipeDTO]?, Error>) -> ()
     ) {
         guard let url = setupURL(category: category, search: search) else {
             complitionHandler(.failure(NetworkError.notValidURL))
@@ -64,14 +64,14 @@ final class NetworkService: NetworkServiceProtocol {
                     complitionHandler(.failure(NetworkError.nilData))
                     return
                 }
-                var recipes: [RecipeCard] = []
+                var recipes: [RecipeDTO] = []
 
                 for hitDTO in hits {
-                    guard let recipeDTO = hitDTO.recipe, let recipe = RecipeCard(dto: recipeDTO) else {
+                    guard let recipeDTO = hitDTO.recipe else {
                         complitionHandler(.failure(NetworkError.nilData))
                         return
                     }
-                    recipes.append(recipe)
+                    recipes.append(recipeDTO)
                 }
                 complitionHandler(.success(recipes))
             } catch {
@@ -81,7 +81,7 @@ final class NetworkService: NetworkServiceProtocol {
         }.resume()
     }
 
-    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails?, Error>) -> ()) {
+    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDTO?, Error>) -> ()) {
         var urlComponents = URLComponents()
         urlComponents.scheme = Constants.componentScheme
         urlComponents.host = Constants.componentHost
@@ -108,13 +108,12 @@ final class NetworkService: NetworkServiceProtocol {
 
             do {
                 let parsedData = try JSONDecoder().decode(CategoriesDTO.self, from: data ?? Data())
-                guard let recipeDTO = parsedData.hits?.first?.recipe,
-                      let recipeDetails = RecipeDetails(dto: recipeDTO)
+                guard let recipeDTO = parsedData.hits?.first?.recipe
                 else {
                     complitionHandler(.failure(NetworkError.nilData))
                     return
                 }
-                complitionHandler(.success(recipeDetails))
+                complitionHandler(.success(recipeDTO))
             } catch {
                 complitionHandler(.failure(error))
                 return
