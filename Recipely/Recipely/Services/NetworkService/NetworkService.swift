@@ -50,8 +50,7 @@ final class NetworkService: NetworkServiceProtocol {
             return
         }
 
-        let request = URLRequest(url: url)
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
 
             if let error = error {
                 complitionHandler(.failure(error))
@@ -59,14 +58,18 @@ final class NetworkService: NetworkServiceProtocol {
             }
 
             do {
-                let parsedData = try JSONDecoder().decode(CategoriesDTO.self, from: data ?? Data())
-                guard let hits = parsedData.hits else {
+                guard let data = data else {
+                    complitionHandler(.failure(NetworkError.nilData))
+                    return
+                }
+                let сategoriesDTO = try JSONDecoder().decode(CategoriesDTO.self, from: data)
+                guard let hitsDTO = сategoriesDTO.hits else {
                     complitionHandler(.failure(NetworkError.nilData))
                     return
                 }
                 var recipes: [RecipeCard] = []
 
-                for hitDTO in hits {
+                for hitDTO in hitsDTO {
                     guard let recipeDTO = hitDTO.recipe, let recipe = RecipeCard(dto: recipeDTO) else {
                         complitionHandler(.failure(NetworkError.nilData))
                         return
@@ -98,8 +101,7 @@ final class NetworkService: NetworkServiceProtocol {
             return
         }
 
-        let request = URLRequest(url: url)
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
 
             if let error = error {
                 complitionHandler(.failure(error))
@@ -107,8 +109,12 @@ final class NetworkService: NetworkServiceProtocol {
             }
 
             do {
-                let parsedData = try JSONDecoder().decode(CategoriesDTO.self, from: data ?? Data())
-                guard let recipeDTO = parsedData.hits?.first?.recipe, let recipeDetails = RecipeDetails(dto: recipeDTO)
+                guard let data = data else {
+                    complitionHandler(.failure(NetworkError.nilData))
+                    return
+                }
+                let categoriesDTO = try JSONDecoder().decode(CategoriesDTO.self, from: data)
+                guard let recipeDTO = categoriesDTO.hits?.first?.recipe, let recipeDetails = RecipeDetails(dto: recipeDTO)
                 else {
                     complitionHandler(.failure(NetworkError.nilData))
                     return
