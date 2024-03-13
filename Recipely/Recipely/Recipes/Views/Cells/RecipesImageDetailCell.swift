@@ -108,16 +108,19 @@ final class RecipesImageDetailCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func getInfo(recipe: Recipe?) {
+    func getInfo(recipe: RecipeDetails?) {
         if let recipe = recipe {
             isShimming = false
             recipeImage.stopShimmeringAnimation()
-            recipeImage.image = UIImage(named: recipe.imageName)
-            gramLabel.text = "\(recipe.weight) g"
-            cookingTimeLabel.text = "\(recipe.cookTime) min"
+            gramLabel.text = recipe.weight
+            cookingTimeLabel.text = "\(recipe.totalTime) min"
         } else {
             isShimming = true
         }
+    }
+
+    func setImage(imageData: Data) {
+        recipeImage.image = UIImage(data: imageData)
     }
 
     // MARK: - Private Methods

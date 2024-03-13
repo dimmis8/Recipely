@@ -88,8 +88,8 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
     }
 
     func goToRecipeDetail(numberOfRecipe: Int) {
-        // let recipe = sourceOfRecepies.recipesToShow[numberOfRecipe]
-        // coordinator?.openRecipeDetails(recipe: recipe)
+        let recipe = sourceOfRecepies.recipesToShow[numberOfRecipe]
+        coordinator?.openRecipeDetails(recipeURI: recipe.uri)
     }
 
     func getRecipeInfo() -> ViewState<[RecipeCard]> {
@@ -145,7 +145,6 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
                     } else {
                         self.sourceOfRecepies.searchRecipes(recipes: recipeCard, selectedSortMap: self.selectedSortMap)
                     }
-                    print(recipeCard.count)
                     self.state = .data(self.sourceOfRecepies.recipesToShow)
                     self.view?.reloadTableView()
                 case let .failure(error):

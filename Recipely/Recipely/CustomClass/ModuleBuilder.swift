@@ -20,7 +20,7 @@ protocol Builder {
     /// Функция создания модуля блюд категории
     func createRecepeCategoryModule(coordinator: RecipesCoordinator, category: RecipeCategories) -> UIViewController
     /// Функция создания модуля деталей рецепта
-    func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController
+    func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipeURI: String) -> UIViewController
     /// Функция создания контроллера шеринка
     func createSharingModule(sharingInfo: [Any]) -> UIViewController
 }
@@ -114,12 +114,17 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController {
+    func createRecipeDetailModule(
+        coordinator: RecipesDetailCoordinatorProtocol,
+        recipeURI: String
+    ) -> UIViewController {
         let view = RecipeDetailView()
+        let networkService = NetworkService()
         let presenter = RecipeDetailPresenter(
             view: view,
             coordinator: coordinator,
-            recipe: recipe
+            recipeURI: recipeURI,
+            networkService: networkService
         )
         view.presenter = presenter
         return view

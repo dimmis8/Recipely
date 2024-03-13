@@ -10,12 +10,6 @@ struct SourceOfRecepies {
     var recipesToShow: [RecipeCard] = []
     var allRecipes: [RecipeCard] = []
 
-    var favoriteRecipes: [Recipe] = [
-        Recipe(title: "Baked Fish with Lemon Herb Sauce", cookTime: 90, calories: 616, imageName: "backedFish"),
-        Recipe(title: "Chilli and Tomato Fish", cookTime: 100, calories: 174, imageName: "chilliAndTomato"),
-        Recipe(title: "Fast Roast Fish & Show Peas Recipes", cookTime: 80, calories: 94, imageName: "fastRoast")
-    ]
-
     // MARK: - Private Properties
 
     private var searchedRecipes: [RecipeCard] = []

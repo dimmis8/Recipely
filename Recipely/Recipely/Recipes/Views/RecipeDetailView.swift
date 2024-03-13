@@ -11,6 +11,8 @@ protocol RecipeDetailViewProtocol: AnyObject {
     func changeFavoriteButtonColor(isFavorite: Bool)
     /// Перезагрузка данных
     func reloadTableView()
+    /// Отобразить ошибку "нет данных"
+    func setNoDataView()
 }
 
 /// Экран деталей рецепта
@@ -20,6 +22,8 @@ final class RecipeDetailView: UIViewController {
     enum Constants {
         static let inDevelopMassage = "Functionality in development"
         static let okAlertText = "OK"
+        static let reloadButtonText = "Reload"
+        static let noDataText = "Failed to load data"
     }
 
     enum Details {
@@ -60,6 +64,39 @@ final class RecipeDetailView: UIViewController {
         recipeLabel.textAlignment = .center
         return recipeLabel
     }()
+
+    private let backgroundLightningView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .deviderLight
+        view.layer.cornerRadius = 12
+        return view
+    }()
+
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .verdana(ofSize: 14)
+        label.textColor = .lightInfoText
+        label.textAlignment = .center
+        return label
+    }()
+
+    private lazy var reloadButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(Constants.reloadButtonText, for: .normal)
+        button.titleLabel?.font = .verdana(ofSize: 14)
+        button.setTitleColor(.lightInfoText, for: .normal)
+        button.layer.cornerRadius = 12
+        button.backgroundColor = .deviderLight
+        button.setImage(.reload, for: .normal)
+        button.semanticContentAttribute = .forceLeftToRight
+        button.contentHorizontalAlignment = .center
+        button.addTarget(self, action: #selector(reloadData), for: .touchUpInside)
+        return button
+    }()
+
+    private let errorView = UIView()
+
+    private let errorImageView = UIImageView(image: .lightning)
 
     private let recipeLabelView = UIView()
 
@@ -176,6 +213,60 @@ final class RecipeDetailView: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
+    private func createErrorViewConstraints() {
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 8).isActive = true
+        errorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        errorView.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        errorView.heightAnchor.constraint(equalToConstant: 140).isActive = true
+    }
+
+    private func createBackgroundLightningViewConstraints() {
+        backgroundLightningView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundLightningView.topAnchor.constraint(equalTo: errorView.topAnchor).isActive = true
+        backgroundLightningView.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
+        backgroundLightningView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        backgroundLightningView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+
+    private func createErrorImageViewConstraints() {
+        errorImageView.translatesAutoresizingMaskIntoConstraints = false
+        errorImageView.centerYAnchor.constraint(equalTo: backgroundLightningView.centerYAnchor).isActive = true
+        errorImageView.centerXAnchor.constraint(equalTo: backgroundLightningView.centerXAnchor).isActive = true
+        errorImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        errorImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+    }
+
+    private func createErrorLabelConstraints() {
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        errorLabel.topAnchor.constraint(equalTo: backgroundLightningView.bottomAnchor, constant: 17).isActive = true
+        errorLabel.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
+        errorLabel.widthAnchor.constraint(equalTo: errorView.widthAnchor).isActive = true
+        errorLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+    }
+
+    private func createReloadButtonConstraints() {
+        reloadButton.translatesAutoresizingMaskIntoConstraints = false
+        reloadButton.bottomAnchor.constraint(equalTo: errorView.bottomAnchor).isActive = true
+        reloadButton.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
+        reloadButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        reloadButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+    }
+
+    private func configureErrorView() {
+        tableView.isHidden = true
+        view.addSubview(errorView)
+        errorView.addSubview(backgroundLightningView)
+        backgroundLightningView.addSubview(errorImageView)
+        errorView.addSubview(errorLabel)
+        errorView.addSubview(reloadButton)
+        createErrorViewConstraints()
+        createBackgroundLightningViewConstraints()
+        createErrorImageViewConstraints()
+        createErrorLabelConstraints()
+        createReloadButtonConstraints()
+    }
+
     @objc private func back() {
         presenter?.back()
     }
@@ -186,6 +277,10 @@ final class RecipeDetailView: UIViewController {
 
     @objc private func shareRecipe() {
         presenter?.shareRecipe()
+    }
+
+    @objc private func reloadData() {
+        presenter?.getRecipeFromNetwork()
     }
 }
 
@@ -206,10 +301,17 @@ extension RecipeDetailView: UITableViewDataSource {
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
             switch presenter?.getRecipeInfo() {
             case let .data(recipe):
-                recipeLabel.text = recipe.title
+                recipeLabel.text = recipe.label
                 tableView.isScrollEnabled = true
                 tableView.allowsSelection = true
                 cell.getInfo(recipe: recipe)
+
+                presenter?.loadImageDataForCell(recipe.image) { data in
+                    DispatchQueue.main.async {
+                        cell.setImage(imageData: data)
+                    }
+                }
+
             default:
                 tableView.isScrollEnabled = false
                 tableView.allowsSelection = false
@@ -235,7 +337,7 @@ extension RecipeDetailView: UITableViewDataSource {
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
             switch presenter?.getRecipeInfo() {
             case let .data(recipe):
-                cell.setText(recipe.description)
+                cell.setText(recipe.ingredients)
             default:
                 cell.setText("")
             }
@@ -266,5 +368,10 @@ extension RecipeDetailView: RecipeDetailViewProtocol {
     func changeFavoriteButtonColor(isFavorite: Bool) {
         let saveImage: UIImage = isFavorite ? .saved : .saveIcon
         setFavorite.setImage(saveImage, for: .normal)
+    }
+
+    func setNoDataView() {
+        configureErrorView()
+        errorLabel.text = Constants.noDataText
     }
 }

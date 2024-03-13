@@ -12,7 +12,7 @@ protocol NetworkServiceProtocol {
         complitionHandler: @escaping (Result<[RecipeCard], Error>) -> ()
     )
     /// Функция получения деталей рецепта
-    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails?, Error>) -> ())
+    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails, Error>) -> ())
     /// Функция получения данных изображения
     func getImageData(stringURL: String, complitionHandler: @escaping (Result<Data, Error>) -> ())
 }
@@ -84,7 +84,7 @@ final class NetworkService: NetworkServiceProtocol {
         }.resume()
     }
 
-    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails?, Error>) -> ()) {
+    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails, Error>) -> ()) {
         var urlComponents = URLComponents()
         urlComponents.scheme = Constants.componentScheme
         urlComponents.host = Constants.componentHost

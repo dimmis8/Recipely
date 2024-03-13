@@ -9,6 +9,8 @@ struct RecipeCard: Codable {
     let label: String
     /// Ссылка на картинку
     let image: String
+    /// Изображение
+    let imageData: Data?
     /// Время приготовления
     let totalTime: Int
     /// Калорийность
@@ -29,5 +31,15 @@ struct RecipeCard: Codable {
         self.totalTime = Int(totalTime.rounded())
         self.calories = Int(calories.rounded())
         self.uri = uri
+        imageData = nil
+    }
+
+    init(label: String, image: String, totalTime: Int, calories: Int, uri: String, imageData: Data?) {
+        self.label = label
+        self.image = image
+        self.totalTime = totalTime
+        self.calories = calories
+        self.uri = uri
+        self.imageData = imageData
     }
 }

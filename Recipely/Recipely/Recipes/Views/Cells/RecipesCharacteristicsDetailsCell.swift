@@ -186,7 +186,7 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
 
     // MARK: - Public Methods
 
-    func getCharacteristics(recipe: Recipe?) {
+    func getCharacteristics(recipe: RecipeDetails?) {
         if let recipe = recipe {
             isShimming = false
             enercView.stopShimmeringAnimation()
@@ -198,9 +198,9 @@ final class RecipesCharacteristicsDetailsCell: UITableViewCell {
             proteinsView.stopShimmeringAnimation()
             proteinsView.backgroundColor = .characteristics
             enercSubViewLabel.text = "\(recipe.calories) kkal"
-            carbohydratesSubViewLabel.text = "\(recipe.carbohydrates) g"
-            fatsSubViewLabel.text = "\(recipe.fats) g"
-            proteinsSubViewLabel.text = "\(recipe.proteins) g"
+            carbohydratesSubViewLabel.text = recipe.carbohydrates
+            fatsSubViewLabel.text = recipe.fats
+            proteinsSubViewLabel.text = recipe.proteins
         } else {
             isShimming = true
         }

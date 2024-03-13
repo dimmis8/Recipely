@@ -8,7 +8,7 @@ protocol FavoritesViewPresenterProtocol: AnyObject {
     /// Инициализатор с присвоением вью
     init(view: FavoritesViewProtocol, coordinator: FavoritesCoordinator)
     /// Получение информации о рецепте для ячейки
-    func getRecipeInfo() -> ViewState<[Recipe]>
+    func getRecipeInfo() -> ViewState<[RecipeCard]>
     /// Переход на экран деталей
     func goToRecipeDetail(numberOfRecipe: Int)
     /// Удаление рецепта из фаворита
@@ -25,8 +25,8 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
     private weak var view: FavoritesViewProtocol?
     private var favoriteRecipesStorage = FavoriteRecipesStorage.shared
     private var loggerService = LoggerService()
-    private var state: ViewState<[Recipe]>
-    private var favoriteRecipes: [Recipe]
+    private var state: ViewState<[RecipeCard]>
+    private var favoriteRecipes: [RecipeCard]
 
     // MARK: - Initializers
 
@@ -52,7 +52,7 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
 
     // MARK: - Private Methods
 
-    func getRecipeInfo() -> ViewState<[Recipe]> {
+    func getRecipeInfo() -> ViewState<[RecipeCard]> {
         guard let favoriteStorage = favoriteRecipesStorage.favoriteRecipes else {
             return .noData()
         }
@@ -67,7 +67,7 @@ final class FavoritesPresenter: FavoritesViewPresenterProtocol {
     }
 
     func goToRecipeDetail(numberOfRecipe: Int) {
-        coordinator?.openRecipeDetails(recipe: favoriteRecipes[numberOfRecipe])
+        coordinator?.openRecipeDetails(recipeURI: favoriteRecipes[numberOfRecipe].uri)
     }
 
     func sendLog() {
