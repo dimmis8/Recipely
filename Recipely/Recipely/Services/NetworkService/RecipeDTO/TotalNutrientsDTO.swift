@@ -14,8 +14,11 @@ class TotalNutrientsDTO: Codable {
 
     /// Ключи для JSON
     enum CodingKeys: String, CodingKey {
+        /// Ключ для углеводов
         case chocdf = "CHOCDF"
+        /// Ключ для жиров
         case fat = "FAT"
+        /// Ключ для протеинов
         case procnt = "PROCNT"
     }
 

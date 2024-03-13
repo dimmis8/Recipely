@@ -10,6 +10,7 @@ class ImageDTO: Codable {
 
     /// Ключи для JSON
     enum CodingKeys: String, CodingKey {
+        /// Ключ для фото размера Regular
         case regular = "REGULAR"
     }
 
