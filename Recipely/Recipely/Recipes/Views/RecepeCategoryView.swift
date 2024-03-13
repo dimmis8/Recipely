@@ -13,6 +13,8 @@ protocol RecepeCategoryViewProtocol: AnyObject {
     func setNoDataView()
     /// Отобразить ошибку
     func setErrorView()
+    /// Отобразить что ничего не найдено
+    func setNothingFoundView()
 }
 
 /// Экран рецептов
@@ -25,6 +27,8 @@ final class RecepeCategoryView: UIViewController {
         static let reloadButtonText = "Reload"
         static let noDataText = "Failed to load data"
         static let textError = "Error"
+        static let nothingFoundTitleText = "Nothing found"
+        static let nothingFoundText = "Try entering your query differently"
     }
 
     // MARK: - Visual Components
@@ -87,6 +91,34 @@ final class RecepeCategoryView: UIViewController {
         searchBar.searchTextField.backgroundColor = .deviderLight
         return searchBar
     }()
+
+    private let backgroundSearchGlassView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .deviderLight
+        view.layer.cornerRadius = 12
+        return view
+    }()
+
+    private let nothingFoundTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .verdanaBold(ofSize: 18)
+        label.textColor = .black
+        label.textAlignment = .center
+        label.text = Constants.nothingFoundTitleText
+        return label
+    }()
+
+    private let nothingFoundLabel: UILabel = {
+        let label = UILabel()
+        label.font = .verdana(ofSize: 14)
+        label.textColor = .lightInfoText
+        label.textAlignment = .center
+        label.text = Constants.nothingFoundText
+        return label
+    }()
+
+    private let nothingFoundView = UIView()
+    private let searchGlassImageView = UIImageView(image: .searchGlass)
 
     private let sortPickerView = SortPickerView()
     private let tableView = UITableView()
@@ -223,6 +255,48 @@ final class RecepeCategoryView: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
+    private func createNothingFoundViewConstraints() {
+        nothingFoundView.translatesAutoresizingMaskIntoConstraints = false
+        nothingFoundView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 8).isActive = true
+        nothingFoundView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        nothingFoundView.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        nothingFoundView.heightAnchor.constraint(equalToConstant: 140).isActive = true
+    }
+
+    private func createBackgroundNothingFoundViewConstraints() {
+        backgroundSearchGlassView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundSearchGlassView.topAnchor.constraint(equalTo: nothingFoundView.topAnchor).isActive = true
+        backgroundSearchGlassView.centerXAnchor.constraint(equalTo: nothingFoundView.centerXAnchor).isActive = true
+        backgroundSearchGlassView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        backgroundSearchGlassView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+
+    private func createSearchGlassImageViewConstraints() {
+        searchGlassImageView.translatesAutoresizingMaskIntoConstraints = false
+        searchGlassImageView.centerYAnchor.constraint(equalTo: backgroundSearchGlassView.centerYAnchor).isActive = true
+        searchGlassImageView.centerXAnchor.constraint(equalTo: backgroundSearchGlassView.centerXAnchor).isActive = true
+        searchGlassImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        searchGlassImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+    }
+
+    private func createNothingFoundTitleLabelConstraints() {
+        nothingFoundTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        nothingFoundTitleLabel.topAnchor.constraint(equalTo: backgroundSearchGlassView.bottomAnchor, constant: 17)
+            .isActive = true
+        nothingFoundTitleLabel.centerXAnchor.constraint(equalTo: nothingFoundView.centerXAnchor).isActive = true
+        nothingFoundTitleLabel.widthAnchor.constraint(equalTo: nothingFoundView.widthAnchor).isActive = true
+        nothingFoundTitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    }
+
+    private func createNothingFoundLabelConstraints() {
+        nothingFoundLabel.translatesAutoresizingMaskIntoConstraints = false
+        nothingFoundLabel.topAnchor.constraint(equalTo: nothingFoundTitleLabel.bottomAnchor, constant: 25)
+            .isActive = true
+        nothingFoundLabel.centerXAnchor.constraint(equalTo: nothingFoundView.centerXAnchor).isActive = true
+        nothingFoundLabel.widthAnchor.constraint(equalTo: nothingFoundView.widthAnchor).isActive = true
+        nothingFoundLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+    }
+
     private func createErrorViewConstraints() {
         errorView.translatesAutoresizingMaskIntoConstraints = false
         errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 8).isActive = true
@@ -277,6 +351,21 @@ final class RecepeCategoryView: UIViewController {
         createReloadButtonConstraints()
     }
 
+    private func configureNothingFoundView() {
+        tableView.isHidden = true
+        view.addSubview(nothingFoundView)
+        nothingFoundView.isHidden = false
+        nothingFoundView.addSubview(backgroundSearchGlassView)
+        backgroundSearchGlassView.addSubview(searchGlassImageView)
+        nothingFoundView.addSubview(nothingFoundTitleLabel)
+        nothingFoundView.addSubview(nothingFoundLabel)
+        createNothingFoundViewConstraints()
+        createBackgroundNothingFoundViewConstraints()
+        createSearchGlassImageViewConstraints()
+        createNothingFoundTitleLabelConstraints()
+        createNothingFoundLabelConstraints()
+    }
+
     @objc private func back() {
         presenter?.back()
     }
@@ -293,6 +382,7 @@ extension RecepeCategoryView: RecepeCategoryViewProtocol {
         tableView.reloadData()
         tableView.isHidden = false
         errorView.isHidden = true
+        nothingFoundView.isHidden = true
     }
 
     func setNoDataView() {
@@ -303,6 +393,10 @@ extension RecepeCategoryView: RecepeCategoryViewProtocol {
     func setErrorView() {
         configureErrorView()
         errorLabel.text = Constants.textError
+    }
+
+    func setNothingFoundView() {
+        configureNothingFoundView()
     }
 }
 
