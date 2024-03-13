@@ -134,7 +134,11 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
                 switch result {
                 case let .success(recipeCard) where recipeCard.isEmpty:
                     self.state = .noData()
-                    self.view?.setNoDataView()
+                    if self.isSearching {
+                        self.view?.setNothingFoundView()
+                    } else {
+                        self.view?.setNoDataView()
+                    }
                 case let .success(recipeCard):
                     if search == nil {
                         self.sourceOfRecepies.allRecipes = recipeCard
