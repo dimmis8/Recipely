@@ -4,7 +4,7 @@
 import Foundation
 
 /// Ошибки нетворк сервиса
-enum NetworkError: CustomNSError {
+enum NetworkError: Error {
     /// Не удалось преобразовать String в URL
     case notValidURL
     /// Данные не существуют
