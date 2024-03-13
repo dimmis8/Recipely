@@ -4,26 +4,30 @@
 import Foundation
 
 /// Карточка рецепта
-struct RecipeCard {
+struct RecipeCard: Codable {
     /// Название рецепта
     let label: String
     /// Ссылка на картинку
     let image: String
     /// Время приготовления
-    let totalTime: String
+    let totalTime: Int
     /// Калорийность
-    let calories: String
+    let calories: Int
+    /// uri
+    let uri: String
 
     init?(dto: RecipeDTO) {
         guard let label = dto.label,
               let image = dto.image,
               let totalTime = dto.totalTime,
-              let calories = dto.calories
+              let calories = dto.calories,
+              let uri = dto.uri
         else { return nil }
 
         self.label = label
         self.image = image
-        self.totalTime = "\(totalTime.rounded()) min"
-        self.calories = "\(calories.rounded()) kkal"
+        self.totalTime = Int(totalTime.rounded())
+        self.calories = Int(calories.rounded())
+        self.uri = uri
     }
 }

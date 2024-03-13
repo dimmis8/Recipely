@@ -33,7 +33,7 @@ final class RecipesCoordinator: BaseCoodinator {
 
     func goToCategory(_ category: RecipeCategories) {
         rootController?.viewControllers.first?.hidesBottomBarWhenPushed = true
-        let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self)
+        let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self, category: category)
         recepeCategoryView?.navigationItem.title = category.rawValue
         rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
     }

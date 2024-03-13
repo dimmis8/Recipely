@@ -18,7 +18,7 @@ protocol Builder {
     /// Функция создания модуля экрана бонусов
     func createBonusesProfileModule(coordinator: ProfileCoordinator) -> UIViewController
     /// Функция создания модуля блюд категории
-    func createRecepeCategoryModule(coordinator: RecipesCoordinator) -> UIViewController
+    func createRecepeCategoryModule(coordinator: RecipesCoordinator, category: RecipeCategories) -> UIViewController
     /// Функция создания модуля деталей рецепта
     func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController
     /// Функция создания контроллера шеринка
@@ -89,11 +89,14 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createRecepeCategoryModule(coordinator: RecipesCoordinator) -> UIViewController {
+    func createRecepeCategoryModule(coordinator: RecipesCoordinator, category: RecipeCategories) -> UIViewController {
         let view = RecepeCategoryView()
+        let networkService = NetworkService()
         let presenter = RecepeCategoryPresenter(
             view: view,
-            coordinator: coordinator
+            coordinator: coordinator,
+            networkService: networkService,
+            category: category
         )
         view.presenter = presenter
         return view

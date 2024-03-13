@@ -7,8 +7,12 @@ import UIKit
 protocol RecepeCategoryViewProtocol: AnyObject {
     ///  Презентер экрана
     var presenter: RecepeCategoryPresenterProtocol? { get set }
-    /// ОБновить таблицу
+    /// Обновить таблицу
     func reloadTableView()
+    /// Отобразить ошибку "нет данных"
+    func setNoDataView()
+    /// Отобразить ошибку
+    func setErrorView()
 }
 
 /// Экран рецептов
@@ -18,6 +22,9 @@ final class RecepeCategoryView: UIViewController {
     enum Constants {
         static let seatchBarText = "Search recipes"
         static let buttonSortHigh: CGFloat = 36
+        static let reloadButtonText = "Reload"
+        static let noDataText = "Failed to load data"
+        static let textError = "Error"
     }
 
     // MARK: - Visual Components
@@ -34,6 +41,39 @@ final class RecepeCategoryView: UIViewController {
         label.textColor = .black
         return label
     }()
+
+    private let backgroundLightningView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .deviderLight
+        view.layer.cornerRadius = 12
+        return view
+    }()
+
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .verdana(ofSize: 14)
+        label.textColor = .lightInfoText
+        label.textAlignment = .center
+        return label
+    }()
+
+    private lazy var reloadButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(Constants.reloadButtonText, for: .normal)
+        button.titleLabel?.font = .verdana(ofSize: 14)
+        button.setTitleColor(.lightInfoText, for: .normal)
+        button.layer.cornerRadius = 12
+        button.backgroundColor = .deviderLight
+        button.setImage(.reload, for: .normal)
+        button.semanticContentAttribute = .forceLeftToRight
+        button.contentHorizontalAlignment = .center
+        button.addTarget(self, action: #selector(reloadData), for: .touchUpInside)
+        return button
+    }()
+
+    private let errorView = UIView()
+
+    private let errorImageView = UIImageView(image: .lightning)
 
     private let barView = UIView()
 
@@ -183,8 +223,66 @@ final class RecepeCategoryView: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
+    private func createErrorViewConstraints() {
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 8).isActive = true
+        errorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        errorView.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        errorView.heightAnchor.constraint(equalToConstant: 140).isActive = true
+    }
+
+    private func createBackgroundLightningViewConstraints() {
+        backgroundLightningView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundLightningView.topAnchor.constraint(equalTo: errorView.topAnchor).isActive = true
+        backgroundLightningView.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
+        backgroundLightningView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        backgroundLightningView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+
+    private func createErrorImageViewConstraints() {
+        errorImageView.translatesAutoresizingMaskIntoConstraints = false
+        errorImageView.centerYAnchor.constraint(equalTo: backgroundLightningView.centerYAnchor).isActive = true
+        errorImageView.centerXAnchor.constraint(equalTo: backgroundLightningView.centerXAnchor).isActive = true
+        errorImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        errorImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+    }
+
+    private func createErrorLabelConstraints() {
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        errorLabel.topAnchor.constraint(equalTo: backgroundLightningView.bottomAnchor, constant: 17).isActive = true
+        errorLabel.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
+        errorLabel.widthAnchor.constraint(equalTo: errorView.widthAnchor).isActive = true
+        errorLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+    }
+
+    private func createReloadButtonConstraints() {
+        reloadButton.translatesAutoresizingMaskIntoConstraints = false
+        reloadButton.bottomAnchor.constraint(equalTo: errorView.bottomAnchor).isActive = true
+        reloadButton.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
+        reloadButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        reloadButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+    }
+
+    private func configureErrorView() {
+        tableView.isHidden = true
+        view.addSubview(errorView)
+        errorView.addSubview(backgroundLightningView)
+        backgroundLightningView.addSubview(errorImageView)
+        errorView.addSubview(errorLabel)
+        errorView.addSubview(reloadButton)
+        createErrorViewConstraints()
+        createBackgroundLightningViewConstraints()
+        createErrorImageViewConstraints()
+        createErrorLabelConstraints()
+        createReloadButtonConstraints()
+    }
+
     @objc private func back() {
         presenter?.back()
+    }
+
+    @objc private func reloadData() {
+        presenter?.getRecipesFromNetwork(search: nil)
     }
 }
 
@@ -193,6 +291,18 @@ final class RecepeCategoryView: UIViewController {
 extension RecepeCategoryView: RecepeCategoryViewProtocol {
     func reloadTableView() {
         tableView.reloadData()
+        tableView.isHidden = false
+        errorView.isHidden = true
+    }
+
+    func setNoDataView() {
+        configureErrorView()
+        errorLabel.text = Constants.noDataText
+    }
+
+    func setErrorView() {
+        configureErrorView()
+        errorLabel.text = Constants.textError
     }
 }
 
@@ -236,6 +346,11 @@ extension RecepeCategoryView: UITableViewDataSource {
         switch presenter?.getRecipeInfo() {
         case let .data(recipes):
             cell.loadInfo(recipe: recipes[indexPath.row])
+            presenter?.loadImageDataForCell(recipes[indexPath.row].image) { data in
+                DispatchQueue.main.async {
+                    cell.setImage(imageData: data)
+                }
+            }
         default:
             cell.loadInfo(recipe: nil)
         }

@@ -12,7 +12,7 @@ protocol RecipesViewPresenterProtocol: AnyObject {
     /// Получение информации о количестве категорий
     func getCategoryCount() -> ViewState<[DishCategory]>
     /// Переход на экран категории
-    func goToCategory(_ category: RecipeCategories)
+    func goToCategory(_ categoryNumber: Int)
     /// Добавление логов
     func sendLog()
 }
@@ -41,8 +41,8 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
 
     // MARK: - Public Methods
 
-    func goToCategory(_ category: RecipeCategories) {
-        coordinator?.goToCategory(category)
+    func goToCategory(_ categoryNumber: Int) {
+        coordinator?.goToCategory(informationSource.categories[categoryNumber].type)
     }
 
     func getInfo() -> ViewState<[DishCategory]> {

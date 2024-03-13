@@ -105,19 +105,27 @@ final class RecipeCell: UITableViewCell {
         detailImageView.isHidden = isShimming
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        recipeImageView.image = nil
+    }
+
     // MARK: - Public Methods
 
-    func loadInfo(recipe: Recipe?) {
+    func loadInfo(recipe: RecipeCard?) {
         if let recipe = recipe {
             isShimming = false
             stopShimmers()
-            recipeImageView.image = UIImage(named: recipe.imageName)
-            recipeLabel.text = recipe.title
-            timerLabel.text = "\(recipe.cookTime) min"
+            recipeLabel.text = recipe.label
+            timerLabel.text = "\(recipe.totalTime) min"
             caloriesLabel.text = "\(recipe.calories) kkal"
         } else {
             isShimming = true
         }
+    }
+
+    func setImage(imageData: Data) {
+        recipeImageView.image = UIImage(data: imageData)
     }
 
     // MARK: - Private Methods

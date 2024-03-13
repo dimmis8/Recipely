@@ -221,8 +221,8 @@ extension FavoritesViewController: UITableViewDataSource {
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
         switch presenter?.getRecipeInfo() {
-        case let .data(recipes):
-            cell.loadInfo(recipe: recipes[indexPath.row])
+//        case let .data(recipes):
+//            cell.loadInfo(recipe: recipes[indexPath.row])
         default:
             cell.loadInfo(recipe: nil)
         }
