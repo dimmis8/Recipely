@@ -15,6 +15,7 @@ protocol RecipeDetailViewProtocol: AnyObject {
 
 /// Экран деталей рецепта
 final class RecipeDetailView: UIViewController {
+
     enum Details {
         /// Фото блюда
         case photo
@@ -257,7 +258,7 @@ extension RecipeDetailView: UITableViewDataSource {
                 for: indexPath
             ) as? DetailsSkeletonCell else { return UITableViewCell() }
             return cell
-        case .error, .noData:
+        case .error, .noData, nil:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecipeErrorCell.identifier,
                 for: indexPath
@@ -266,8 +267,6 @@ extension RecipeDetailView: UITableViewDataSource {
                 self?.presenter?.getRecipeFromNetwork(comlition: nil)
             }
             return cell
-        default:
-            return UITableViewCell()
         }
     }
 }
