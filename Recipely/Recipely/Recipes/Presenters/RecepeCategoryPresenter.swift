@@ -95,7 +95,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         guard !text.isEmpty else {
             isSearching = false
             sourceOfRecepies.setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSearching)
-            state = .data(sourceOfRecepies.recipesToShow)
+            state = sourceOfRecepies.recipesToShow.isEmpty ? .noData() : .data(sourceOfRecepies.recipesToShow)
             return
         }
         isSearching = true

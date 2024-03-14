@@ -49,10 +49,11 @@ final class NetworkService: NetworkServiceProtocol {
             complitionHandler(.failure(NetworkError.notValidURL))
             return
         }
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, responce, error in
 
-            if let error = error {
-                complitionHandler(.failure(error))
+            guard let httpResponse = responce as? HTTPURLResponse else { return }
+            if httpResponse.statusCode >= 400 {
+                complitionHandler(.failure(NetworkError.networkError(httpResponse.statusCode)))
                 return
             }
 
@@ -100,10 +101,11 @@ final class NetworkService: NetworkServiceProtocol {
             return
         }
 
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, responce, error in
 
-            if let error = error {
-                complitionHandler(.failure(error))
+            guard let httpResponse = responce as? HTTPURLResponse else { return }
+            if httpResponse.statusCode >= 400 {
+                complitionHandler(.failure(NetworkError.networkError(httpResponse.statusCode)))
                 return
             }
 
@@ -134,12 +136,14 @@ final class NetworkService: NetworkServiceProtocol {
         }
 
         let request = URLRequest(url: url)
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: request) { data, responce, _ in
 
-            if let error = error {
-                complitionHandler(.failure(error))
+            guard let httpResponse = responce as? HTTPURLResponse else { return }
+            if httpResponse.statusCode >= 400 {
+                complitionHandler(.failure(NetworkError.networkError(httpResponse.statusCode)))
                 return
             }
+
             guard let data = data else {
                 complitionHandler(.failure(NetworkError.nilData))
                 return

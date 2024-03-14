@@ -128,7 +128,7 @@ final class RecepeCategoryView: UIViewController {
 
     private var sortButtons: [UIButton] = []
     private let sortTypes: [SortTypes] = [.calories, .time]
-    
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -284,7 +284,7 @@ final class RecepeCategoryView: UIViewController {
             .isActive = true
         nothingFoundTitleLabel.centerXAnchor.constraint(equalTo: nothingFoundView.centerXAnchor).isActive = true
         nothingFoundTitleLabel.widthAnchor.constraint(equalTo: nothingFoundView.widthAnchor).isActive = true
-        nothingFoundTitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        nothingFoundTitleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
     }
 
     private func createNothingFoundLabelConstraints() {
@@ -339,6 +339,7 @@ final class RecepeCategoryView: UIViewController {
     private func configureErrorView() {
         tableView.isHidden = true
         view.addSubview(errorView)
+        errorView.isHidden = false
         errorView.addSubview(backgroundLightningView)
         backgroundLightningView.addSubview(errorImageView)
         errorView.addSubview(errorLabel)
@@ -372,7 +373,7 @@ final class RecepeCategoryView: UIViewController {
     @objc private func reloadData() {
         presenter?.getRecipesFromNetwork(search: nil, complition: nil)
     }
-    
+
     @objc private func refrashHandle(sender: UIRefreshControl) {
         presenter?.getRecipesFromNetwork(search: nil) {
             sender.endRefreshing()
@@ -391,7 +392,7 @@ extension RecepeCategoryView: RecepeCategoryViewProtocol {
             errorView.isHidden = true
             nothingFoundView.isHidden = true
         case .noData:
-                configureNothingFoundView()
+            configureNothingFoundView()
         case .error, .none:
             configureErrorView()
             errorLabel.text = Constants.noDataText

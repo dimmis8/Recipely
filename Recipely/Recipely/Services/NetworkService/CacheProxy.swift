@@ -69,7 +69,7 @@ final class CacheProxy: NetworkServiceProtocol {
         guard let url = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
         cacheImageFolderURL = url.appendingPathComponent(Constants.imageCacheFolderName)
         guard let cacheImageFolderURL = cacheImageFolderURL,
-                  !fileManager.fileExists(atPath: cacheImageFolderURL.path()) else { return }
+              !fileManager.fileExists(atPath: cacheImageFolderURL.path()) else { return }
         do {
             try fileManager.createDirectory(at: cacheImageFolderURL, withIntermediateDirectories: true)
         } catch { return }
