@@ -72,10 +72,6 @@ final class RecipeCell: UITableViewCell {
         }
     }
 
-    // MARK: - Private Properties
-
-    private var isShimming = true
-
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -88,23 +84,6 @@ final class RecipeCell: UITableViewCell {
         super.init(coder: coder)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if isShimming {
-            recipeImageView.startShimmeringAnimation()
-            recipeLabel.startShimmeringAnimation()
-            timerLabel.startShimmeringAnimation()
-            caloriesLabel.startShimmeringAnimation()
-            recipeImageView.image = nil
-            recipeLabel.text = nil
-            timerLabel.text = nil
-            caloriesLabel.text = nil
-        }
-        timerImageView.isHidden = isShimming
-        pizzaImageView.isHidden = isShimming
-        detailImageView.isHidden = isShimming
-    }
-
     override func prepareForReuse() {
         super.prepareForReuse()
         recipeImageView.image = nil
@@ -114,13 +93,9 @@ final class RecipeCell: UITableViewCell {
 
     func loadInfo(recipe: RecipeCard?) {
         if let recipe = recipe {
-            isShimming = false
-            stopShimmers()
             recipeLabel.text = recipe.label
             timerLabel.text = "\(recipe.totalTime) min"
             caloriesLabel.text = "\(recipe.calories) kkal"
-        } else {
-            isShimming = true
         }
     }
 
@@ -151,13 +126,6 @@ final class RecipeCell: UITableViewCell {
         setPizzaImageViewConstraints()
         setCaloriesLabelConstraints()
         setDetailImageViewConstraints()
-    }
-
-    private func stopShimmers() {
-        recipeImageView.stopShimmeringAnimation()
-        recipeLabel.stopShimmeringAnimation()
-        timerLabel.stopShimmeringAnimation()
-        caloriesLabel.stopShimmeringAnimation()
     }
 
     private func setBackgroundViewConstraints() {

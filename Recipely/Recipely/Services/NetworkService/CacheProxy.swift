@@ -40,11 +40,10 @@ final class CacheProxy: NetworkServiceProtocol {
     }
 
     func getImageData(stringURL: String, complitionHandler: @escaping (Result<Data, Error>) -> ()) {
-        guard let imageNetworkURL = URL(string: stringURL) else { return }
-        let urlComponents = URLComponents(url: imageNetworkURL, resolvingAgainstBaseURL: false)
-        guard let urlPath = urlComponents?.path,
-              let imageName = urlPath.components(separatedBy: Constants.slash).last,
+        guard let imageNetworkURL = URL(string: stringURL),
               let cacheImageFolderURL = cacheImageFolderURL else { return }
+
+        let imageName = imageNetworkURL.lastPathComponent
         let imageFilePath = cacheImageFolderURL.appendingPathComponent(imageName).path()
 
         if fileManager.fileExists(atPath: imageFilePath) {

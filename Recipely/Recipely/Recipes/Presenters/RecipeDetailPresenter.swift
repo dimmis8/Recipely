@@ -68,8 +68,7 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     func saveToFavorite() {
         guard case let .data(recipe) = state,
               let favoritesStorage = FavoriteRecipesStorage.shared.favoriteRecipes
-        else { return
-        }
+        else { return }
 
         if favoritesStorage.contains(where: { favoriteRecipe in
             favoriteRecipe.label == recipe.label
@@ -111,6 +110,7 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     }
 
     func getRecipeFromNetwork(comlition: VoidHandler? = nil) {
+        state = .loading
         networkService.getDetail(uri: recipeURI) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
