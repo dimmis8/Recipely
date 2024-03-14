@@ -18,10 +18,6 @@ final class RecepeCategoryView: UIViewController {
     enum Constants {
         static let seatchBarText = "Search recipes"
         static let buttonSortHigh: CGFloat = 36
-        static let reloadButtonText = "Reload"
-        static let noDataText = "Failed to load data"
-        static let nothingFoundTitleText = "Nothing found"
-        static let nothingFoundText = "Try entering your query differently"
     }
 
     // MARK: - Visual Components
@@ -39,39 +35,6 @@ final class RecepeCategoryView: UIViewController {
         return label
     }()
 
-    private let backgroundLightningView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .deviderLight
-        view.layer.cornerRadius = 12
-        return view
-    }()
-
-    private let errorLabel: UILabel = {
-        let label = UILabel()
-        label.font = .verdana(ofSize: 14)
-        label.textColor = .lightInfoText
-        label.textAlignment = .center
-        return label
-    }()
-
-    private lazy var reloadButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(Constants.reloadButtonText, for: .normal)
-        button.titleLabel?.font = .verdana(ofSize: 14)
-        button.setTitleColor(.lightInfoText, for: .normal)
-        button.layer.cornerRadius = 12
-        button.backgroundColor = .deviderLight
-        button.setImage(.reload, for: .normal)
-        button.semanticContentAttribute = .forceLeftToRight
-        button.contentHorizontalAlignment = .center
-        button.addTarget(self, action: #selector(reloadData), for: .touchUpInside)
-        return button
-    }()
-
-    private let errorView = UIView()
-
-    private let errorImageView = UIImageView(image: .lightning)
-
     private let barView = UIView()
 
     private let recipesSearchBar: UISearchBar = {
@@ -85,32 +48,6 @@ final class RecepeCategoryView: UIViewController {
         return searchBar
     }()
 
-    private let backgroundSearchGlassView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .deviderLight
-        view.layer.cornerRadius = 12
-        return view
-    }()
-
-    private let nothingFoundTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .verdanaBold(ofSize: 18)
-        label.textColor = .black
-        label.textAlignment = .center
-        label.text = Constants.nothingFoundTitleText
-        return label
-    }()
-
-    private let nothingFoundLabel: UILabel = {
-        let label = UILabel()
-        label.font = .verdana(ofSize: 14)
-        label.textColor = .lightInfoText
-        label.textAlignment = .center
-        label.text = Constants.nothingFoundText
-        return label
-    }()
-
-    private let nothingFoundView = UIView()
     private let searchGlassImageView = UIImageView(image: .searchGlass)
     private let sortPickerView = SortPickerView()
     private let tableView = UITableView()
@@ -164,6 +101,9 @@ final class RecepeCategoryView: UIViewController {
 
     private func configureTableView() {
         tableView.register(RecipeCell.self, forCellReuseIdentifier: RecipeCell.identifier)
+        tableView.register(RecipeSkeletonCell.self, forCellReuseIdentifier: RecipeSkeletonCell.identifier)
+        tableView.register(RecipeNoDataCell.self, forCellReuseIdentifier: RecipeNoDataCell.identifier)
+        tableView.register(RecipeErrorCell.self, forCellReuseIdentifier: RecipeErrorCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsSelection = true
@@ -254,124 +194,8 @@ final class RecepeCategoryView: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
-    private func createNothingFoundViewConstraints() {
-        nothingFoundView.translatesAutoresizingMaskIntoConstraints = false
-        nothingFoundView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 8).isActive = true
-        nothingFoundView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        nothingFoundView.widthAnchor.constraint(equalToConstant: 350).isActive = true
-        nothingFoundView.heightAnchor.constraint(equalToConstant: 140).isActive = true
-    }
-
-    private func createBackgroundNothingFoundViewConstraints() {
-        backgroundSearchGlassView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundSearchGlassView.topAnchor.constraint(equalTo: nothingFoundView.topAnchor).isActive = true
-        backgroundSearchGlassView.centerXAnchor.constraint(equalTo: nothingFoundView.centerXAnchor).isActive = true
-        backgroundSearchGlassView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        backgroundSearchGlassView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-
-    private func createSearchGlassImageViewConstraints() {
-        searchGlassImageView.translatesAutoresizingMaskIntoConstraints = false
-        searchGlassImageView.centerYAnchor.constraint(equalTo: backgroundSearchGlassView.centerYAnchor).isActive = true
-        searchGlassImageView.centerXAnchor.constraint(equalTo: backgroundSearchGlassView.centerXAnchor).isActive = true
-        searchGlassImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        searchGlassImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
-    }
-
-    private func createNothingFoundTitleLabelConstraints() {
-        nothingFoundTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        nothingFoundTitleLabel.topAnchor.constraint(equalTo: backgroundSearchGlassView.bottomAnchor, constant: 17)
-            .isActive = true
-        nothingFoundTitleLabel.centerXAnchor.constraint(equalTo: nothingFoundView.centerXAnchor).isActive = true
-        nothingFoundTitleLabel.widthAnchor.constraint(equalTo: nothingFoundView.widthAnchor).isActive = true
-        nothingFoundTitleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
-    }
-
-    private func createNothingFoundLabelConstraints() {
-        nothingFoundLabel.translatesAutoresizingMaskIntoConstraints = false
-        nothingFoundLabel.topAnchor.constraint(equalTo: nothingFoundTitleLabel.bottomAnchor, constant: 25)
-            .isActive = true
-        nothingFoundLabel.centerXAnchor.constraint(equalTo: nothingFoundView.centerXAnchor).isActive = true
-        nothingFoundLabel.widthAnchor.constraint(equalTo: nothingFoundView.widthAnchor).isActive = true
-        nothingFoundLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
-    }
-
-    private func createErrorViewConstraints() {
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 8).isActive = true
-        errorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        errorView.widthAnchor.constraint(equalToConstant: 350).isActive = true
-        errorView.heightAnchor.constraint(equalToConstant: 140).isActive = true
-    }
-
-    private func createBackgroundLightningViewConstraints() {
-        backgroundLightningView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundLightningView.topAnchor.constraint(equalTo: errorView.topAnchor).isActive = true
-        backgroundLightningView.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
-        backgroundLightningView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        backgroundLightningView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-
-    private func createErrorImageViewConstraints() {
-        errorImageView.translatesAutoresizingMaskIntoConstraints = false
-        errorImageView.centerYAnchor.constraint(equalTo: backgroundLightningView.centerYAnchor).isActive = true
-        errorImageView.centerXAnchor.constraint(equalTo: backgroundLightningView.centerXAnchor).isActive = true
-        errorImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        errorImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
-    }
-
-    private func createErrorLabelConstraints() {
-        errorLabel.translatesAutoresizingMaskIntoConstraints = false
-        errorLabel.topAnchor.constraint(equalTo: backgroundLightningView.bottomAnchor, constant: 17).isActive = true
-        errorLabel.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
-        errorLabel.widthAnchor.constraint(equalTo: errorView.widthAnchor).isActive = true
-        errorLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
-    }
-
-    private func createReloadButtonConstraints() {
-        reloadButton.translatesAutoresizingMaskIntoConstraints = false
-        reloadButton.bottomAnchor.constraint(equalTo: errorView.bottomAnchor).isActive = true
-        reloadButton.centerXAnchor.constraint(equalTo: errorView.centerXAnchor).isActive = true
-        reloadButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        reloadButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
-    }
-
-    private func configureErrorView() {
-        tableView.isHidden = true
-        view.addSubview(errorView)
-        errorView.isHidden = false
-        errorView.addSubview(backgroundLightningView)
-        backgroundLightningView.addSubview(errorImageView)
-        errorView.addSubview(errorLabel)
-        errorView.addSubview(reloadButton)
-        createErrorViewConstraints()
-        createBackgroundLightningViewConstraints()
-        createErrorImageViewConstraints()
-        createErrorLabelConstraints()
-        createReloadButtonConstraints()
-    }
-
-    private func configureNothingFoundView() {
-        tableView.isHidden = true
-        view.addSubview(nothingFoundView)
-        nothingFoundView.isHidden = false
-        nothingFoundView.addSubview(backgroundSearchGlassView)
-        backgroundSearchGlassView.addSubview(searchGlassImageView)
-        nothingFoundView.addSubview(nothingFoundTitleLabel)
-        nothingFoundView.addSubview(nothingFoundLabel)
-        createNothingFoundViewConstraints()
-        createBackgroundNothingFoundViewConstraints()
-        createSearchGlassImageViewConstraints()
-        createNothingFoundTitleLabelConstraints()
-        createNothingFoundLabelConstraints()
-    }
-
     @objc private func back() {
         presenter?.back()
-    }
-
-    @objc private func reloadData() {
-        presenter?.getRecipesFromNetwork(search: nil, complition: nil)
     }
 
     @objc private func refrashHandle(sender: UIRefreshControl) {
@@ -385,18 +209,7 @@ final class RecepeCategoryView: UIViewController {
 
 extension RecepeCategoryView: RecepeCategoryViewProtocol {
     func updateState() {
-        switch presenter?.state {
-        case .loading, .data:
-            tableView.reloadData()
-            tableView.isHidden = false
-            errorView.isHidden = true
-            nothingFoundView.isHidden = true
-        case .noData:
-            configureNothingFoundView()
-        case .error, .none:
-            configureErrorView()
-            errorLabel.text = Constants.noDataText
-        }
+        tableView.reloadData()
     }
 }
 
@@ -425,6 +238,8 @@ extension RecepeCategoryView: UITableViewDataSource {
             tableView.isScrollEnabled = true
             tableView.allowsSelection = true
             return recipes.count
+        case .noData, .error:
+            return 1
         default:
             tableView.isScrollEnabled = false
             tableView.allowsSelection = false
@@ -433,24 +248,41 @@ extension RecepeCategoryView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: RecipeCell.identifier,
-            for: indexPath
-        ) as? RecipeCell else { return UITableViewCell() }
         switch presenter?.state {
         case let .data(recipes):
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeCell.identifier,
+                for: indexPath
+            ) as? RecipeCell else { return UITableViewCell() }
             cell.loadInfo(recipe: recipes[indexPath.row])
             presenter?.loadImageDataForCell(recipes[indexPath.row].image) { data in
                 DispatchQueue.main.async {
                     cell.setImage(imageData: data)
                 }
             }
+            return cell
         case .loading:
-            cell.loadInfo(recipe: nil)
-        default:
-            break
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeSkeletonCell.identifier,
+                for: indexPath
+            ) as? RecipeSkeletonCell else { return UITableViewCell() }
+            return cell
+        case .noData:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeNoDataCell.identifier,
+                for: indexPath
+            ) as? RecipeNoDataCell else { return UITableViewCell() }
+            return cell
+        case .error, .none:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeErrorCell.identifier,
+                for: indexPath
+            ) as? RecipeErrorCell else { return UITableViewCell() }
+            cell.reloadDataHandler = { [weak self] in
+                self?.presenter?.getRecipesFromNetwork(search: nil, complition: nil)
+            }
+            return cell
         }
-        return cell
     }
 }
 
