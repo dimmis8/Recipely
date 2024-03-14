@@ -7,14 +7,8 @@ import UIKit
 protocol RecepeCategoryViewProtocol: AnyObject {
     ///  Презентер экрана
     var presenter: RecepeCategoryPresenterProtocol? { get set }
-    /// Обновить таблицу
-    func reloadTableView()
-    /// Отобразить ошибку "нет данных"
-    func setNoDataView()
-    /// Отобразить ошибку
-    func setErrorView()
-    /// Отобразить что ничего не найдено
-    func setNothingFoundView()
+    /// Обновление состояния
+    func updateState()
 }
 
 /// Экран рецептов
@@ -182,6 +176,7 @@ final class RecepeCategoryView: UIViewController {
         recipesSearchBar.delegate = self
         view.addSubview(sortPickerView)
         view.addSubview(tableView)
+        presenter?.getRecipesFromNetwork(search: nil)
     }
 
     private func createConstraints() {
@@ -378,25 +373,25 @@ final class RecepeCategoryView: UIViewController {
 // MARK: - RecepeCategoryView + RecepeCategoryViewProtocol
 
 extension RecepeCategoryView: RecepeCategoryViewProtocol {
-    func reloadTableView() {
-        tableView.reloadData()
-        tableView.isHidden = false
-        errorView.isHidden = true
-        nothingFoundView.isHidden = true
-    }
-
-    func setNoDataView() {
-        configureErrorView()
-        errorLabel.text = Constants.noDataText
-    }
-
-    func setErrorView() {
-        configureErrorView()
-        errorLabel.text = Constants.textError
-    }
-
-    func setNothingFoundView() {
-        configureNothingFoundView()
+    
+    func updateState() {
+        switch presenter?.state {
+        case .loading, .data:
+            tableView.reloadData()
+            tableView.isHidden = false
+            errorView.isHidden = true
+            nothingFoundView.isHidden = true
+        case .noData:
+            if recipesSearchBar.text != nil {
+                configureNothingFoundView()
+            } else {
+                configureErrorView()
+                errorLabel.text = Constants.noDataText
+            }
+        case .error, .none:
+            configureErrorView()
+            errorLabel.text = Constants.textError
+        }
     }
 }
 
@@ -420,7 +415,7 @@ extension RecepeCategoryView: SortPickerViewDataSource {
 
 extension RecepeCategoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch presenter?.getRecipeCount() {
+        switch presenter?.state {
         case let .data(recipes):
             tableView.isScrollEnabled = true
             tableView.allowsSelection = true
@@ -437,7 +432,7 @@ extension RecepeCategoryView: UITableViewDataSource {
             withIdentifier: RecipeCell.identifier,
             for: indexPath
         ) as? RecipeCell else { return UITableViewCell() }
-        switch presenter?.getRecipeInfo() {
+        switch presenter?.state {
         case let .data(recipes):
             cell.loadInfo(recipe: recipes[indexPath.row])
             presenter?.loadImageDataForCell(recipes[indexPath.row].image) { data in
@@ -445,8 +440,10 @@ extension RecepeCategoryView: UITableViewDataSource {
                     cell.setImage(imageData: data)
                 }
             }
-        default:
+        case .loading:
             cell.loadInfo(recipe: nil)
+        default:
+            break
         }
         return cell
     }
