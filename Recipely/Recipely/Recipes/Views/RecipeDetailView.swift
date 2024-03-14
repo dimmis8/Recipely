@@ -15,7 +15,6 @@ protocol RecipeDetailViewProtocol: AnyObject {
 
 /// Экран деталей рецепта
 final class RecipeDetailView: UIViewController {
-
     enum Details {
         /// Фото блюда
         case photo

@@ -51,17 +51,8 @@ final class RecipesPresenter: RecipesViewPresenterProtocol {
 
     func getCategoryCount() -> ViewState<[DishCategory]> {
         if isFirstRequest {
-            // Временно приходит сразу .succes, так как не решена проблема с высотой подложки под лейблы
             isFirstRequest = false
             state = .data(informationSource.categories)
-//            stateOfLoading = .loading(nil)
-//            Timer.scheduledTimer(
-//                timeInterval: 3,
-//                target: self,
-//                selector: #selector(setInfo),
-//                userInfo: nil,
-//                repeats: false
-//            )
         }
         return state
     }

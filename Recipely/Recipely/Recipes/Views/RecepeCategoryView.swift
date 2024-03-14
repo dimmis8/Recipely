@@ -255,9 +255,12 @@ extension RecepeCategoryView: UITableViewDataSource {
                 for: indexPath
             ) as? RecipeCell else { return UITableViewCell() }
             cell.loadInfo(recipe: recipes[indexPath.row])
+            cell.cellID = indexPath
             presenter?.loadImageDataForCell(recipes[indexPath.row].image) { data in
-                DispatchQueue.main.async {
-                    cell.setImage(imageData: data)
+                if cell.cellID == indexPath {
+                    DispatchQueue.main.async {
+                        cell.setImage(imageData: data)
+                    }
                 }
             }
             return cell

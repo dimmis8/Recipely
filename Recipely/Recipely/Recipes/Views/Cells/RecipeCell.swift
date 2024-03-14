@@ -72,6 +72,8 @@ final class RecipeCell: UITableViewCell {
         }
     }
 
+    var cellID: IndexPath?
+
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
