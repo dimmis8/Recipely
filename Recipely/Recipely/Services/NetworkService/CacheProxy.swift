@@ -9,7 +9,6 @@ final class CacheProxy: NetworkServiceProtocol {
 
     enum Constants {
         static let imageCacheFolderName = "ImageCache"
-        static let slash = "/"
     }
 
     // MARK: - Private Properties
@@ -45,7 +44,7 @@ final class CacheProxy: NetworkServiceProtocol {
 
         let imageName = imageNetworkURL.lastPathComponent
         let imageFilePath = cacheImageFolderURL.appendingPathComponent(imageName).path()
-
+        print(imageFilePath)
         if fileManager.fileExists(atPath: imageFilePath) {
             guard let imageData = fileManager.contents(atPath: imageFilePath) else { return }
             complitionHandler(.success(imageData))
