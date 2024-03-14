@@ -20,7 +20,6 @@ final class RecepeCategoryView: UIViewController {
         static let buttonSortHigh: CGFloat = 36
         static let reloadButtonText = "Reload"
         static let noDataText = "Failed to load data"
-        static let textError = "Error"
         static let nothingFoundTitleText = "Nothing found"
         static let nothingFoundText = "Try entering your query differently"
     }
@@ -113,9 +112,13 @@ final class RecepeCategoryView: UIViewController {
 
     private let nothingFoundView = UIView()
     private let searchGlassImageView = UIImageView(image: .searchGlass)
-
     private let sortPickerView = SortPickerView()
     private let tableView = UITableView()
+    private lazy var refreshControll: UIRefreshControl = {
+        let refreshControll = UIRefreshControl()
+        refreshControll.addTarget(self, action: #selector(refrashHandle(sender:)), for: .valueChanged)
+        return refreshControll
+    }()
 
     // MARK: - Public Properties
 
@@ -125,7 +128,7 @@ final class RecepeCategoryView: UIViewController {
 
     private var sortButtons: [UIButton] = []
     private let sortTypes: [SortTypes] = [.calories, .time]
-
+    
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -167,6 +170,7 @@ final class RecepeCategoryView: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.separatorStyle = .none
+        tableView.addSubview(refreshControll)
     }
 
     private func setupView() {
@@ -176,7 +180,7 @@ final class RecepeCategoryView: UIViewController {
         recipesSearchBar.delegate = self
         view.addSubview(sortPickerView)
         view.addSubview(tableView)
-        presenter?.getRecipesFromNetwork(search: nil)
+        presenter?.getRecipesFromNetwork(search: nil, complition: nil)
     }
 
     private func createConstraints() {
@@ -366,7 +370,13 @@ final class RecepeCategoryView: UIViewController {
     }
 
     @objc private func reloadData() {
-        presenter?.getRecipesFromNetwork(search: nil)
+        presenter?.getRecipesFromNetwork(search: nil, complition: nil)
+    }
+    
+    @objc private func refrashHandle(sender: UIRefreshControl) {
+        presenter?.getRecipesFromNetwork(search: nil) {
+            sender.endRefreshing()
+        }
     }
 }
 
@@ -381,15 +391,10 @@ extension RecepeCategoryView: RecepeCategoryViewProtocol {
             errorView.isHidden = true
             nothingFoundView.isHidden = true
         case .noData:
-            if recipesSearchBar.text != nil {
                 configureNothingFoundView()
-            } else {
-                configureErrorView()
-                errorLabel.text = Constants.noDataText
-            }
         case .error, .none:
             configureErrorView()
-            errorLabel.text = Constants.textError
+            errorLabel.text = Constants.noDataText
         }
     }
 }

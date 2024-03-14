@@ -92,6 +92,12 @@ final class RecipeDetailView: UIViewController {
         return button
     }()
 
+    private lazy var refreshControll: UIRefreshControl = {
+        let refreshControll = UIRefreshControl()
+        refreshControll.addTarget(self, action: #selector(refrashHandle(sender:)), for: .valueChanged)
+        return refreshControll
+    }()
+
     private let errorView = UIView()
 
     private let errorImageView = UIImageView(image: .lightning)
@@ -128,7 +134,7 @@ final class RecipeDetailView: UIViewController {
     private func setupView() {
         view.backgroundColor = .white
         view.addSubview(tableView)
-        presenter?.getRecipeFromNetwork()
+        presenter?.getRecipeFromNetwork(comlition: nil)
     }
 
     private func setupNavigationBar() {
@@ -168,6 +174,7 @@ final class RecipeDetailView: UIViewController {
             forCellReuseIdentifier: RecipesDescriptionDetailsCell.identifier
         )
         recipeLabelView.addSubview(recipeLabel)
+        tableView.addSubview(refreshControll)
     }
 
     private func addLogs() {
@@ -279,7 +286,13 @@ final class RecipeDetailView: UIViewController {
     }
 
     @objc private func reloadData() {
-        presenter?.getRecipeFromNetwork()
+        presenter?.getRecipeFromNetwork(comlition: nil)
+    }
+
+    @objc private func refrashHandle(sender: UIRefreshControl) {
+        presenter?.getRecipeFromNetwork {
+            sender.endRefreshing()
+        }
     }
 }
 

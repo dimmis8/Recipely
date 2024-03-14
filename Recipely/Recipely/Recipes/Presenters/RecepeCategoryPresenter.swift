@@ -25,7 +25,7 @@ protocol RecepeCategoryPresenterProtocol: AnyObject {
     /// Загрузить картинку для ячейки
     func loadImageDataForCell(_ imageURL: String, complitionHandler: @escaping (Data) -> ())
     /// Получить данные
-    func getRecipesFromNetwork(search: String?)
+    func getRecipesFromNetwork(search: String?, complition: VoidHandler?)
     /// Состояние загрузки данных
     var state: ViewState<[RecipeCard]> { get set }
 }
@@ -114,7 +114,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
         }
     }
 
-    func getRecipesFromNetwork(search: String?) {
+    func getRecipesFromNetwork(search: String?, complition comlition: VoidHandler? = nil) {
         state = .loading
         networkService.getRecipes(category: category, search: search) { [weak self] result in
             guard let self = self else { return }
@@ -132,6 +132,7 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
                 case let .failure(error):
                     self.state = .error(error) {}
                 }
+                comlition?()
             }
         }
     }

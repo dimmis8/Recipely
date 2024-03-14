@@ -92,10 +92,11 @@ final class ModuleBuilder: Builder {
     func createRecepeCategoryModule(coordinator: RecipesCoordinator, category: RecipeCategories) -> UIViewController {
         let view = RecepeCategoryView()
         let networkService = NetworkService()
+        let cashProxy = CacheProxy(networkService: networkService)
         let presenter = RecepeCategoryPresenter(
             view: view,
             coordinator: coordinator,
-            networkService: networkService,
+            networkService: cashProxy,
             category: category
         )
         view.presenter = presenter
@@ -120,11 +121,12 @@ final class ModuleBuilder: Builder {
     ) -> UIViewController {
         let view = RecipeDetailView()
         let networkService = NetworkService()
+        let cashProxy = CacheProxy(networkService: networkService)
         let presenter = RecipeDetailPresenter(
             view: view,
             coordinator: coordinator,
             recipeURI: recipeURI,
-            networkService: networkService
+            networkService: cashProxy
         )
         view.presenter = presenter
         return view

@@ -21,7 +21,7 @@ protocol RecipeDetailPresenterProtocol: AnyObject {
     /// Добавление логов
     func sendLog()
     /// Получить данные
-    func getRecipeFromNetwork()
+    func getRecipeFromNetwork(comlition: VoidHandler?)
     /// Загрузить картинку для ячейки
     func loadImageDataForCell(_ imageURL: String, complitionHandler: @escaping (Data) -> ())
     /// Состояние данных экрана деталей
@@ -110,7 +110,7 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
         }
     }
 
-    func getRecipeFromNetwork() {
+    func getRecipeFromNetwork(comlition: VoidHandler? = nil) {
         networkService.getDetail(uri: recipeURI) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -136,6 +136,7 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
                 case let .failure(error):
                     self.state = .error(error) {}
                 }
+                comlition?()
             }
         }
     }
