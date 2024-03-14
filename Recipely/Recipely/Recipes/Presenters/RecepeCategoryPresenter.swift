@@ -122,19 +122,13 @@ final class RecepeCategoryPresenter: RecepeCategoryPresenterProtocol {
                 switch result {
                 case let .success(recipeCard) where recipeCard.isEmpty:
                     self.state = .noData()
-
                 case let .success(recipeCard):
-                    if search == nil {
-                        self.sourceOfRecepies.allRecipes = recipeCard
-                        self.sourceOfRecepies.setNeededInformation(
-                            selectedSortMap: self.selectedSortMap,
-                            isSerching: false
-                        )
-                    } else {
-                        self.sourceOfRecepies.searchRecipes(recipes: recipeCard, selectedSortMap: self.selectedSortMap)
-                    }
+                    self.sourceOfRecepies.setRecipes(
+                        recipes: recipeCard,
+                        selectedSortMap: self.selectedSortMap,
+                        isSerching: self.isSearching
+                    )
                     self.state = .data(self.sourceOfRecepies.recipesToShow)
-
                 case let .failure(error):
                     self.state = .error(error) {}
                 }

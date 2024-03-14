@@ -373,7 +373,6 @@ final class RecepeCategoryView: UIViewController {
 // MARK: - RecepeCategoryView + RecepeCategoryViewProtocol
 
 extension RecepeCategoryView: RecepeCategoryViewProtocol {
-    
     func updateState() {
         switch presenter?.state {
         case .loading, .data:

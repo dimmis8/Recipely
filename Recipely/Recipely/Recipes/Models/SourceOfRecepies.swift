@@ -16,9 +16,13 @@ struct SourceOfRecepies {
 
     // MARK: - Public Methods
 
-    mutating func searchRecipes(recipes: [RecipeCard], selectedSortMap: [SortTypes: SortState]) {
-        searchedRecipes = recipes
-        setNeededInformation(selectedSortMap: selectedSortMap, isSerching: true)
+    mutating func setRecipes(recipes: [RecipeCard], selectedSortMap: [SortTypes: SortState], isSerching: Bool) {
+        if isSerching {
+            searchedRecipes = recipes
+        } else {
+            allRecipes = recipes
+        }
+        setNeededInformation(selectedSortMap: selectedSortMap, isSerching: isSerching)
     }
 
     mutating func setNeededInformation(selectedSortMap: [SortTypes: SortState], isSerching: Bool) {
