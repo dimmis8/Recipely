@@ -9,10 +9,8 @@ protocol RecipeDetailViewProtocol: AnyObject {
     var presenter: RecipeDetailPresenterProtocol? { get set }
     /// Установка цвета кнопки фаворита
     func changeFavoriteButtonColor(isFavorite: Bool)
-    /// Перезагрузка данных
-    func reloadTableView()
-    /// Отобразить ошибку "нет данных"
-    func setNoDataView()
+    /// Обновление состояния
+    func updateState()
 }
 
 /// Экран деталей рецепта
@@ -130,6 +128,7 @@ final class RecipeDetailView: UIViewController {
     private func setupView() {
         view.backgroundColor = .white
         view.addSubview(tableView)
+        presenter?.getRecipeFromNetwork()
     }
 
     private func setupNavigationBar() {
@@ -299,7 +298,7 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesImageDetailCell.identifier,
                 for: indexPath
             ) as? RecipesImageDetailCell else { return UITableViewCell() }
-            switch presenter?.getRecipeInfo() {
+            switch presenter?.state {
             case let .data(recipe):
                 recipeLabel.text = recipe.label
                 tableView.isScrollEnabled = true
@@ -312,10 +311,13 @@ extension RecipeDetailView: UITableViewDataSource {
                     }
                 }
 
-            default:
+            case .loading:
                 tableView.isScrollEnabled = false
                 tableView.allowsSelection = false
                 cell.getInfo(recipe: nil)
+
+            default:
+                break
             }
             return cell
         case .characteristics:
@@ -323,11 +325,13 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
-            switch presenter?.getRecipeInfo() {
+            switch presenter?.state {
             case let .data(recipe):
                 cell.getCharacteristics(recipe: recipe)
-            default:
+            case .loading:
                 cell.getCharacteristics(recipe: nil)
+            default:
+                break
             }
             return cell
         case .description:
@@ -335,11 +339,13 @@ extension RecipeDetailView: UITableViewDataSource {
                 withIdentifier: RecipesDescriptionDetailsCell.identifier,
                 for: indexPath
             ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
-            switch presenter?.getRecipeInfo() {
+            switch presenter?.state {
             case let .data(recipe):
                 cell.setText(recipe.ingredients)
-            default:
+            case .loading:
                 cell.setText("")
+            default:
+                break
             }
             return cell
         }
@@ -361,8 +367,15 @@ extension RecipeDetailView: UITableViewDelegate {
 // MARK: - RecipeDetailView + RecipeDetailViewProtocol
 
 extension RecipeDetailView: RecipeDetailViewProtocol {
-    func reloadTableView() {
-        tableView.reloadData()
+    func updateState() {
+        switch presenter?.state {
+        case .loading, .data:
+            tableView.isHidden = false
+            errorView.isHidden = true
+            tableView.reloadData()
+        case .noData, .error, nil:
+            setNoDataView()
+        }
     }
 
     func changeFavoriteButtonColor(isFavorite: Bool) {
@@ -372,6 +385,7 @@ extension RecipeDetailView: RecipeDetailViewProtocol {
 
     func setNoDataView() {
         configureErrorView()
+        errorView.isHidden = false
         errorLabel.text = Constants.noDataText
     }
 }

@@ -18,14 +18,14 @@ protocol RecipeDetailPresenterProtocol: AnyObject {
     func shareRecipe()
     /// Экшн кнопки назад
     func back()
-    /// Получение данных рецепта
-    func getRecipeInfo() -> ViewState<RecipeDetails>
     /// Добавление логов
     func sendLog()
     /// Получить данные
     func getRecipeFromNetwork()
     /// Загрузить картинку для ячейки
     func loadImageDataForCell(_ imageURL: String, complitionHandler: @escaping (Data) -> ())
+    /// Состояние данных экрана деталей
+    var state: ViewState<RecipeDetails> { get set }
 }
 
 /// Презентер экрана деталей рецептов
@@ -38,8 +38,12 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
     private var loggerService = LoggerService()
     private var recipeURI: String
     private var isFirstRequest = true
-    private var state: ViewState<RecipeDetails>
     private var imageData: Data?
+    var state: ViewState<RecipeDetails> = .loading {
+        didSet {
+            view?.updateState()
+        }
+    }
 
     // MARK: - Initializers
 
@@ -53,15 +57,9 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
         self.coordinator = coordinator
         self.recipeURI = recipeURI
         self.networkService = networkService
-        state = .loading
-        getRecipeFromNetwork()
     }
 
     // MARK: - Public Methods
-
-    func getRecipeInfo() -> ViewState<RecipeDetails> {
-        state
-    }
 
     func back() {
         coordinator?.backToRecipes()
@@ -137,9 +135,7 @@ final class RecipeDetailPresenter: RecipeDetailPresenterProtocol {
 
                 case let .failure(error):
                     self.state = .error(error) {}
-                    self.view?.setNoDataView()
                 }
-                self.view?.reloadTableView()
             }
         }
     }
