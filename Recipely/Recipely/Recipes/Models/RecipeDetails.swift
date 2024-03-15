@@ -12,9 +12,9 @@ struct RecipeDetails {
     /// Вес блюда
     let weight: String
     /// Время приготовления
-    let totalTime: String
+    let totalTime: Int
     /// Калорийность
-    let calories: String
+    let calories: Int
     /// Углеводы
     let carbohydrates: String
     /// Жиры
@@ -42,8 +42,8 @@ struct RecipeDetails {
         self.label = label
         self.image = image
         self.weight = "\(weight.rounded()) g"
-        self.totalTime = "\(totalTime.rounded()) min"
-        self.calories = "\(calories.rounded()) kkal"
+        self.totalTime = Int(totalTime.rounded())
+        self.calories = Int(calories.rounded())
         self.carbohydrates = "\(carbohydrates.rounded()) g"
         self.fats = "\(fats.rounded()) g"
         self.proteins = "\(proteins.rounded()) g"

@@ -9,19 +9,12 @@ protocol RecipeDetailViewProtocol: AnyObject {
     var presenter: RecipeDetailPresenterProtocol? { get set }
     /// Установка цвета кнопки фаворита
     func changeFavoriteButtonColor(isFavorite: Bool)
-    /// Перезагрузка данных
-    func reloadTableView()
+    /// Обновление состояния
+    func updateState()
 }
 
 /// Экран деталей рецепта
 final class RecipeDetailView: UIViewController {
-    // MARK: - Constants
-
-    enum Constants {
-        static let inDevelopMassage = "Functionality in development"
-        static let okAlertText = "OK"
-    }
-
     enum Details {
         /// Фото блюда
         case photo
@@ -61,8 +54,13 @@ final class RecipeDetailView: UIViewController {
         return recipeLabel
     }()
 
-    private let recipeLabelView = UIView()
+    private lazy var refreshControll: UIRefreshControl = {
+        let refreshControll = UIRefreshControl()
+        refreshControll.addTarget(self, action: #selector(refrashHandle(sender:)), for: .valueChanged)
+        return refreshControll
+    }()
 
+    private let recipeLabelView = UIView()
     private let tableView = UITableView(frame: CGRect(), style: .grouped)
 
     // MARK: - Public Properties
@@ -93,6 +91,7 @@ final class RecipeDetailView: UIViewController {
     private func setupView() {
         view.backgroundColor = .white
         view.addSubview(tableView)
+        presenter?.getRecipeFromNetwork(comlition: nil)
     }
 
     private func setupNavigationBar() {
@@ -123,6 +122,9 @@ final class RecipeDetailView: UIViewController {
         tableView.separatorStyle = .none
 
         tableView.register(RecipesImageDetailCell.self, forCellReuseIdentifier: RecipesImageDetailCell.identifier)
+        tableView.register(DetailsSkeletonCell.self, forCellReuseIdentifier: DetailsSkeletonCell.identifier)
+        tableView.register(RecipeNoDataCell.self, forCellReuseIdentifier: RecipeNoDataCell.identifier)
+        tableView.register(RecipeErrorCell.self, forCellReuseIdentifier: RecipeErrorCell.identifier)
         tableView.register(
             RecipesCharacteristicsDetailsCell.self,
             forCellReuseIdentifier: RecipesCharacteristicsDetailsCell.identifier
@@ -131,7 +133,9 @@ final class RecipeDetailView: UIViewController {
             RecipesDescriptionDetailsCell.self,
             forCellReuseIdentifier: RecipesDescriptionDetailsCell.identifier
         )
+
         recipeLabelView.addSubview(recipeLabel)
+        tableView.addSubview(refreshControll)
     }
 
     private func addLogs() {
@@ -187,57 +191,79 @@ final class RecipeDetailView: UIViewController {
     @objc private func shareRecipe() {
         presenter?.shareRecipe()
     }
+
+    @objc private func reloadData() {
+        presenter?.getRecipeFromNetwork(comlition: nil)
+    }
+
+    @objc private func refrashHandle(sender: UIRefreshControl) {
+        presenter?.getRecipeFromNetwork {
+            sender.endRefreshing()
+        }
+    }
 }
 
 // MARK: - Extensions
 
 extension RecipeDetailView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recipeCells.count
+        switch presenter?.state {
+        case .data:
+            tableView.isScrollEnabled = true
+            tableView.allowsSelection = true
+            return recipeCells.count
+        default:
+            tableView.isScrollEnabled = false
+            tableView.allowsSelection = false
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cells = recipeCells[indexPath.row]
-        switch cells {
-        case .photo:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: RecipesImageDetailCell.identifier,
-                for: indexPath
-            ) as? RecipesImageDetailCell else { return UITableViewCell() }
-            switch presenter?.getRecipeInfo() {
-            case let .data(recipe):
-                recipeLabel.text = recipe.title
-                tableView.isScrollEnabled = true
-                tableView.allowsSelection = true
+        switch presenter?.state {
+        case let .data(recipe):
+            switch recipeCells[indexPath.row] {
+            case .photo:
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: RecipesImageDetailCell.identifier,
+                    for: indexPath
+                ) as? RecipesImageDetailCell else { return UITableViewCell() }
+                recipeLabel.text = recipe.label
                 cell.getInfo(recipe: recipe)
-            default:
-                tableView.isScrollEnabled = false
-                tableView.allowsSelection = false
-                cell.getInfo(recipe: nil)
-            }
-            return cell
-        case .characteristics:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
-                for: indexPath
-            ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
-            switch presenter?.getRecipeInfo() {
-            case let .data(recipe):
+                presenter?.loadImageDataForCell(recipe.image) { data in
+                    DispatchQueue.main.async {
+                        cell.setImage(imageData: data)
+                    }
+                }
+                return cell
+            case .characteristics:
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: RecipesCharacteristicsDetailsCell.identifier,
+                    for: indexPath
+                ) as? RecipesCharacteristicsDetailsCell else { return UITableViewCell() }
                 cell.getCharacteristics(recipe: recipe)
-            default:
-                cell.getCharacteristics(recipe: nil)
+                return cell
+            case .description:
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: RecipesDescriptionDetailsCell.identifier,
+                    for: indexPath
+                ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
+                cell.setText(recipe.ingredients)
+                return cell
             }
-            return cell
-        case .description:
+        case .loading:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: RecipesDescriptionDetailsCell.identifier,
+                withIdentifier: DetailsSkeletonCell.identifier,
                 for: indexPath
-            ) as? RecipesDescriptionDetailsCell else { return UITableViewCell() }
-            switch presenter?.getRecipeInfo() {
-            case let .data(recipe):
-                cell.setText(recipe.description)
-            default:
-                cell.setText("")
+            ) as? DetailsSkeletonCell else { return UITableViewCell() }
+            return cell
+        case .error, .noData, nil:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeErrorCell.identifier,
+                for: indexPath
+            ) as? RecipeErrorCell else { return UITableViewCell() }
+            cell.reloadDataHandler = { [weak self] in
+                self?.presenter?.getRecipeFromNetwork(comlition: nil)
             }
             return cell
         }
@@ -248,18 +274,12 @@ extension RecipeDetailView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         recipeLabelView
     }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? RecipesDescriptionDetailsCell {
-            cell.addGradient()
-        }
-    }
 }
 
 // MARK: - RecipeDetailView + RecipeDetailViewProtocol
 
 extension RecipeDetailView: RecipeDetailViewProtocol {
-    func reloadTableView() {
+    func updateState() {
         tableView.reloadData()
     }
 

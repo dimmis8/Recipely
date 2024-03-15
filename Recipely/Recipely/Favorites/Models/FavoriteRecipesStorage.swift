@@ -12,7 +12,7 @@ struct FavoriteRecipesStorage {
     // MARK: - Public Properties
 
     @Storage()
-    var favoriteRecipes: [Recipe]?
+    var favoriteRecipes: [RecipeCard]?
 
     // MARK: - Initializers
 

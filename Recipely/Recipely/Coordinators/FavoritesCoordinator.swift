@@ -30,8 +30,8 @@ extension FavoritesCoordinator: RecipesDetailCoordinatorProtocol {
         rootController?.popViewController(animated: true)
     }
 
-    func openRecipeDetails(recipe: Recipe) {
-        let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
+    func openRecipeDetails(recipeURI: String) {
+        let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipeURI: recipeURI)
         rootController?.viewControllers.first?.hidesBottomBarWhenPushed = true
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
     }

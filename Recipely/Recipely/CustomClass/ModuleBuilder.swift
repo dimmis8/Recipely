@@ -18,9 +18,9 @@ protocol Builder {
     /// Функция создания модуля экрана бонусов
     func createBonusesProfileModule(coordinator: ProfileCoordinator) -> UIViewController
     /// Функция создания модуля блюд категории
-    func createRecepeCategoryModule(coordinator: RecipesCoordinator) -> UIViewController
+    func createRecepeCategoryModule(coordinator: RecipesCoordinator, category: RecipeCategories) -> UIViewController
     /// Функция создания модуля деталей рецепта
-    func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController
+    func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipeURI: String) -> UIViewController
     /// Функция создания контроллера шеринка
     func createSharingModule(sharingInfo: [Any]) -> UIViewController
 }
@@ -89,11 +89,15 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createRecepeCategoryModule(coordinator: RecipesCoordinator) -> UIViewController {
+    func createRecepeCategoryModule(coordinator: RecipesCoordinator, category: RecipeCategories) -> UIViewController {
         let view = RecepeCategoryView()
+        let networkService = NetworkService()
+        let cashProxy = CacheProxy(networkService: networkService)
         let presenter = RecepeCategoryPresenter(
             view: view,
-            coordinator: coordinator
+            coordinator: coordinator,
+            networkService: cashProxy,
+            category: category
         )
         view.presenter = presenter
         return view
@@ -111,12 +115,18 @@ final class ModuleBuilder: Builder {
         return view
     }
 
-    func createRecipeDetailModule(coordinator: RecipesDetailCoordinatorProtocol, recipe: Recipe) -> UIViewController {
+    func createRecipeDetailModule(
+        coordinator: RecipesDetailCoordinatorProtocol,
+        recipeURI: String
+    ) -> UIViewController {
         let view = RecipeDetailView()
+        let networkService = NetworkService()
+        let cashProxy = CacheProxy(networkService: networkService)
         let presenter = RecipeDetailPresenter(
             view: view,
             coordinator: coordinator,
-            recipe: recipe
+            recipeURI: recipeURI,
+            networkService: cashProxy
         )
         view.presenter = presenter
         return view

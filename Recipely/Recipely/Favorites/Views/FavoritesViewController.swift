@@ -223,6 +223,8 @@ extension FavoritesViewController: UITableViewDataSource {
         switch presenter?.getRecipeInfo() {
         case let .data(recipes):
             cell.loadInfo(recipe: recipes[indexPath.row])
+            guard let imageData = recipes[indexPath.row].imageData else { return cell }
+            cell.setImage(imageData: imageData)
         default:
             cell.loadInfo(recipe: nil)
         }

@@ -9,4 +9,6 @@ enum NetworkError: Error {
     case notValidURL
     /// Данные не существуют
     case nilData
+    /// Ошибка сети
+    case networkError(Int)
 }

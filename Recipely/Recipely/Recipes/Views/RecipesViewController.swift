@@ -191,7 +191,7 @@ extension RecipesViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter?.goToCategory(.fish)
+        presenter?.goToCategory(indexPath.item)
     }
 }
 

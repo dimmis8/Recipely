@@ -9,12 +9,12 @@ protocol NetworkServiceProtocol {
     func getRecipes(
         category: RecipeCategories,
         search: String?,
-        complitionHandler: @escaping (Result<[RecipeCard]?, Error>) -> ()
+        complitionHandler: @escaping (Result<[RecipeCard], Error>) -> ()
     )
     /// Функция получения деталей рецепта
-    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails?, Error>) -> ())
+    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails, Error>) -> ())
     /// Функция получения данных изображения
-    func getImageData(url: URL?, complitionHandler: @escaping (Result<Data, Error>) -> ())
+    func getImageData(stringURL: String, complitionHandler: @escaping (Result<Data, Error>) -> ())
 }
 
 /// Нетворк сервис
@@ -43,17 +43,17 @@ final class NetworkService: NetworkServiceProtocol {
     func getRecipes(
         category: RecipeCategories,
         search: String?,
-        complitionHandler: @escaping (Result<[RecipeCard]?, Error>) -> ()
+        complitionHandler: @escaping (Result<[RecipeCard], Error>) -> ()
     ) {
         guard let url = setupURL(category: category, search: search) else {
             complitionHandler(.failure(NetworkError.notValidURL))
             return
         }
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, responce, error in
 
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
-
-            if let error = error {
-                complitionHandler(.failure(error))
+            guard let httpResponse = responce as? HTTPURLResponse else { return }
+            if httpResponse.statusCode >= 400 {
+                complitionHandler(.failure(NetworkError.networkError(httpResponse.statusCode)))
                 return
             }
 
@@ -62,8 +62,8 @@ final class NetworkService: NetworkServiceProtocol {
                     complitionHandler(.failure(NetworkError.nilData))
                     return
                 }
-                let сategoriesDTO = try JSONDecoder().decode(CategoriesDTO.self, from: data)
-                guard let hitsDTO = сategoriesDTO.hits else {
+                let categoriesDTO = try JSONDecoder().decode(CategoriesDTO.self, from: data)
+                guard let hitsDTO = categoriesDTO.hits else {
                     complitionHandler(.failure(NetworkError.nilData))
                     return
                 }
@@ -84,7 +84,7 @@ final class NetworkService: NetworkServiceProtocol {
         }.resume()
     }
 
-    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails?, Error>) -> ()) {
+    func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails, Error>) -> ()) {
         var urlComponents = URLComponents()
         urlComponents.scheme = Constants.componentScheme
         urlComponents.host = Constants.componentHost
@@ -101,10 +101,11 @@ final class NetworkService: NetworkServiceProtocol {
             return
         }
 
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, responce, error in
 
-            if let error = error {
-                complitionHandler(.failure(error))
+            guard let httpResponse = responce as? HTTPURLResponse else { return }
+            if httpResponse.statusCode >= 400 {
+                complitionHandler(.failure(NetworkError.networkError(httpResponse.statusCode)))
                 return
             }
 
@@ -114,7 +115,8 @@ final class NetworkService: NetworkServiceProtocol {
                     return
                 }
                 let categoriesDTO = try JSONDecoder().decode(CategoriesDTO.self, from: data)
-                guard let recipeDTO = categoriesDTO.hits?.first?.recipe, let recipeDetails = RecipeDetails(dto: recipeDTO)
+                guard let recipeDTO = categoriesDTO.hits?.first?.recipe,
+                      let recipeDetails = RecipeDetails(dto: recipeDTO)
                 else {
                     complitionHandler(.failure(NetworkError.nilData))
                     return
@@ -127,27 +129,26 @@ final class NetworkService: NetworkServiceProtocol {
         }.resume()
     }
 
-    func getImageData(url: URL?, complitionHandler: @escaping (Result<Data, Error>) -> ()) {
-        guard let url = url else {
+    func getImageData(stringURL: String, complitionHandler: @escaping (Result<Data, Error>) -> ()) {
+        guard let url = URL(string: stringURL) else {
             complitionHandler(.failure(NetworkError.notValidURL))
             return
         }
 
         let request = URLRequest(url: url)
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: request) { data, responce, _ in
 
-            if let error = error {
-                complitionHandler(.failure(error))
+            guard let httpResponse = responce as? HTTPURLResponse else { return }
+            if httpResponse.statusCode >= 400 {
+                complitionHandler(.failure(NetworkError.networkError(httpResponse.statusCode)))
                 return
             }
 
-            do {
-                let parsedData = try JSONDecoder().decode(Data.self, from: data ?? Data())
-                complitionHandler(.success(parsedData))
-            } catch {
-                complitionHandler(.failure(error))
+            guard let data = data else {
+                complitionHandler(.failure(NetworkError.nilData))
                 return
             }
+            complitionHandler(.success(data))
         }.resume()
     }
 
@@ -174,7 +175,7 @@ final class NetworkService: NetworkServiceProtocol {
             qKey = "Fish"
         case .sideDish:
             dishType = "Main course"
-            health = "Vegetarian"
+            health = "vegetarian"
         case .drinks:
             dishType = "Drinks"
         case .pancake:

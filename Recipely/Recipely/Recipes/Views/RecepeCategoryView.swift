@@ -7,8 +7,8 @@ import UIKit
 protocol RecepeCategoryViewProtocol: AnyObject {
     ///  Презентер экрана
     var presenter: RecepeCategoryPresenterProtocol? { get set }
-    /// ОБновить таблицу
-    func reloadTableView()
+    /// Обновление состояния
+    func updateState()
 }
 
 /// Экран рецептов
@@ -48,8 +48,14 @@ final class RecepeCategoryView: UIViewController {
         return searchBar
     }()
 
+    private let searchGlassImageView = UIImageView(image: .searchGlass)
     private let sortPickerView = SortPickerView()
     private let tableView = UITableView()
+    private lazy var refreshControll: UIRefreshControl = {
+        let refreshControll = UIRefreshControl()
+        refreshControll.addTarget(self, action: #selector(refrashHandle(sender:)), for: .valueChanged)
+        return refreshControll
+    }()
 
     // MARK: - Public Properties
 
@@ -95,12 +101,16 @@ final class RecepeCategoryView: UIViewController {
 
     private func configureTableView() {
         tableView.register(RecipeCell.self, forCellReuseIdentifier: RecipeCell.identifier)
+        tableView.register(RecipeSkeletonCell.self, forCellReuseIdentifier: RecipeSkeletonCell.identifier)
+        tableView.register(RecipeNoDataCell.self, forCellReuseIdentifier: RecipeNoDataCell.identifier)
+        tableView.register(RecipeErrorCell.self, forCellReuseIdentifier: RecipeErrorCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsSelection = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.separatorStyle = .none
+        tableView.addSubview(refreshControll)
     }
 
     private func setupView() {
@@ -110,6 +120,7 @@ final class RecepeCategoryView: UIViewController {
         recipesSearchBar.delegate = self
         view.addSubview(sortPickerView)
         view.addSubview(tableView)
+        presenter?.getRecipesFromNetwork(search: nil, complition: nil)
     }
 
     private func createConstraints() {
@@ -186,12 +197,18 @@ final class RecepeCategoryView: UIViewController {
     @objc private func back() {
         presenter?.back()
     }
+
+    @objc private func refrashHandle(sender: UIRefreshControl) {
+        presenter?.getRecipesFromNetwork(search: nil) {
+            sender.endRefreshing()
+        }
+    }
 }
 
 // MARK: - RecepeCategoryView + RecepeCategoryViewProtocol
 
 extension RecepeCategoryView: RecepeCategoryViewProtocol {
-    func reloadTableView() {
+    func updateState() {
         tableView.reloadData()
     }
 }
@@ -216,11 +233,13 @@ extension RecepeCategoryView: SortPickerViewDataSource {
 
 extension RecepeCategoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch presenter?.getRecipeCount() {
+        switch presenter?.state {
         case let .data(recipes):
             tableView.isScrollEnabled = true
             tableView.allowsSelection = true
             return recipes.count
+        case .noData, .error:
+            return 1
         default:
             tableView.isScrollEnabled = false
             tableView.allowsSelection = false
@@ -229,17 +248,44 @@ extension RecepeCategoryView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: RecipeCell.identifier,
-            for: indexPath
-        ) as? RecipeCell else { return UITableViewCell() }
-        switch presenter?.getRecipeInfo() {
+        switch presenter?.state {
         case let .data(recipes):
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeCell.identifier,
+                for: indexPath
+            ) as? RecipeCell else { return UITableViewCell() }
             cell.loadInfo(recipe: recipes[indexPath.row])
-        default:
-            cell.loadInfo(recipe: nil)
+            cell.cellID = indexPath
+            presenter?.loadImageDataForCell(recipes[indexPath.row].image) { data in
+                if cell.cellID == indexPath {
+                    DispatchQueue.main.async {
+                        cell.setImage(imageData: data)
+                    }
+                }
+            }
+            return cell
+        case .loading:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeSkeletonCell.identifier,
+                for: indexPath
+            ) as? RecipeSkeletonCell else { return UITableViewCell() }
+            return cell
+        case .noData:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeNoDataCell.identifier,
+                for: indexPath
+            ) as? RecipeNoDataCell else { return UITableViewCell() }
+            return cell
+        case .error, .none:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: RecipeErrorCell.identifier,
+                for: indexPath
+            ) as? RecipeErrorCell else { return UITableViewCell() }
+            cell.reloadDataHandler = { [weak self] in
+                self?.presenter?.getRecipesFromNetwork(search: nil, complition: nil)
+            }
+            return cell
         }
-        return cell
     }
 }
 

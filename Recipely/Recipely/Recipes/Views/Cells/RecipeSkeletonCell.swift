@@ -1,13 +1,13 @@
-// RecipeCell.swift
+// RecipeSkeletonCell.swift
 // Copyright © RoadMap. All rights reserved.
 
 import UIKit
 
-/// Ячейка с рецептом
-final class RecipeCell: UITableViewCell {
+/// Ячейка с шиммером для рецепта
+final class RecipeSkeletonCell: UITableViewCell {
     // MARK: - Constants
 
-    static let identifier = "RecipeCell"
+    static let identifier = "RecipeSkeletonCell"
 
     // MARK: - Visual Components
 
@@ -34,34 +34,16 @@ final class RecipeCell: UITableViewCell {
         return label
     }()
 
-    private let timerImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = .timer
-        return imageView
-    }()
-
     private let timerLabel: UILabel = {
         let label = UILabel()
         label.font = .verdana(ofSize: 12)
         return label
     }()
 
-    private let pizzaImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = .pizza
-        return imageView
-    }()
-
     private let caloriesLabel: UILabel = {
         let label = UILabel()
         label.font = .verdana(ofSize: 12)
         return label
-    }()
-
-    private let detailImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = .detailsIcon
-        return imageView
     }()
 
     // MARK: - Public Properties
@@ -71,8 +53,6 @@ final class RecipeCell: UITableViewCell {
             background.layer.borderWidth = isSelected ? 2 : 0
         }
     }
-
-    var cellID: IndexPath?
 
     // MARK: - Initializers
 
@@ -84,50 +64,43 @@ final class RecipeCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        createView()
+        setConstraints()
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        recipeImageView.image = nil
-    }
-
-    // MARK: - Public Methods
-
-    func loadInfo(recipe: RecipeCard?) {
-        if let recipe = recipe {
-            recipeLabel.text = recipe.label
-            timerLabel.text = "\(recipe.totalTime) min"
-            caloriesLabel.text = "\(recipe.calories) kkal"
-        }
-    }
-
-    func setImage(imageData: Data) {
-        recipeImageView.image = UIImage(data: imageData)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        startShimming()
     }
 
     // MARK: - Private Methods
+
+    private func startShimming() {
+        recipeImageView.startShimmeringAnimation()
+        recipeLabel.startShimmeringAnimation()
+        timerLabel.startShimmeringAnimation()
+        caloriesLabel.startShimmeringAnimation()
+        recipeImageView.image = nil
+        recipeLabel.text = nil
+        timerLabel.text = nil
+        caloriesLabel.text = nil
+    }
 
     private func createView() {
         selectionStyle = .none
         contentView.addSubview(background)
         background.addSubview(recipeImageView)
         background.addSubview(recipeLabel)
-        background.addSubview(timerImageView)
         background.addSubview(timerLabel)
-        background.addSubview(pizzaImageView)
         background.addSubview(caloriesLabel)
-        background.addSubview(detailImageView)
     }
 
     private func setConstraints() {
         setBackgroundViewConstraints()
         setRecipeImageViewConstraints()
         setRecipeLabelConstraints()
-        setTimerImageViewConstraints()
         setTimerLabelConstraints()
-        setPizzaImageViewConstraints()
         setCaloriesLabelConstraints()
-        setDetailImageViewConstraints()
     }
 
     private func setBackgroundViewConstraints() {
@@ -155,43 +128,19 @@ final class RecipeCell: UITableViewCell {
         recipeLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
 
-    private func setTimerImageViewConstraints() {
-        timerImageView.translatesAutoresizingMaskIntoConstraints = false
-        timerImageView.topAnchor.constraint(equalTo: recipeLabel.bottomAnchor, constant: 8).isActive = true
-        timerImageView.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 20).isActive = true
-        timerImageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
-        timerImageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-
     private func setTimerLabelConstraints() {
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
-        timerLabel.topAnchor.constraint(equalTo: timerImageView.topAnchor).isActive = true
-        timerLabel.leadingAnchor.constraint(equalTo: timerImageView.trailingAnchor, constant: 4).isActive = true
+        timerLabel.topAnchor.constraint(equalTo: recipeLabel.bottomAnchor, constant: 8).isActive = true
+        timerLabel.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 40).isActive = true
         timerLabel.widthAnchor.constraint(equalToConstant: 55).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
 
-    private func setPizzaImageViewConstraints() {
-        pizzaImageView.translatesAutoresizingMaskIntoConstraints = false
-        pizzaImageView.topAnchor.constraint(equalTo: timerImageView.topAnchor).isActive = true
-        pizzaImageView.leadingAnchor.constraint(equalTo: timerLabel.trailingAnchor, constant: 10).isActive = true
-        pizzaImageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
-        pizzaImageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-
     private func setCaloriesLabelConstraints() {
         caloriesLabel.translatesAutoresizingMaskIntoConstraints = false
-        caloriesLabel.topAnchor.constraint(equalTo: timerImageView.topAnchor).isActive = true
-        caloriesLabel.leadingAnchor.constraint(equalTo: pizzaImageView.trailingAnchor, constant: 4).isActive = true
+        caloriesLabel.topAnchor.constraint(equalTo: timerLabel.topAnchor).isActive = true
+        caloriesLabel.leadingAnchor.constraint(equalTo: timerLabel.trailingAnchor, constant: 30).isActive = true
         caloriesLabel.widthAnchor.constraint(equalToConstant: 72).isActive = true
         caloriesLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-
-    private func setDetailImageViewConstraints() {
-        detailImageView.translatesAutoresizingMaskIntoConstraints = false
-        detailImageView.centerYAnchor.constraint(equalTo: background.centerYAnchor).isActive = true
-        detailImageView.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -2).isActive = true
-        detailImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        detailImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
     }
 }

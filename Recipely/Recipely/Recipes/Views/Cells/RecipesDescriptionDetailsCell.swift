@@ -35,6 +35,11 @@ class RecipesDescriptionDetailsCell: UITableViewCell {
         setConstraints()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addGradient()
+    }
+
     // MARK: - Public Methods
 
     func setText(_ text: String) {
@@ -48,7 +53,15 @@ class RecipesDescriptionDetailsCell: UITableViewCell {
         textView.attributedText = attributedText
     }
 
-    func addGradient() {
+    // MARK: - Private Methods
+
+    private func createView() {
+        gradientLayer.colors = [UIColor.loginGradient.cgColor, UIColor.white.cgColor]
+        contentView.layer.addSublayer(gradientLayer)
+        contentView.addSubview(textView)
+    }
+
+    private func addGradient() {
         gradientLayer.frame = CGRect(
             x: 0,
             y: 10,
@@ -64,14 +77,6 @@ class RecipesDescriptionDetailsCell: UITableViewCell {
         let maskLayer = CAShapeLayer()
         maskLayer.path = path.cgPath
         gradientLayer.mask = maskLayer
-    }
-
-    // MARK: - Private Methods
-
-    private func createView() {
-        gradientLayer.colors = [UIColor.loginGradient.cgColor, UIColor.white.cgColor]
-        contentView.layer.addSublayer(gradientLayer)
-        contentView.addSubview(textView)
     }
 
     private func setConstraints() {

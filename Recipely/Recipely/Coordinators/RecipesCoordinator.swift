@@ -6,7 +6,7 @@ import UIKit
 /// Протокол для открытия деталей о рецепте
 protocol RecipesDetailCoordinatorProtocol: AnyObject {
     /// Открыть экран деталей
-    func openRecipeDetails(recipe: Recipe)
+    func openRecipeDetails(recipeURI: String)
     /// Вернуться на экран рецептов
     func backToRecipes()
     /// Поделиться рецептом
@@ -33,7 +33,7 @@ final class RecipesCoordinator: BaseCoodinator {
 
     func goToCategory(_ category: RecipeCategories) {
         rootController?.viewControllers.first?.hidesBottomBarWhenPushed = true
-        let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self)
+        let recepeCategoryView = moduleBuilder?.createRecepeCategoryModule(coordinator: self, category: category)
         recepeCategoryView?.navigationItem.title = category.rawValue
         rootController?.pushViewController(recepeCategoryView ?? UIViewController(), animated: true)
     }
@@ -54,8 +54,8 @@ extension RecipesCoordinator: RecipesDetailCoordinatorProtocol {
         rootController?.popViewController(animated: true)
     }
 
-    func openRecipeDetails(recipe: Recipe) {
-        let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipe: recipe)
+    func openRecipeDetails(recipeURI: String) {
+        let recipeDetailView = moduleBuilder?.createRecipeDetailModule(coordinator: self, recipeURI: recipeURI)
         rootController?.pushViewController(recipeDetailView ?? UIViewController(), animated: true)
     }
 
