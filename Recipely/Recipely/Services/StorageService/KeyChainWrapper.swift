@@ -1,11 +1,12 @@
-// UserDefaultWrapper.swift
+// KeyChainWrapper.swift
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
+import Keychain
 
-/// Обертка для сохраниения данных в userDefaults
+/// Обертка для сохраниения данных в Keychain
 @propertyWrapper
-public struct Storage<T: Codable> {
+public struct KeyChain<T: Codable> {
     public init(_ key: String = "", defaultValue: T? = nil) {
         self.key = key
         self.defaultValue = defaultValue
@@ -14,15 +15,14 @@ public struct Storage<T: Codable> {
     public var wrappedValue: T? {
         get {
             let decoder = JSONDecoder()
-            guard let data = UserDefaults.standard.data(forKey: key),
+            guard let data = Keychain.load(key)?.data(using: .utf8),
                   let decoded = try? decoder.decode(T.self, from: data) else { return nil }
             return decoded
         }
         set {
             let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(newValue) {
-                UserDefaults.standard.set(encoded, forKey: key)
-                UserDefaults.standard.synchronize()
+            if let encoded = try? encoder.encode(newValue), let textData = String(data: encoded, encoding: .utf8) {
+                _ = Keychain.save(textData, forKey: key)
             }
         }
     }

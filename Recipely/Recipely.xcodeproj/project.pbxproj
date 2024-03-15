@@ -13,7 +13,7 @@
 		0A6DEBC12B97D5240062F54C /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC02B97D5240062F54C /* ViewState.swift */; };
 		0A6DEBC32B99AB330062F54C /* Memento.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC22B99AB330062F54C /* Memento.swift */; };
 		0A6DEBC52B99ABD80062F54C /* LoginPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC42B99ABD80062F54C /* LoginPassword.swift */; };
-		0A6DEBC72B99ADA80062F54C /* UserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */; };
+		0A6DEBC72B99ADA80062F54C /* UserDefaultWrapperWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC62B99ADA80062F54C /* UserDefaultWrapperWrapper.swift */; };
 		0A6DEBC92B9A0B510062F54C /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC82B9A0B510062F54C /* StorageService.swift */; };
 		0A6DEBCB2B9A4C570062F54C /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */; };
 		0A6DEBCE2B9A4FE20062F54C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBCD2B9A4FE20062F54C /* ImagePicker.swift */; };
@@ -65,6 +65,7 @@
 		0A8521872B90DB0F002BCE50 /* SortTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521862B90DB0F002BCE50 /* SortTypes.swift */; };
 		0A85218C2B90EF65002BCE50 /* SourceOfRecepies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */; };
 		0A85218E2B90F222002BCE50 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85218D2B90F222002BCE50 /* RecipeCell.swift */; };
+		0AD4072E2BA4C4800068FF8F /* KeyChainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */; };
 		0ADBED692B91E13F009FAA2A /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED682B91E13F009FAA2A /* RecipeDetailView.swift */; };
 		0ADBED6B2B91E1D6009FAA2A /* RecipeDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED6A2B91E1D6009FAA2A /* RecipeDetailPresenter.swift */; };
 		0ADBED702B91F590009FAA2A /* FavoriteRecipesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED6F2B91F590009FAA2A /* FavoriteRecipesStorage.swift */; };
@@ -94,7 +95,7 @@
 		0A6DEBC02B97D5240062F54C /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		0A6DEBC22B99AB330062F54C /* Memento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memento.swift; sourceTree = "<group>"; };
 		0A6DEBC42B99ABD80062F54C /* LoginPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPassword.swift; sourceTree = "<group>"; };
-		0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultWrapper.swift; sourceTree = "<group>"; };
+		0A6DEBC62B99ADA80062F54C /* UserDefaultWrapperWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultWrapperWrapper.swift; sourceTree = "<group>"; };
 		0A6DEBC82B9A0B510062F54C /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
 		0A6DEBCD2B9A4FE20062F54C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -148,6 +149,7 @@
 		0A8521862B90DB0F002BCE50 /* SortTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTypes.swift; sourceTree = "<group>"; };
 		0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceOfRecepies.swift; sourceTree = "<group>"; };
 		0A85218D2B90F222002BCE50 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
+		0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainWrapper.swift; sourceTree = "<group>"; };
 		0ADBED682B91E13F009FAA2A /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
 		0ADBED6A2B91E1D6009FAA2A /* RecipeDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailPresenter.swift; sourceTree = "<group>"; };
 		0ADBED6F2B91F590009FAA2A /* FavoriteRecipesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesStorage.swift; sourceTree = "<group>"; };
@@ -226,7 +228,8 @@
 				0A6DEBC82B9A0B510062F54C /* StorageService.swift */,
 				0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */,
 				0A6DEBC22B99AB330062F54C /* Memento.swift */,
-				0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */,
+				0A6DEBC62B99ADA80062F54C /* UserDefaultWrapperWrapper.swift */,
+				0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */,
 			);
 			path = StorageService;
 			sourceTree = "<group>";
@@ -716,6 +719,7 @@
 				0A6DEBC52B99ABD80062F54C /* LoginPassword.swift in Sources */,
 				52B0A9262B924A49006E01A3 /* RecipesCharacteristicsDetailsCell.swift in Sources */,
 				0A8521822B905B1F002BCE50 /* RecepeCategoryView.swift in Sources */,
+				0AD4072E2BA4C4800068FF8F /* KeyChainWrapper.swift in Sources */,
 				0A85218C2B90EF65002BCE50 /* SourceOfRecepies.swift in Sources */,
 				0A6FB7C52BA3831C00601A94 /* RecipeErrorCell.swift in Sources */,
 				0A6FB7C72BA38E5B00601A94 /* DetailsSkeletonCell.swift in Sources */,
@@ -730,7 +734,7 @@
 				0ADBED702B91F590009FAA2A /* FavoriteRecipesStorage.swift in Sources */,
 				0A6DEBE92BA0DFCA0062F54C /* ImageDTO.swift in Sources */,
 				0A6DEBBD2B978B3F0062F54C /* UIView+Extension.swift in Sources */,
-				0A6DEBC72B99ADA80062F54C /* UserDefaultWrapper.swift in Sources */,
+				0A6DEBC72B99ADA80062F54C /* UserDefaultWrapperWrapper.swift in Sources */,
 				0A8521592B8DB91A002BCE50 /* MainTabBarViewController.swift in Sources */,
 				0A6DEBC12B97D5240062F54C /* ViewState.swift in Sources */,
 				52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */,
