@@ -9,6 +9,6 @@ import Foundation
 final class StorageRecipesCard: NSManagedObject {}
 
 extension StorageRecipesCard {
-    @NSManaged var recipesCard: Data?
-    @NSManaged var recipesCategory: String?
+    @NSManaged var object: Data?
+    @NSManaged var objectName: String?
 }

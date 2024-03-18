@@ -41,15 +41,15 @@ final class CoreDataStorageService {
         let storageRecipesCard = StorageRecipesCard(context: context)
 
         if let storageRecipeCards = getRecipes() {
-            if storageRecipeCards.contains(where: { $0.recipesCategory == recipesCategory }) {
+            if storageRecipeCards.contains(where: { $0.objectName == recipesCategory }) {
                 updateRecipes(searchPhrase: recipesCategory, newRecipes: recipeCards)
                 return
             }
         }
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(recipeCards) {
-            storageRecipesCard.recipesCard = encoded
-            storageRecipesCard.recipesCategory = recipesCategory
+            storageRecipesCard.object = encoded
+            storageRecipesCard.objectName = recipesCategory
             saveContext()
         }
     }
@@ -58,8 +58,8 @@ final class CoreDataStorageService {
         let storageRecipesCard = StorageRecipesCard(context: context)
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(recipeDetails) {
-            storageRecipesCard.recipesCard = encoded
-            storageRecipesCard.recipesCategory = uri
+            storageRecipesCard.object = encoded
+            storageRecipesCard.objectName = uri
             saveContext()
         }
     }
@@ -68,8 +68,8 @@ final class CoreDataStorageService {
         do {
             let decoder = JSONDecoder()
             guard let storageRecipeCards = getRecipes(),
-                  let storageRecipeCard = storageRecipeCards.first(where: { $0.recipesCategory == category })?
-                  .recipesCard,
+                  let storageRecipeCard = storageRecipeCards.first(where: { $0.objectName == category })?
+                  .object,
                   let recipeCards = try? decoder.decode([RecipeCard].self, from: storageRecipeCard) else { return [] }
             return recipeCards
         }
@@ -79,8 +79,8 @@ final class CoreDataStorageService {
         do {
             let decoder = JSONDecoder()
             guard let storageRecipeCards = getRecipes(),
-                  let storageRecipeCard = storageRecipeCards.first(where: { $0.recipesCategory == uri })?
-                  .recipesCard,
+                  let storageRecipeCard = storageRecipeCards.first(where: { $0.objectName == uri })?
+                  .object,
                   let recipeCards = try? decoder.decode(RecipeDetails.self, from: storageRecipeCard) else { return nil }
             return recipeCards
         }
@@ -88,11 +88,11 @@ final class CoreDataStorageService {
 
     func updateRecipes(searchPhrase: String, newRecipes: [RecipeCard]) {
         guard let storageRecipeCards = getRecipes(),
-              let storageRecipeCard = storageRecipeCards.first(where: { $0.recipesCategory == searchPhrase })
+              let storageRecipeCard = storageRecipeCards.first(where: { $0.objectName == searchPhrase })
         else { return }
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(newRecipes) {
-            storageRecipeCard.recipesCard = encoded
+            storageRecipeCard.object = encoded
             saveContext()
         }
     }
