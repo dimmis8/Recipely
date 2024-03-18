@@ -49,6 +49,7 @@ final class NetworkService: NetworkServiceProtocol {
             complitionHandler(.failure(NetworkError.notValidURL))
             return
         }
+
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, responce, error in
 
             guard let httpResponse = responce as? HTTPURLResponse else { return }

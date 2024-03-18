@@ -4,7 +4,7 @@
 import Foundation
 
 /// Детали рецепта
-struct RecipeDetails {
+struct RecipeDetails: Codable {
     /// Название рецепта
     let label: String
     /// Ссылка на картинку

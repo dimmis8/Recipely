@@ -66,6 +66,9 @@
 		0A85218C2B90EF65002BCE50 /* SourceOfRecepies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */; };
 		0A85218E2B90F222002BCE50 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85218D2B90F222002BCE50 /* RecipeCell.swift */; };
 		0AD4072E2BA4C4800068FF8F /* KeyChainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */; };
+		0AD407312BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4072F2BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld */; };
+		0AD407392BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD407382BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift */; };
+		0AD4073D2BA5A3550068FF8F /* CoreDataStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4073C2BA5A3550068FF8F /* CoreDataStorageService.swift */; };
 		0ADBED692B91E13F009FAA2A /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED682B91E13F009FAA2A /* RecipeDetailView.swift */; };
 		0ADBED6B2B91E1D6009FAA2A /* RecipeDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED6A2B91E1D6009FAA2A /* RecipeDetailPresenter.swift */; };
 		0ADBED702B91F590009FAA2A /* FavoriteRecipesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED6F2B91F590009FAA2A /* FavoriteRecipesStorage.swift */; };
@@ -150,6 +153,9 @@
 		0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceOfRecepies.swift; sourceTree = "<group>"; };
 		0A85218D2B90F222002BCE50 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainWrapper.swift; sourceTree = "<group>"; };
+		0AD407302BA596BF0068FF8F /* CoreDataStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataStorage.xcdatamodel; sourceTree = "<group>"; };
+		0AD407382BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StorageRecipesCard+CoreDataProperties.swift"; path = "/Users/dmitry/Documents/Swift/Recipely/Recipely/Recipely/Services/StorageService/StorageRecipesCard+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		0AD4073C2BA5A3550068FF8F /* CoreDataStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorageService.swift; sourceTree = "<group>"; };
 		0ADBED682B91E13F009FAA2A /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
 		0ADBED6A2B91E1D6009FAA2A /* RecipeDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailPresenter.swift; sourceTree = "<group>"; };
 		0ADBED6F2B91F590009FAA2A /* FavoriteRecipesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesStorage.swift; sourceTree = "<group>"; };
@@ -230,6 +236,9 @@
 				0A6DEBC22B99AB330062F54C /* Memento.swift */,
 				0A6DEBC62B99ADA80062F54C /* UserDefaultWrapperWrapper.swift */,
 				0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */,
+				0AD407382BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift */,
+				0AD4073C2BA5A3550068FF8F /* CoreDataStorageService.swift */,
+				0AD4072F2BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld */,
 			);
 			path = StorageService;
 			sourceTree = "<group>";
@@ -692,6 +701,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AD407392BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift in Sources */,
 				0A6DEBEB2BA0E1000062F54C /* RegularImageDTO.swift in Sources */,
 				0A6DEBDF2BA0AF630062F54C /* RecipeDTO.swift in Sources */,
 				0A8521872B90DB0F002BCE50 /* SortTypes.swift in Sources */,
@@ -719,6 +729,7 @@
 				0A6DEBC52B99ABD80062F54C /* LoginPassword.swift in Sources */,
 				52B0A9262B924A49006E01A3 /* RecipesCharacteristicsDetailsCell.swift in Sources */,
 				0A8521822B905B1F002BCE50 /* RecepeCategoryView.swift in Sources */,
+				0AD4073D2BA5A3550068FF8F /* CoreDataStorageService.swift in Sources */,
 				0AD4072E2BA4C4800068FF8F /* KeyChainWrapper.swift in Sources */,
 				0A85218C2B90EF65002BCE50 /* SourceOfRecepies.swift in Sources */,
 				0A6FB7C52BA3831C00601A94 /* RecipeErrorCell.swift in Sources */,
@@ -752,6 +763,7 @@
 				0A8521852B90BC4A002BCE50 /* SortPickerView.swift in Sources */,
 				52B0A9532B9A2899006E01A3 /* LoggerInvoker.swift in Sources */,
 				0A6FB7C32BA37C5400601A94 /* RecipeNoDataCell.swift in Sources */,
+				0AD407312BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld in Sources */,
 				52B0A9242B9249F8006E01A3 /* RecipesImageDetailCell.swift in Sources */,
 				0A8521662B8DC2F9002BCE50 /* FavoritesPresenter.swift in Sources */,
 				52073D992B905A2300A1DA9C /* RecipesCollectionViewCell.swift in Sources */,
@@ -981,6 +993,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0AD4072F2BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0AD407302BA596BF0068FF8F /* CoreDataStorage.xcdatamodel */,
+			);
+			currentVersion = 0AD407302BA596BF0068FF8F /* CoreDataStorage.xcdatamodel */;
+			path = CoreDataStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0A8521012B8CB1D4002BCE50 /* Project object */;
 }
