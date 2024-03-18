@@ -25,10 +25,10 @@ final class CoreDataStorageService {
     private init() {
         persistentContainer = {
             let container = NSPersistentContainer(name: Constants.containerName)
-            container.loadPersistentStores { description, error in
+            container.loadPersistentStores { _, error in
                 if let error = error as NSError? {
                     print(error)
-                } 
+                }
             }
             return container
         }()
@@ -39,6 +39,13 @@ final class CoreDataStorageService {
 
     func createRecipes(_ recipeCards: [RecipeCard], recipesCategory: String) {
         let storageRecipesCard = StorageRecipesCard(context: context)
+
+        if let storageRecipeCards = getRecipes() {
+            if storageRecipeCards.contains(where: { $0.recipesCategory == recipesCategory }) {
+                updateRecipes(searchPhrase: recipesCategory, newRecipes: recipeCards)
+                return
+            }
+        }
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(recipeCards) {
             storageRecipesCard.recipesCard = encoded
