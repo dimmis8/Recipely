@@ -1,0 +1,16 @@
+PODS:
+  - Keychain (0.3.1)
+
+DEPENDENCIES:
+  - Keychain
+
+SPEC REPOS:
+  trunk:
+    - Keychain
+
+SPEC CHECKSUMS:
+  Keychain: ef812eafcf6593fe4409b07cfecc00b95fb373ed
+
+PODFILE CHECKSUM: 626ee921a35aeaffb100ae44000b17e415502758
+
+COCOAPODS: 1.15.2

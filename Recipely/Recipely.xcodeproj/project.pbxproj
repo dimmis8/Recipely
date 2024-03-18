@@ -13,7 +13,7 @@
 		0A6DEBC12B97D5240062F54C /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC02B97D5240062F54C /* ViewState.swift */; };
 		0A6DEBC32B99AB330062F54C /* Memento.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC22B99AB330062F54C /* Memento.swift */; };
 		0A6DEBC52B99ABD80062F54C /* LoginPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC42B99ABD80062F54C /* LoginPassword.swift */; };
-		0A6DEBC72B99ADA80062F54C /* UserDefaultWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */; };
+		0A6DEBC72B99ADA80062F54C /* UserDefaultWrapperWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC62B99ADA80062F54C /* UserDefaultWrapperWrapper.swift */; };
 		0A6DEBC92B9A0B510062F54C /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBC82B9A0B510062F54C /* StorageService.swift */; };
 		0A6DEBCB2B9A4C570062F54C /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */; };
 		0A6DEBCE2B9A4FE20062F54C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6DEBCD2B9A4FE20062F54C /* ImagePicker.swift */; };
@@ -38,9 +38,6 @@
 		0A8521112B8CB1D4002BCE50 /* AutorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521102B8CB1D4002BCE50 /* AutorizationView.swift */; };
 		0A8521162B8CB1D5002BCE50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A8521152B8CB1D5002BCE50 /* Assets.xcassets */; };
 		0A8521192B8CB1D5002BCE50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A8521172B8CB1D5002BCE50 /* LaunchScreen.storyboard */; };
-		0A8521242B8CB1D6002BCE50 /* RecipelyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521232B8CB1D6002BCE50 /* RecipelyTests.swift */; };
-		0A85212E2B8CB1D6002BCE50 /* RecipelyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85212D2B8CB1D6002BCE50 /* RecipelyUITests.swift */; };
-		0A8521302B8CB1D6002BCE50 /* RecipelyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85212F2B8CB1D6002BCE50 /* RecipelyUITestsLaunchTests.swift */; };
 		0A8521422B8CEF0F002BCE50 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521412B8CEF0F002BCE50 /* AppCoordinator.swift */; };
 		0A8521442B8CF005002BCE50 /* AutorizationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521432B8CF005002BCE50 /* AutorizationCoordinator.swift */; };
 		0A85214C2B8CFF7C002BCE50 /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85214B2B8CFF7C002BCE50 /* ModuleBuilder.swift */; };
@@ -68,10 +65,15 @@
 		0A8521872B90DB0F002BCE50 /* SortTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8521862B90DB0F002BCE50 /* SortTypes.swift */; };
 		0A85218C2B90EF65002BCE50 /* SourceOfRecepies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */; };
 		0A85218E2B90F222002BCE50 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A85218D2B90F222002BCE50 /* RecipeCell.swift */; };
+		0AD4072E2BA4C4800068FF8F /* KeyChainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */; };
+		0AD407312BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4072F2BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld */; };
+		0AD407392BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD407382BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift */; };
+		0AD4073D2BA5A3550068FF8F /* CoreDataStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4073C2BA5A3550068FF8F /* CoreDataStorageService.swift */; };
 		0ADBED692B91E13F009FAA2A /* RecipeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED682B91E13F009FAA2A /* RecipeDetailView.swift */; };
 		0ADBED6B2B91E1D6009FAA2A /* RecipeDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED6A2B91E1D6009FAA2A /* RecipeDetailPresenter.swift */; };
 		0ADBED702B91F590009FAA2A /* FavoriteRecipesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED6F2B91F590009FAA2A /* FavoriteRecipesStorage.swift */; };
 		0ADBED732B927A4F009FAA2A /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBED722B927A4F009FAA2A /* Font+Extension.swift */; };
+		4F18D241B0CC07E96EAF7795 /* Pods_Recipely.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06F63895588C3476C2BD28E8 /* Pods_Recipely.framework */; };
 		52073D8F2B8E066900A1DA9C /* AutorizationValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */; };
 		52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */; };
 		52073D972B9055A900A1DA9C /* InformationSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52073D962B9055A900A1DA9C /* InformationSource.swift */; };
@@ -88,31 +90,15 @@
 		52B0A9552B9A5B2C006E01A3 /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B0A9542B9A5B2C006E01A3 /* LoggerService.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		0A8521202B8CB1D6002BCE50 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0A8521012B8CB1D4002BCE50 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0A8521082B8CB1D4002BCE50;
-			remoteInfo = Recipely;
-		};
-		0A85212A2B8CB1D6002BCE50 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0A8521012B8CB1D4002BCE50 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0A8521082B8CB1D4002BCE50;
-			remoteInfo = Recipely;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		06F63895588C3476C2BD28E8 /* Pods_Recipely.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Recipely.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A6DEBB62B96021F0062F54C /* SortState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortState.swift; sourceTree = "<group>"; };
 		0A6DEBB82B963BD20062F54C /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		0A6DEBBC2B978B3F0062F54C /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		0A6DEBC02B97D5240062F54C /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		0A6DEBC22B99AB330062F54C /* Memento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memento.swift; sourceTree = "<group>"; };
 		0A6DEBC42B99ABD80062F54C /* LoginPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPassword.swift; sourceTree = "<group>"; };
-		0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultWrapper.swift; sourceTree = "<group>"; };
+		0A6DEBC62B99ADA80062F54C /* UserDefaultWrapperWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultWrapperWrapper.swift; sourceTree = "<group>"; };
 		0A6DEBC82B9A0B510062F54C /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
 		0A6DEBCD2B9A4FE20062F54C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -139,11 +125,6 @@
 		0A8521152B8CB1D5002BCE50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A8521182B8CB1D5002BCE50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A85211A2B8CB1D5002BCE50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0A85211F2B8CB1D6002BCE50 /* RecipelyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipelyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0A8521232B8CB1D6002BCE50 /* RecipelyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipelyTests.swift; sourceTree = "<group>"; };
-		0A8521292B8CB1D6002BCE50 /* RecipelyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipelyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0A85212D2B8CB1D6002BCE50 /* RecipelyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipelyUITests.swift; sourceTree = "<group>"; };
-		0A85212F2B8CB1D6002BCE50 /* RecipelyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipelyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0A8521412B8CEF0F002BCE50 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		0A8521432B8CF005002BCE50 /* AutorizationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutorizationCoordinator.swift; sourceTree = "<group>"; };
 		0A85214B2B8CFF7C002BCE50 /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
@@ -171,10 +152,16 @@
 		0A8521862B90DB0F002BCE50 /* SortTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTypes.swift; sourceTree = "<group>"; };
 		0A85218B2B90EF65002BCE50 /* SourceOfRecepies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceOfRecepies.swift; sourceTree = "<group>"; };
 		0A85218D2B90F222002BCE50 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
+		0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainWrapper.swift; sourceTree = "<group>"; };
+		0AD407302BA596BF0068FF8F /* CoreDataStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataStorage.xcdatamodel; sourceTree = "<group>"; };
+		0AD407382BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "StorageRecipesCard+CoreDataProperties.swift"; path = "/Users/dmitry/Documents/Swift/Recipely/Recipely/Recipely/Services/StorageService/StorageRecipesCard+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		0AD4073C2BA5A3550068FF8F /* CoreDataStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorageService.swift; sourceTree = "<group>"; };
 		0ADBED682B91E13F009FAA2A /* RecipeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailView.swift; sourceTree = "<group>"; };
 		0ADBED6A2B91E1D6009FAA2A /* RecipeDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailPresenter.swift; sourceTree = "<group>"; };
 		0ADBED6F2B91F590009FAA2A /* FavoriteRecipesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesStorage.swift; sourceTree = "<group>"; };
 		0ADBED722B927A4F009FAA2A /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
+		1DB12E898F054336ED79634D /* Pods-Recipely.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipely.release.xcconfig"; path = "Target Support Files/Pods-Recipely/Pods-Recipely.release.xcconfig"; sourceTree = "<group>"; };
+		2A167DB407B58D418EBB3C35 /* Pods-Recipely.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipely.debug.xcconfig"; path = "Target Support Files/Pods-Recipely/Pods-Recipely.debug.xcconfig"; sourceTree = "<group>"; };
 		52073D8E2B8E066900A1DA9C /* AutorizationValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutorizationValidation.swift; sourceTree = "<group>"; };
 		52073D942B8E525800A1DA9C /* ProfileBonusesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBonusesViewController.swift; sourceTree = "<group>"; };
 		52073D962B9055A900A1DA9C /* InformationSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationSource.swift; sourceTree = "<group>"; };
@@ -196,20 +183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0A85211C2B8CB1D6002BCE50 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0A8521262B8CB1D6002BCE50 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				4F18D241B0CC07E96EAF7795 /* Pods_Recipely.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +234,11 @@
 				0A6DEBC82B9A0B510062F54C /* StorageService.swift */,
 				0A6DEBCA2B9A4C570062F54C /* StorageKeys.swift */,
 				0A6DEBC22B99AB330062F54C /* Memento.swift */,
-				0A6DEBC62B99ADA80062F54C /* UserDefaultWrapper.swift */,
+				0A6DEBC62B99ADA80062F54C /* UserDefaultWrapperWrapper.swift */,
+				0AD4072D2BA4C4800068FF8F /* KeyChainWrapper.swift */,
+				0AD407382BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift */,
+				0AD4073C2BA5A3550068FF8F /* CoreDataStorageService.swift */,
+				0AD4072F2BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld */,
 			);
 			path = StorageService;
 			sourceTree = "<group>";
@@ -351,9 +329,9 @@
 			isa = PBXGroup;
 			children = (
 				0A85210B2B8CB1D4002BCE50 /* Recipely */,
-				0A8521222B8CB1D6002BCE50 /* RecipelyTests */,
-				0A85212C2B8CB1D6002BCE50 /* RecipelyUITests */,
 				0A85210A2B8CB1D4002BCE50 /* Products */,
+				774ED40921396AC55BA91EF9 /* Pods */,
+				0F2F67BC48DE07F056FE8066 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -361,8 +339,6 @@
 			isa = PBXGroup;
 			children = (
 				0A8521092B8CB1D4002BCE50 /* Recipely.app */,
-				0A85211F2B8CB1D6002BCE50 /* RecipelyTests.xctest */,
-				0A8521292B8CB1D6002BCE50 /* RecipelyUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -387,23 +363,6 @@
 				0A85211A2B8CB1D5002BCE50 /* Info.plist */,
 			);
 			path = Recipely;
-			sourceTree = "<group>";
-		};
-		0A8521222B8CB1D6002BCE50 /* RecipelyTests */ = {
-			isa = PBXGroup;
-			children = (
-				0A8521232B8CB1D6002BCE50 /* RecipelyTests.swift */,
-			);
-			path = RecipelyTests;
-			sourceTree = "<group>";
-		};
-		0A85212C2B8CB1D6002BCE50 /* RecipelyUITests */ = {
-			isa = PBXGroup;
-			children = (
-				0A85212D2B8CB1D6002BCE50 /* RecipelyUITests.swift */,
-				0A85212F2B8CB1D6002BCE50 /* RecipelyUITestsLaunchTests.swift */,
-			);
-			path = RecipelyUITests;
 			sourceTree = "<group>";
 		};
 		0A8521402B8CEEF5002BCE50 /* Coordinators */ = {
@@ -557,6 +516,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		0F2F67BC48DE07F056FE8066 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				06F63895588C3476C2BD28E8 /* Pods_Recipely.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		52B0A94B2B9A275E006E01A3 /* LoggerService */ = {
 			isa = PBXGroup;
 			children = (
@@ -569,6 +536,15 @@
 			path = LoggerService;
 			sourceTree = "<group>";
 		};
+		774ED40921396AC55BA91EF9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2A167DB407B58D418EBB3C35 /* Pods-Recipely.debug.xcconfig */,
+				1DB12E898F054336ED79634D /* Pods-Recipely.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -576,11 +552,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A8521332B8CB1D6002BCE50 /* Build configuration list for PBXNativeTarget "Recipely" */;
 			buildPhases = (
+				162E861D826CC47C89C3F7AC /* [CP] Check Pods Manifest.lock */,
 				0A85213C2B8CB3D5002BCE50 /* SwiftFormat */,
 				0A85213D2B8CB3FE002BCE50 /* SwiftLint */,
 				0A8521052B8CB1D4002BCE50 /* Sources */,
 				0A8521062B8CB1D4002BCE50 /* Frameworks */,
 				0A8521072B8CB1D4002BCE50 /* Resources */,
+				41631919A6530ED89D442E9C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -590,42 +568,6 @@
 			productName = Recipely;
 			productReference = 0A8521092B8CB1D4002BCE50 /* Recipely.app */;
 			productType = "com.apple.product-type.application";
-		};
-		0A85211E2B8CB1D6002BCE50 /* RecipelyTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0A8521362B8CB1D6002BCE50 /* Build configuration list for PBXNativeTarget "RecipelyTests" */;
-			buildPhases = (
-				0A85211B2B8CB1D6002BCE50 /* Sources */,
-				0A85211C2B8CB1D6002BCE50 /* Frameworks */,
-				0A85211D2B8CB1D6002BCE50 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0A8521212B8CB1D6002BCE50 /* PBXTargetDependency */,
-			);
-			name = RecipelyTests;
-			productName = RecipelyTests;
-			productReference = 0A85211F2B8CB1D6002BCE50 /* RecipelyTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		0A8521282B8CB1D6002BCE50 /* RecipelyUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0A8521392B8CB1D6002BCE50 /* Build configuration list for PBXNativeTarget "RecipelyUITests" */;
-			buildPhases = (
-				0A8521252B8CB1D6002BCE50 /* Sources */,
-				0A8521262B8CB1D6002BCE50 /* Frameworks */,
-				0A8521272B8CB1D6002BCE50 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0A85212B2B8CB1D6002BCE50 /* PBXTargetDependency */,
-			);
-			name = RecipelyUITests;
-			productName = RecipelyUITests;
-			productReference = 0A8521292B8CB1D6002BCE50 /* RecipelyUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -639,14 +581,6 @@
 				TargetAttributes = {
 					0A8521082B8CB1D4002BCE50 = {
 						CreatedOnToolsVersion = 15.2;
-					};
-					0A85211E2B8CB1D6002BCE50 = {
-						CreatedOnToolsVersion = 15.2;
-						TestTargetID = 0A8521082B8CB1D4002BCE50;
-					};
-					0A8521282B8CB1D6002BCE50 = {
-						CreatedOnToolsVersion = 15.2;
-						TestTargetID = 0A8521082B8CB1D4002BCE50;
 					};
 				};
 			};
@@ -664,8 +598,6 @@
 			projectRoot = "";
 			targets = (
 				0A8521082B8CB1D4002BCE50 /* Recipely */,
-				0A85211E2B8CB1D6002BCE50 /* RecipelyTests */,
-				0A8521282B8CB1D6002BCE50 /* RecipelyUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -677,20 +609,6 @@
 			files = (
 				0A8521192B8CB1D5002BCE50 /* LaunchScreen.storyboard in Resources */,
 				0A8521162B8CB1D5002BCE50 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0A85211D2B8CB1D6002BCE50 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0A8521272B8CB1D6002BCE50 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,6 +655,45 @@
 			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		162E861D826CC47C89C3F7AC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Recipely-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		41631919A6530ED89D442E9C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Recipely/Pods-Recipely-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Recipely/Pods-Recipely-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Recipely/Pods-Recipely-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -744,6 +701,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AD407392BA5A2540068FF8F /* StorageRecipesCard+CoreDataProperties.swift in Sources */,
 				0A6DEBEB2BA0E1000062F54C /* RegularImageDTO.swift in Sources */,
 				0A6DEBDF2BA0AF630062F54C /* RecipeDTO.swift in Sources */,
 				0A8521872B90DB0F002BCE50 /* SortTypes.swift in Sources */,
@@ -771,6 +729,8 @@
 				0A6DEBC52B99ABD80062F54C /* LoginPassword.swift in Sources */,
 				52B0A9262B924A49006E01A3 /* RecipesCharacteristicsDetailsCell.swift in Sources */,
 				0A8521822B905B1F002BCE50 /* RecepeCategoryView.swift in Sources */,
+				0AD4073D2BA5A3550068FF8F /* CoreDataStorageService.swift in Sources */,
+				0AD4072E2BA4C4800068FF8F /* KeyChainWrapper.swift in Sources */,
 				0A85218C2B90EF65002BCE50 /* SourceOfRecepies.swift in Sources */,
 				0A6FB7C52BA3831C00601A94 /* RecipeErrorCell.swift in Sources */,
 				0A6FB7C72BA38E5B00601A94 /* DetailsSkeletonCell.swift in Sources */,
@@ -785,7 +745,7 @@
 				0ADBED702B91F590009FAA2A /* FavoriteRecipesStorage.swift in Sources */,
 				0A6DEBE92BA0DFCA0062F54C /* ImageDTO.swift in Sources */,
 				0A6DEBBD2B978B3F0062F54C /* UIView+Extension.swift in Sources */,
-				0A6DEBC72B99ADA80062F54C /* UserDefaultWrapper.swift in Sources */,
+				0A6DEBC72B99ADA80062F54C /* UserDefaultWrapperWrapper.swift in Sources */,
 				0A8521592B8DB91A002BCE50 /* MainTabBarViewController.swift in Sources */,
 				0A6DEBC12B97D5240062F54C /* ViewState.swift in Sources */,
 				52073D952B8E525800A1DA9C /* ProfileBonusesViewController.swift in Sources */,
@@ -803,6 +763,7 @@
 				0A8521852B90BC4A002BCE50 /* SortPickerView.swift in Sources */,
 				52B0A9532B9A2899006E01A3 /* LoggerInvoker.swift in Sources */,
 				0A6FB7C32BA37C5400601A94 /* RecipeNoDataCell.swift in Sources */,
+				0AD407312BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld in Sources */,
 				52B0A9242B9249F8006E01A3 /* RecipesImageDetailCell.swift in Sources */,
 				0A8521662B8DC2F9002BCE50 /* FavoritesPresenter.swift in Sources */,
 				52073D992B905A2300A1DA9C /* RecipesCollectionViewCell.swift in Sources */,
@@ -821,37 +782,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0A85211B2B8CB1D6002BCE50 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0A8521242B8CB1D6002BCE50 /* RecipelyTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0A8521252B8CB1D6002BCE50 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0A8521302B8CB1D6002BCE50 /* RecipelyUITestsLaunchTests.swift in Sources */,
-				0A85212E2B8CB1D6002BCE50 /* RecipelyUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0A8521212B8CB1D6002BCE50 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0A8521082B8CB1D4002BCE50 /* Recipely */;
-			targetProxy = 0A8521202B8CB1D6002BCE50 /* PBXContainerItemProxy */;
-		};
-		0A85212B2B8CB1D6002BCE50 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0A8521082B8CB1D4002BCE50 /* Recipely */;
-			targetProxy = 0A85212A2B8CB1D6002BCE50 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0A8521172B8CB1D5002BCE50 /* LaunchScreen.storyboard */ = {
@@ -986,6 +917,7 @@
 		};
 		0A8521342B8CB1D6002BCE50 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2A167DB407B58D418EBB3C35 /* Pods-Recipely.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1013,6 +945,7 @@
 		};
 		0A8521352B8CB1D6002BCE50 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DB12E898F054336ED79634D /* Pods-Recipely.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1038,78 +971,6 @@
 			};
 			name = Release;
 		};
-		0A8521372B8CB1D6002BCE50 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NairoNFeeD.RecipelyTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Recipely.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Recipely";
-			};
-			name = Debug;
-		};
-		0A8521382B8CB1D6002BCE50 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NairoNFeeD.RecipelyTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Recipely.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Recipely";
-			};
-			name = Release;
-		};
-		0A85213A2B8CB1D6002BCE50 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NairoNFeeD.RecipelyUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Recipely;
-			};
-			name = Debug;
-		};
-		0A85213B2B8CB1D6002BCE50 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NairoNFeeD.RecipelyUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Recipely;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1131,25 +992,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0A8521362B8CB1D6002BCE50 /* Build configuration list for PBXNativeTarget "RecipelyTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0A8521372B8CB1D6002BCE50 /* Debug */,
-				0A8521382B8CB1D6002BCE50 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0A8521392B8CB1D6002BCE50 /* Build configuration list for PBXNativeTarget "RecipelyUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0A85213A2B8CB1D6002BCE50 /* Debug */,
-				0A85213B2B8CB1D6002BCE50 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0AD4072F2BA596BF0068FF8F /* CoreDataStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0AD407302BA596BF0068FF8F /* CoreDataStorage.xcdatamodel */,
+			);
+			currentVersion = 0AD407302BA596BF0068FF8F /* CoreDataStorage.xcdatamodel */;
+			path = CoreDataStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0A8521012B8CB1D4002BCE50 /* Project object */;
 }

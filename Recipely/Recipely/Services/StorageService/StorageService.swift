@@ -9,7 +9,7 @@ final class StorageService<T: Codable> {
 
     private var keyee: StorageKeys?
 
-    @Storage()
+    @KeyChain()
     private var memento: Memento?
 
     // MARK: - Initializers

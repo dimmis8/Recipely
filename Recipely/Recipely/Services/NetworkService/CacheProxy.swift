@@ -2,6 +2,7 @@
 // Copyright © RoadMap. All rights reserved.
 
 import Foundation
+import Network
 
 /// Прокси для кеширования файлов
 final class CacheProxy: NetworkServiceProtocol {
@@ -9,6 +10,7 @@ final class CacheProxy: NetworkServiceProtocol {
 
     enum Constants {
         static let imageCacheFolderName = "ImageCache"
+        static let queueLabel = "Monitor"
     }
 
     // MARK: - Private Properties
@@ -16,6 +18,7 @@ final class CacheProxy: NetworkServiceProtocol {
     private let networkService: NetworkServiceProtocol
     private let fileManager = FileManager.default
     private var cacheImageFolderURL: URL?
+    private let monitor = NWPathMonitor()
 
     // MARK: - Initializers
 
@@ -31,11 +34,43 @@ final class CacheProxy: NetworkServiceProtocol {
         search: String?,
         complitionHandler: @escaping (Result<[RecipeCard], Error>) -> ()
     ) {
-        networkService.getRecipes(category: category, search: search, complitionHandler: complitionHandler)
+        monitor.pathUpdateHandler = { [weak self] path in
+            guard let self = self else { return }
+            if path.status == .satisfied {
+                self.networkService.getRecipes(category: category, search: search) { result in
+                    complitionHandler(result)
+                    if case let .success(recipes) = result {
+                        CoreDataStorageService.shared.createRecipes(recipes, recipesCategory: category.rawValue)
+                    }
+                }
+            } else {
+                complitionHandler(.success(CoreDataStorageService.shared.fetchRecipes(category.rawValue)))
+            }
+        }
+        let queue = DispatchQueue(label: Constants.queueLabel)
+        monitor.start(queue: queue)
     }
 
     func getDetail(uri: String?, complitionHandler: @escaping (Result<RecipeDetails, Error>) -> ()) {
-        networkService.getDetail(uri: uri, complitionHandler: complitionHandler)
+        monitor.pathUpdateHandler = { [weak self] path in
+            guard let uri = uri, let self = self else { return }
+            if path.status == .satisfied {
+                self.networkService.getDetail(uri: uri) { result in
+                    complitionHandler(result)
+                    if case let .success(recipeDetails) = result {
+                        CoreDataStorageService.shared.createRecipeDetails(recipeDetails, uri: uri)
+                    }
+                }
+            } else {
+                if let details = CoreDataStorageService.shared.fetchRecipeDetails(uri) {
+                    complitionHandler(.success(details))
+                } else {
+                    complitionHandler(.failure(NetworkError.nilData))
+                }
+            }
+        }
+        let queue = DispatchQueue(label: Constants.queueLabel)
+        monitor.start(queue: queue)
     }
 
     func getImageData(stringURL: String, complitionHandler: @escaping (Result<Data, Error>) -> ()) {
@@ -44,7 +79,6 @@ final class CacheProxy: NetworkServiceProtocol {
 
         let imageName = imageNetworkURL.lastPathComponent
         let imageFilePath = cacheImageFolderURL.appendingPathComponent(imageName).path()
-        print(imageFilePath)
         if fileManager.fileExists(atPath: imageFilePath) {
             guard let imageData = fileManager.contents(atPath: imageFilePath) else { return }
             complitionHandler(.success(imageData))
